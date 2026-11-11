@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import type { ReactNode } from "react";
 
 export function Eyebrow({
@@ -15,7 +16,7 @@ export function Eyebrow({
     >
       {dot && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src="/images/ellipse1.svg" alt="" width={13} height={13} className="shrink-0" />
+        <img src={asset("/images/ellipse1.svg")} alt="" width={13} height={13} className="shrink-0" />
       )}
       {children}
     </p>

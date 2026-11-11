@@ -3,6 +3,8 @@
 Marketing site for **InterpretNext**, a Bayantech specialized interpretation brand.
 Built from the [InterpretNext Figma design](https://www.figma.com/design/1ajrgXbLk8Ga3SWa7WMG9S/InterpretNext?node-id=49-11933) (home page, node `49:11933`).
 
+**Live site:** https://mhellawygap-ui.github.io/InterpretNext/
+
 ## Stack
 
 - [Next.js 15](https://nextjs.org) (App Router) + React 19 + TypeScript
@@ -16,6 +18,23 @@ npm install
 npm run dev     # http://localhost:3000
 npm run build   # production build
 npm run lint
+```
+
+## Deployment
+
+Every push to `main` builds a static export (`out/`) and publishes it to GitHub Pages
+via `.github/workflows/deploy.yml`. The workflow sets `NEXT_PUBLIC_BASE_PATH=/InterpretNext`
+because Pages serves the site from that sub-path.
+
+When adding images from `public/`, wrap the path with `asset()` from `src/lib/asset.ts`
+(e.g. `src={asset("/images/logo.png")}`) so it resolves under the base path.
+
+To preview the production build locally:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/InterpretNext npm run build
+mkdir -p /tmp/site && cp -r out /tmp/site/InterpretNext && npx serve /tmp/site
+# then open http://localhost:3000/InterpretNext/
 ```
 
 ## Structure

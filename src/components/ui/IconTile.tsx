@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import Image from "next/image";
 
 /** 32px emoji-style icon centered on a blush (or lilac) rounded tile. */
@@ -19,7 +20,7 @@ export function IconTile({
       className={`flex shrink-0 items-center justify-center ${tone === "blush" ? "bg-blush" : "bg-lilac"}`}
       style={{ width: size, height: size, borderRadius: radius }}
     >
-      <Image src={src} alt="" width={32} height={32} unoptimized={unoptimized} />
+      <Image src={asset(src)} alt="" width={32} height={32} unoptimized={unoptimized} />
     </span>
   );
 }

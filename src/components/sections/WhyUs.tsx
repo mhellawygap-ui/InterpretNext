@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { GradientText, SectionHeading } from "@/components/ui/SectionHeading";
@@ -36,7 +37,7 @@ export function WhyUs() {
                 key={item.title}
                 className="flex items-center gap-4 rounded-lg border border-border bg-background/50 px-4 py-4"
               >
-                <Image src={item.icon} alt="" width={32} height={32} className="shrink-0" />
+                <Image src={asset(item.icon)} alt="" width={32} height={32} className="shrink-0" />
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] leading-[1.2] text-muted">What we’re built for</p>
                   <p className="mt-4 text-base font-medium leading-[1.2] text-foreground">{item.title}</p>

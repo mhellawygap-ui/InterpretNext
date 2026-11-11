@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
@@ -117,7 +118,7 @@ export function ServiceFinder() {
                     : "border-accent-1 bg-[rgba(245,241,253,0.4)] hover:bg-lilac/50"
                 }`}
               >
-                <Image src={s.icon} alt="" width={32} height={32} unoptimized={s.animated} />
+                <Image src={asset(s.icon)} alt="" width={32} height={32} unoptimized={s.animated} />
                 <span className="flex flex-col gap-2 leading-[1.2]">
                   <span className={`text-xl font-semibold ${selected ? "" : "text-brand"}`}>{s.situation}</span>
                   <span className={`text-base font-medium ${selected ? "" : "text-muted"}`}>{s.situationHint}</span>
@@ -173,7 +174,7 @@ export function ServiceFinder() {
           <div className="flex items-center gap-[15px]">
             <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/ai2.svg" alt="" width={32} height={32} />
+              <img src={asset("/images/ai2.svg")} alt="" width={32} height={32} />
             </span>
             <div className="text-white">
               <p className="text-xl font-medium leading-[1.2]">Not sure which one you need?</p>

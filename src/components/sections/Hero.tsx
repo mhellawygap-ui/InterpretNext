@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -41,16 +42,16 @@ function LiveCard() {
           <span>EN</span>
           <span aria-hidden className="relative block h-[28px] w-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/arrow-alt1.svg" alt="" width={16} height={16} className="absolute top-0 left-0" />
+            <img src={asset("/images/arrow-alt1.svg")} alt="" width={16} height={16} className="absolute top-0 left-0" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/arrow-alt.svg" alt="" width={16} height={16} className="absolute top-[11px] left-0" />
+            <img src={asset("/images/arrow-alt.svg")} alt="" width={16} height={16} className="absolute top-[11px] left-0" />
           </span>
           <span lang="ar" dir="rtl">السودانية</span>
           <span className="sr-only">to Sudanese Arabic</span>
         </p>
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/frame12.svg" alt="" width={101} height={60} className="mt-5" />
+        <img src={asset("/images/frame12.svg")} alt="" width={101} height={60} className="mt-5" />
 
         <div className="mt-[35px] flex flex-wrap items-center justify-between gap-3">
           <p className="text-[13px] font-medium leading-[1.2] text-border">

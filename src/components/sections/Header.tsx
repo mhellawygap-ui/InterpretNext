@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +15,7 @@ const NAV = [
 
 function Chevron() {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src="/images/arrow.svg" alt="" width={24} height={24} className="shrink-0" />;
+  return <img src={asset("/images/arrow.svg")} alt="" width={24} height={24} className="shrink-0" />;
 }
 
 export function Header() {
@@ -26,7 +27,7 @@ export function Header() {
         <Link href="/" aria-label="InterpretNext home" className="relative block h-[80px] w-[160px] shrink-0 overflow-hidden lg:h-[114px] lg:w-[218px]">
           {/* The source logo artwork has generous padding; it is cropped by the link box. */}
           <Image
-            src="/images/logo.png"
+            src={asset("/images/logo.png")}
             alt="InterpretNext — Understand. Connect. Advance."
             width={218}
             height={145}
