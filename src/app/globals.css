@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Design tokens — mirrored from the InterpretNext Figma variables */
+@theme {
+  --color-brand: #080c41;
+  --color-brand-deep: #08093e;
+  --color-accent-1: #6528cb;
+  --color-accent-2: #f32f7e;
+  --color-background: #faf7ff;
+  --color-foreground: #0a0a14;
+  --color-muted: #45444a;
+  --color-border: #c7c5cc;
+  --color-card: #ffffff;
+  --color-lilac: #ebdbff;
+  --color-lilac-strong: #dec4ff;
+  --color-violet: #9b4dff;
+  --color-blush: #ffcadf;
+  --color-sky: #cbe1ff;
+  --color-sky-border: #93addb;
+  --color-sky-text: #1788e6;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee 46s linear infinite reverse;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 }
 
+@utility bg-brand-gradient {
+  background-image: linear-gradient(to left, #f32f7e, #6528cb 50%, #080c41);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(to left, #f32f7e, #6528cb 50%, #080c41);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility font-display-wonk {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-marquee,
+  .animate-marquee-reverse { animation: none; }
 }
