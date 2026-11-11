@@ -1,15 +1,17 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
-type Variant = "primary" | "outline";
+type Variant = "primary" | "outline" | "white" | "ghost-light";
 
 const base =
   "inline-flex h-12 items-center justify-center gap-2 rounded-lg px-4 text-base font-medium leading-[1.2] whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-accent-1",
-  outline:
-    "border-[0.5px] border-brand bg-transparent text-brand hover:bg-brand/5",
+  outline: "border-[0.5px] border-brand bg-transparent text-brand hover:bg-brand/5",
+  /** On gradient heroes / banners */
+  white: "bg-white text-brand hover:bg-lilac",
+  "ghost-light": "border border-white/40 bg-white/5 text-white hover:bg-white/15",
 };
 
 type ButtonProps = ComponentProps<typeof Link> & { variant?: Variant };

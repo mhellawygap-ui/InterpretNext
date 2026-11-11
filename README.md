@@ -37,17 +37,31 @@ mkdir -p /tmp/site && cp -r out /tmp/site/InterpretNext && npx serve /tmp/site
 # then open http://localhost:3000/InterpretNext/
 ```
 
+## Pages
+
+| Route | Figma frame | Notes |
+| --- | --- | --- |
+| `/` | home | |
+| `/services/` | services | 9 expandable service cards; *Request Service* pre-selects the modality on the quote form |
+| `/industries/` | Industry + sectors section | 8 sector tabs synced to the URL hash (`/industries/#legal`), "all industries" cards |
+| `/languages/` | Languages | 6 region cards + searchable directory of 63 languages with region / modality / availability / domain filters (`/languages/?region=African`) |
+| `/trust-center/` | trust center | Certifications, security, privacy, quality, accessibility, legal documents, documentation request form |
+| `/get-quote/` | get quote + quote steps section | 4-step form with validation, confirmation summary; accepts `?modality=opi\|vri\|rsi\|onsite\|unsure` |
+
+All navigation (header dropdowns, mobile menu, footer) is defined once in `src/lib/nav.ts`.
+
 ## Structure
 
 ```
 src/
-  app/                 layout, page, global tokens
+  app/                 one folder per route, plus layout (header/footer) and global tokens
   components/
-    ui/                Button, Container, Eyebrow, SectionHeading/GradientText, Pill, IconTile
-    sections/          one file per page section, in page order:
-                       Header, Hero, TrustedBar, Stats, ServiceFinder (interactive tabs),
-                       Industries, LanguageMarquee, WhyUs, Tiers, Compliance,
-                       HowItWorks, Testimonial, GetStarted, Footer
+    ui/                Button, Container, Eyebrow, SectionHeading, Pill, IconTile
+    sections/          home page sections + Header/Footer
+    page/              inner-page building blocks: PageHero, CtaBanner, Faq, Chip,
+                       SectorExplorer, LanguageExplorer, DocRequest, QuoteFlow
+  data/                page content (services, industries, languages, trust, quote)
+  lib/                 nav map, asset() base-path helper
 public/images/         assets exported from Figma
 ```
 
@@ -66,6 +80,12 @@ Brand gradient (`bg-brand-gradient`, `text-gradient`): `#080c41 → #6528cb → 
 
 ## Open items
 
-- **Service finder:** Figma only specifies the *Phone Call → OPI* panel. Copy for the VRI, RSI and Docs panels is placeholder (`TODO(content)` in `ServiceFinder.tsx`).
-- **Language marquee:** every chip in Figma says "Somali" as a placeholder; it now shows a representative list (`TODO(content)` in `LanguageMarquee.tsx`).
-- Nav dropdowns, Client Login, the assistant, and the contact/demo flows link to anchors only; there are no designs for them yet.
+Search the code for `TODO(` to find each of these.
+
+- **Forms have no backend.** The quote form and the security-documentation form validate and show their confirmation screens, but nothing is sent anywhere yet (`QuoteFlow.tsx`, `DocRequest.tsx`).
+- **Industry FAQ answers are drafts.** Figma shows the questions collapsed, so the answers were written from the page copy and need approval (`src/data/industries.ts`).
+- **Quote dropdown options** (country, industry, duration, volume, frequency, platform, role, "how did you hear") are not in Figma; they are placeholders (`src/data/quote.ts`).
+- **Language "Domain" filter** has no per-language data in Figma; it is derived from modalities for now (`src/data/languages.ts`).
+- **Sector photos** on `/industries/` were cropped from Figma screenshots (the Figma API rate limit blocked the original image export). Replace the files in `public/images/sectors/` with the source images for full resolution.
+- **No pages designed yet** for Client Login, About Bayantech, Careers or Case Studies, so those links point to existing pages.
+- Service-finder copy for the VRI/RSI/Docs panels on the home page and the home language marquee are still placeholders.

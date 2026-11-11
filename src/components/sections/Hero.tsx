@@ -81,8 +81,8 @@ export function Hero() {
             don&apos;t have.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Button href="#get-started" variant="outline">Get Quote</Button>
-            <Button href="#get-started">Request Demo</Button>
+            <Button href="/get-quote/" variant="outline">Get Quote</Button>
+            <Button href="/get-quote/?modality=unsure">Request Demo</Button>
           </div>
           <ul className="mt-6 flex flex-wrap gap-2" aria-label="Highlights">
             <li><Pill tone="lilac">OPI · VRI · RSI · On-site</Pill></li>

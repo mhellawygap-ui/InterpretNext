@@ -20,6 +20,8 @@ type Service = {
   description: string;
   useCases: string[];
   cta: string;
+  /** Pre-selects the modality on /get-quote/ */
+  quote: string;
 };
 
 // Only the "Phone Call" detail panel is specified in Figma.
@@ -38,6 +40,7 @@ const SERVICES: Service[] = [
       "Connects you to a live interpreter in seconds — no video, no app, no scheduling. Built for healthcare intake lines, insurance calls, emergency dispatch, and customer support desks that can't afford to wait.",
     useCases: ["Healthcare intake", "Insurance claims", "Emergency services", "Helpdesk & CX"],
     cta: "Request OPI Service",
+    quote: "opi",
   },
   {
     id: "vri",
@@ -51,6 +54,7 @@ const SERVICES: Service[] = [
       "See and be seen. A certified interpreter joins by video in seconds, or on-site for sessions where presence matters — ideal for clinical consultations, legal meetings, and sign-language needs.",
     useCases: ["Clinical visits", "Legal meetings", "Social services", "Sign language"],
     cta: "Request VRI Service",
+    quote: "vri",
   },
   {
     id: "rsi",
@@ -64,6 +68,7 @@ const SERVICES: Service[] = [
       "Real-time interpretation streamed to every attendee in their language, on any platform — for summits, board meetings, webinars, and hybrid events at any scale.",
     useCases: ["Summits", "Board meetings", "Webinars", "Hybrid events"],
     cta: "Request RSI Service",
+    quote: "rsi",
   },
   {
     id: "docs",
@@ -77,6 +82,7 @@ const SERVICES: Service[] = [
       "Certified translation of documents and accurate transcription of recordings, handled by the same domain-matched linguists — with full confidentiality on every file.",
     useCases: ["Medical records", "Court filings", "Recordings", "Compliance docs"],
     cta: "Request a Quote",
+    quote: "unsure",
   },
 ];
 
@@ -162,7 +168,7 @@ export function ServiceFinder() {
               Our network of professional linguists is available immediately.
             </p>
             <Link
-              href="#get-started"
+              href={`/get-quote/?modality=${active.quote}`}
               className="inline-flex h-[35px] w-[204px] items-center justify-center rounded-[13px] bg-brand text-[13px] font-semibold text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)] hover:bg-accent-1"
             >
               {active.cta}
@@ -184,7 +190,7 @@ export function ServiceFinder() {
             </div>
           </div>
           <Link
-            href="#assistant"
+            href="/get-quote/?modality=unsure"
             className="inline-flex h-12 shrink-0 items-center justify-center rounded-xl border-[0.2px] border-accent-1 bg-background px-6 text-[13px] font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)] sm:w-[214px]"
           >
             <span className="text-gradient">Ask the Assistant</span>

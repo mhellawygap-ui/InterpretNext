@@ -19,8 +19,8 @@ export function GetStarted() {
           className="max-w-[618px]"
         />
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          <Button href="#contact" variant="outline">Talk to sales</Button>
-          <Button href="#contact">Request Demo</Button>
+          <Button href="/get-quote/" variant="outline">Talk to sales</Button>
+          <Button href="/get-quote/?modality=unsure">Request Demo</Button>
         </div>
       </Container>
     </section>

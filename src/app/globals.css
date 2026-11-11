@@ -63,3 +63,16 @@ body {
   .animate-marquee,
   .animate-marquee-reverse { animation: none; }
 }
+
+/* Page-hero card: navy top-left → violet → hot pink bottom-right */
+@utility bg-hero {
+  background-color: #2a1a8a;
+  background-image:
+    radial-gradient(120% 90% at 100% 100%, #ff2d78 0%, rgba(255, 45, 120, 0) 55%),
+    linear-gradient(125deg, #0b0c45 0%, #3b1fb0 40%, #6f30e0 70%, #8a35e0 100%);
+}
+
+/* Horizontal brand banner (CTA blocks) */
+@utility bg-banner {
+  background-image: linear-gradient(90deg, #080c41 0%, #6528cb 50%, #f32f7e 100%);
+}

@@ -1,25 +1,101 @@
 "use client";
 
 import Image from "next/image";
-import { asset } from "@/lib/asset";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { asset } from "@/lib/asset";
+import { PRIMARY_NAV, QUOTE_HREF, type NavGroup } from "@/lib/nav";
 import { Button } from "@/components/ui/Button";
 
-const NAV = [
-  { label: "Services", href: "#services" },
-  { label: "Industries", href: "#industries" },
-  { label: "Languages", href: "#languages" },
-  { label: "Trust Center", href: "#compliance" },
-];
+function Chevron({ open }: { open?: boolean }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={asset("/images/arrow.svg")}
+      alt=""
+      width={24}
+      height={24}
+      className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+    />
+  );
+}
 
-function Chevron() {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={asset("/images/arrow.svg")} alt="" width={24} height={24} className="shrink-0" />;
+function isActive(pathname: string, href: string) {
+  const path = href.split(/[?#]/)[0];
+  return path !== "/" && pathname.startsWith(path.replace(/\/$/, ""));
+}
+
+function NavDropdown({ group, pathname }: { group: NavGroup; pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const active = isActive(pathname, group.href);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <div className="flex items-center">
+        <Link
+          href={group.href}
+          className={`text-base font-medium hover:text-accent-1 ${active ? "text-accent-1" : "text-foreground"}`}
+          aria-current={active ? "page" : undefined}
+        >
+          {group.label}
+        </Link>
+        <button
+          type="button"
+          className="ml-1 rounded"
+          aria-expanded={open}
+          aria-label={`${group.label} menu`}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <Chevron open={open} />
+        </button>
+      </div>
+      {open && (
+        <div className="absolute top-full left-1/2 z-50 -translate-x-1/2 pt-3">
+          <ul className="min-w-[240px] rounded-xl border border-border bg-card p-2 shadow-[0_12px_32px_rgba(8,12,65,0.14)]">
+            {group.children.map((c) => (
+              <li key={c.href}>
+                <Link
+                  href={c.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg px-3 py-2 text-sm text-foreground hover:bg-lilac/60 hover:text-accent-1"
+                >
+                  {c.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card">
@@ -37,24 +113,18 @@ export function Header() {
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-4 xl:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="flex items-center gap-2 text-base font-medium text-foreground hover:text-accent-1"
-            >
-              {item.label}
-              <Chevron />
-            </Link>
+          {PRIMARY_NAV.map((g) => (
+            <NavDropdown key={g.label} group={g} pathname={pathname} />
           ))}
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
-          <Link href="#login" className="mr-4 text-base font-medium text-accent-1 underline">
+          {/* TODO(content): no client portal URL yet */}
+          <Link href="/#top" className="mr-4 text-base font-medium text-accent-1 underline">
             Client Login
           </Link>
-          <Button href="#get-started" variant="outline">Get Quote</Button>
-          <Button href="#get-started">Request Demo</Button>
+          <Button href={QUOTE_HREF} variant="outline">Get Quote</Button>
+          <Button href={`${QUOTE_HREF}?modality=unsure`}>Request Demo</Button>
         </div>
 
         <button
@@ -70,25 +140,37 @@ export function Header() {
       </div>
 
       {open && (
-        <div id="mobile-nav" className="border-t border-border bg-card px-4 pb-6 sm:px-8 xl:hidden">
+        <div id="mobile-nav" className="max-h-[calc(100vh-80px)] overflow-y-auto border-t border-border bg-card px-4 pb-6 sm:px-8 xl:hidden">
           <nav aria-label="Mobile" className="flex flex-col py-2">
-            {NAV.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="py-3 text-base font-medium text-foreground"
-              >
-                {item.label}
-              </Link>
+            {PRIMARY_NAV.map((g) => (
+              <details key={g.label} className="group border-b border-border/60">
+                <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-base font-medium text-foreground">
+                  {g.label}
+                  <span className="transition-transform group-open:rotate-180"><Chevron /></span>
+                </summary>
+                <ul className="pb-3 pl-3">
+                  <li>
+                    <Link href={g.href} className="block py-2 text-sm font-medium text-accent-1">
+                      All {g.label.toLowerCase()}
+                    </Link>
+                  </li>
+                  {g.children.map((c) => (
+                    <li key={c.href}>
+                      <Link href={c.href} onClick={() => setOpen(false)} className="block py-2 text-sm text-muted">
+                        {c.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             ))}
-            <Link href="#login" className="py-3 text-base font-medium text-accent-1 underline">
+            <Link href="/#top" className="py-3 text-base font-medium text-accent-1 underline">
               Client Login
             </Link>
           </nav>
           <div className="flex gap-2">
-            <Button href="#get-started" variant="outline" className="flex-1">Get Quote</Button>
-            <Button href="#get-started" className="flex-1">Request Demo</Button>
+            <Button href={QUOTE_HREF} variant="outline" className="flex-1">Get Quote</Button>
+            <Button href={`${QUOTE_HREF}?modality=unsure`} className="flex-1">Request Demo</Button>
           </div>
         </div>
       )}
