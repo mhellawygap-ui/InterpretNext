@@ -15,6 +15,11 @@ export function IconTile({
   tone?: "blush" | "lilac";
   unoptimized?: boolean;
 }) {
+  if (src.includes("/images/brand/")) {
+    return (
+      <Image src={asset(src)} alt="" width={size} height={size} className="shrink-0" style={{ width: size, height: size }} />
+    );
+  }
   return (
     <span
       className={`flex shrink-0 items-center justify-center ${tone === "blush" ? "bg-blush" : "bg-lilac"}`}

@@ -51,34 +51,30 @@ function NavDropdown({ group, pathname }: { group: NavGroup; pathname: string })
       className="relative"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={(e) => {
+        if (!ref.current?.contains(e.relatedTarget as Node)) setOpen(false);
+      }}
     >
-      <div className="flex items-center">
-        <Link
-          href={group.href}
-          className={`text-base font-medium hover:text-accent-1 ${active ? "text-accent-1" : "text-foreground"}`}
-          aria-current={active ? "page" : undefined}
-        >
-          {group.label}
-        </Link>
-        <button
-          type="button"
-          className="ml-1 rounded"
-          aria-expanded={open}
-          aria-label={`${group.label} menu`}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <Chevron open={open} />
-        </button>
-      </div>
+      <Link
+        href={group.href}
+        className={`flex min-h-11 items-center gap-1 text-base font-medium hover:text-accent-1 ${active ? "text-accent-1" : "text-foreground"}`}
+        aria-current={active ? "page" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        {group.label}
+        <Chevron open={open} />
+      </Link>
       {open && (
-        <div className="absolute top-full left-1/2 z-50 -translate-x-1/2 pt-3">
-          <ul className="min-w-[240px] rounded-xl border border-border bg-card p-2 shadow-[0_12px_32px_rgba(8,12,65,0.14)]">
+        <div className="absolute top-full left-1/2 z-50 -translate-x-1/2 pt-1">
+          <ul className="min-w-[240px] rounded-xl border border-border bg-card p-2 shadow-[0_12px_32px_rgba(8,12,65,0.07)]">
             {group.children.map((c) => (
               <li key={c.href}>
                 <Link
                   href={c.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-foreground hover:bg-lilac/60 hover:text-accent-1"
+                  className="flex min-h-11 items-center rounded-lg px-3 text-sm text-foreground hover:bg-lilac/60 hover:text-accent-1"
                 >
                   {c.label}
                 </Link>
@@ -120,22 +116,22 @@ export function Header() {
 
         <div className="hidden items-center gap-2 xl:flex">
           {/* TODO(content): no client portal URL yet */}
-          <Link href="/#top" className="mr-4 text-base font-medium text-accent-1 underline">
-            Client Login
+          <Link href="/#top" className="tap mr-4 text-base font-medium text-accent-1 underline">
+            Client login
           </Link>
-          <Button href={QUOTE_HREF} variant="outline">Get Quote</Button>
-          <Button href={`${QUOTE_HREF}?modality=unsure`}>Request Demo</Button>
+          <Button href={QUOTE_HREF} variant="outline">Get quote</Button>
+          <Button href={`${QUOTE_HREF}?modality=unsure`}>Request demo</Button>
         </div>
 
         <button
           type="button"
-          className="flex size-11 items-center justify-center rounded-lg border border-border xl:hidden"
+          className="flex h-11 items-center justify-center gap-2 rounded-lg border border-border px-3 xl:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
+                    onClick={() => setOpen((v) => !v)}
         >
-          <span aria-hidden className="text-xl leading-none text-brand">{open ? "✕" : "☰"}</span>
+          <span aria-hidden className="text-lg leading-none text-brand">{open ? "✕" : "☰"}</span>
+          <span className="text-sm font-medium text-brand">{open ? "Close" : "Menu"}</span>
         </button>
       </div>
 
@@ -144,19 +140,19 @@ export function Header() {
           <nav aria-label="Mobile" className="flex flex-col py-2">
             {PRIMARY_NAV.map((g) => (
               <details key={g.label} className="group border-b border-border/60">
-                <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-base font-medium text-foreground">
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between text-base font-medium text-foreground">
                   {g.label}
                   <span className="transition-transform group-open:rotate-180"><Chevron /></span>
                 </summary>
                 <ul className="pb-3 pl-3">
                   <li>
-                    <Link href={g.href} className="block py-2 text-sm font-medium text-accent-1">
+                    <Link href={g.href} className="flex min-h-11 items-center text-sm font-medium text-accent-1">
                       All {g.label.toLowerCase()}
                     </Link>
                   </li>
                   {g.children.map((c) => (
                     <li key={c.href}>
-                      <Link href={c.href} onClick={() => setOpen(false)} className="block py-2 text-sm text-muted">
+                      <Link href={c.href} onClick={() => setOpen(false)} className="flex min-h-11 items-center text-sm text-muted">
                         {c.label}
                       </Link>
                     </li>
@@ -164,13 +160,13 @@ export function Header() {
                 </ul>
               </details>
             ))}
-            <Link href="/#top" className="py-3 text-base font-medium text-accent-1 underline">
-              Client Login
+            <Link href="/#top" className="flex min-h-12 items-center text-base font-medium text-accent-1 underline">
+              Client login
             </Link>
           </nav>
           <div className="flex gap-2">
-            <Button href={QUOTE_HREF} variant="outline" className="flex-1">Get Quote</Button>
-            <Button href={`${QUOTE_HREF}?modality=unsure`} className="flex-1">Request Demo</Button>
+            <Button href={QUOTE_HREF} variant="outline" className="flex-1">Get quote</Button>
+            <Button href={`${QUOTE_HREF}?modality=unsure`} className="flex-1">Request demo</Button>
           </div>
         </div>
       )}

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export function Chip({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`inline-flex h-6 items-center rounded-full bg-lilac-strong/60 px-2.5 text-[13px] font-medium whitespace-nowrap text-accent-1 ${className}`}
+      className={`inline-flex h-6 items-center rounded-full bg-lilac-strong/60 px-2.5 text-[13px] font-medium whitespace-nowrap text-violet-ink ${className}`}
     >
       {children}
     </span>
@@ -14,9 +14,9 @@ export function Chip({ children, className = "" }: { children: ReactNode; classN
 export type Availability = "On-demand" | "Scheduled" | "Limited";
 
 const AVAILABILITY_STYLES: Record<Availability, string> = {
-  "On-demand": "bg-[#e7f7ec] text-[#178a3e]",
-  Scheduled: "bg-[#e6f0ff] text-[#1f6fe0]",
-  Limited: "bg-[#fff3dc] text-[#c46a00]",
+  "On-demand": "bg-[#e7f7ec] text-success-ink",
+  Scheduled: "bg-[#e6f0ff] text-info-ink",
+  Limited: "bg-[#fff3dc] text-warning-ink",
 };
 
 export function AvailabilityBadge({ value }: { value: Availability }) {
@@ -33,7 +33,7 @@ export function StatusBadge({ value }: { value: "Active" | "In Progress" }) {
   return (
     <span
       className={`inline-flex h-6 items-center gap-1.5 rounded-full px-2.5 text-xs font-semibold ${
-        active ? "bg-[#e7f7ec] text-[#178a3e]" : "bg-[#fff3dc] text-[#c46a00]"
+        active ? "bg-[#e7f7ec] text-success-ink" : "bg-[#fff3dc] text-warning-ink"
       }`}
     >
       <span aria-hidden className="size-1.5 rounded-full bg-current" />

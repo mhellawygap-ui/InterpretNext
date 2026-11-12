@@ -39,12 +39,12 @@ const SERVICES: Service[] = [
     description:
       "Connects you to a live interpreter in seconds — no video, no app, no scheduling. Built for healthcare intake lines, insurance calls, emergency dispatch, and customer support desks that can't afford to wait.",
     useCases: ["Healthcare intake", "Insurance claims", "Emergency services", "Helpdesk & CX"],
-    cta: "Request OPI Service",
+    cta: "Request OPI service",
     quote: "opi",
   },
   {
     id: "vri",
-    icon: "/images/desktop-computer.png",
+    icon: "/images/brand/vri.webp",
     situation: "Video or In Person",
     situationHint: "Appointments, meetings, and consultations",
     name: "Video Remote & On-Site Interpretation",
@@ -53,12 +53,12 @@ const SERVICES: Service[] = [
     description:
       "See and be seen. A certified interpreter joins by video in seconds, or on-site for sessions where presence matters — ideal for clinical consultations, legal meetings, and sign-language needs.",
     useCases: ["Clinical visits", "Legal meetings", "Social services", "Sign language"],
-    cta: "Request VRI Service",
+    cta: "Request VRI service",
     quote: "vri",
   },
   {
     id: "rsi",
-    icon: "/images/microphone.png",
+    icon: "/images/brand/rsi.webp",
     situation: "Conference or Event",
     situationHint: "Live events and large audiences",
     name: "Remote Simultaneous Interpretation",
@@ -67,7 +67,7 @@ const SERVICES: Service[] = [
     description:
       "Real-time interpretation streamed to every attendee in their language, on any platform — for summits, board meetings, webinars, and hybrid events at any scale.",
     useCases: ["Summits", "Board meetings", "Webinars", "Hybrid events"],
-    cta: "Request RSI Service",
+    cta: "Request RSI service",
     quote: "rsi",
   },
   {
@@ -81,7 +81,7 @@ const SERVICES: Service[] = [
     description:
       "Certified translation of documents and accurate transcription of recordings, handled by the same domain-matched linguists — with full confidentiality on every file.",
     useCases: ["Medical records", "Court filings", "Recordings", "Compliance docs"],
-    cta: "Request a Quote",
+    cta: "Request a quote",
     quote: "unsure",
   },
 ];
@@ -118,13 +118,13 @@ export function ServiceFinder() {
                 aria-selected={selected}
                 aria-controls={`panel-${s.id}`}
                 onClick={() => setActiveId(s.id)}
-                className={`flex min-h-[152px] flex-col justify-center gap-4 rounded-[20px] border px-[26px] py-6 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1 ${
+                className={`flex min-h-[152px] flex-col justify-center gap-4 rounded-[20px] border px-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1 ${
                   selected
                     ? "bg-brand-gradient border-background text-background"
                     : "border-accent-1 bg-[rgba(245,241,253,0.4)] hover:bg-lilac/50"
                 }`}
               >
-                <Image src={asset(s.icon)} alt="" width={32} height={32} unoptimized={s.animated} />
+                <Image src={asset(s.icon)} alt="" width={40} height={40} unoptimized={s.animated} className={s.icon.includes("/brand/") ? "size-10" : "size-8"} />
                 <span className="flex flex-col gap-2 leading-[1.2]">
                   <span className={`text-xl font-semibold ${selected ? "" : "text-brand"}`}>{s.situation}</span>
                   <span className={`text-base font-medium ${selected ? "" : "text-muted"}`}>{s.situationHint}</span>
@@ -145,7 +145,7 @@ export function ServiceFinder() {
               <IconTile src={active.icon} size={63} radius={9} unoptimized={active.animated} />
               <div className="flex flex-col items-start gap-2">
                 <h3 className="text-xl font-semibold leading-[1.2] text-foreground sm:text-[25px]">{active.name}</h3>
-                <span className="inline-flex h-[18px] items-center rounded-full bg-lilac-strong/60 px-2.5 text-[10px] font-medium text-accent-1">
+                <span className="inline-flex h-5 items-center rounded-full bg-lilac-strong/60 px-2.5 text-xs font-medium text-accent-1">
                   {active.code}
                 </span>
               </div>
@@ -169,7 +169,7 @@ export function ServiceFinder() {
             </p>
             <Link
               href={`/get-quote/?modality=${active.quote}`}
-              className="inline-flex h-[35px] w-[204px] items-center justify-center rounded-[13px] bg-brand text-[13px] font-semibold text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)] hover:bg-accent-1"
+              className="tap inline-flex h-10 w-[204px] items-center justify-center rounded-[13px] bg-brand text-[13px] font-semibold text-white shadow-[0_2px_8px_rgba(8,12,65,0.06)] hover:bg-accent-1"
             >
               {active.cta}
             </Link>
@@ -177,7 +177,7 @@ export function ServiceFinder() {
         </div>
 
         <div className="mt-8 flex flex-col gap-4 rounded-[15px] border-[0.5px] border-accent-1 bg-brand px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-[15px]">
+          <div className="flex items-center gap-4">
             <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset("/images/ai2.svg")} alt="" width={32} height={32} />
@@ -191,9 +191,9 @@ export function ServiceFinder() {
           </div>
           <Link
             href="/get-quote/?modality=unsure"
-            className="inline-flex h-12 shrink-0 items-center justify-center rounded-xl border-[0.2px] border-accent-1 bg-background px-6 text-[13px] font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-2px_rgba(0,0,0,0.1)] sm:w-[214px]"
+            className="inline-flex h-12 shrink-0 items-center justify-center rounded-xl border-[0.2px] border-accent-1 bg-background px-6 text-[13px] font-semibold shadow-[0_2px_8px_rgba(8,12,65,0.06)] sm:w-[214px]"
           >
-            <span className="text-gradient">Ask the Assistant</span>
+            <span className="text-gradient">Ask the assistant</span>
           </Link>
         </div>
       </Container>

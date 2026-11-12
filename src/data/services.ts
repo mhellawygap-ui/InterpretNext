@@ -27,7 +27,7 @@ export const SERVICE_GROUPS: { title: string; items: ServiceItem[] }[] = [
       {
         id: "vri",
         title: "VRI-Video Interpretation",
-        icon: "/images/desktop-computer.png",
+        icon: "/images/brand/vri.webp",
         tags: ["Legal Depositions", "Medical Consultations", "ASL / Sign Language", "Courtrooms"],
         bestFor: "Best when reading the room matters",
         body: "Video Remote brings a certified interpreter face-to-face on screen for medical consultations, legal depositions, and ASL/sign language needs. For the highest-stakes moments, On-Site Elite places a vetted interpreter physically in the room.",
@@ -36,7 +36,7 @@ export const SERVICE_GROUPS: { title: string; items: ServiceItem[] }[] = [
       {
         id: "rsi",
         title: "RSI-Simultaneous Interpretation",
-        icon: "/images/microphone.png",
+        icon: "/images/brand/rsi.webp",
         tags: ["Summits & conferences", "Hybrid Events", "Webinars", "NGO & Multilateral Sessions"],
         bestFor: "Best for many languages, one live audience",
         body: "Cloud-based simultaneous interpretation streamed to attendees in real time — no physical interpreter booths required. Built for summits, hybrid conferences, webinars, and international NGO sessions with multiple language channels.",
@@ -50,7 +50,7 @@ export const SERVICE_GROUPS: { title: string; items: ServiceItem[] }[] = [
       {
         id: "on-site",
         title: "On-site Elite",
-        icon: "/images/icons/round-pushpin.png",
+        icon: "/images/brand/on-site.webp",
         tags: ["Executive business meetings", "Factory inspections", "Government and diplomatic meetings"],
         bestFor: "Best for when being there makes all the difference.",
         body: "Professional interpreters are present at your location to facilitate seamless communication during meetings, appointments, negotiations, and specialized assignments where face-to-face interaction is essential.",

@@ -1,8 +1,9 @@
+import { BrandIcon } from "@/components/ui/BrandIcon";
 import { Container } from "@/components/ui/Container";
 
 const STATS = [
   { value: "200+", label: "Languages & Dialects Covered", small: true },
-  { value: "24/7", label: "On-demand availability, every day" },
+  { value: "24/7", label: "On-demand availability, every day", icon: true },
   { value: "<10s", label: "Average connection time" },
   { value: "3", label: "Interpreter tiers, certification-matched" },
 ];
@@ -22,8 +23,9 @@ export function Stats() {
               <dt className={`${s.small ? "text-[13px]" : "text-base"} leading-[1.2] text-muted`}>
                 {s.label}
               </dt>
-              <dd className="font-display-wonk text-gradient text-[39px] font-bold leading-[1.2]">
-                {s.value}
+              <dd className="flex items-center gap-3">
+                {"icon" in s && <BrandIcon name="24-7" size={40} />}
+                <span className="font-display-wonk text-gradient text-[39px] font-bold leading-[1.2]">{s.value}</span>
               </dd>
             </div>
           ))}

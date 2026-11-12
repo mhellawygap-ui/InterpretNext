@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Pill } from "@/components/ui/Pill";
+import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
 import { Highlight, PageHero } from "@/components/page/PageHero";
+import { IndustriesArt } from "@/components/page/HeroArt";
 import { SectorExplorer } from "@/components/page/SectorExplorer";
 
 export const metadata: Metadata = {
@@ -28,12 +29,9 @@ export default function IndustriesPage() {
             <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
           </>
         }
+        aside={<IndustriesArt />}
         footer={
-          <ul className="flex flex-wrap gap-2">
-            <li><Pill tone="lilac">Healthcare Language Access</Pill></li>
-            <li><Pill tone="blush">Legal-Certified Interpreters</Pill></li>
-            <li><Pill tone="sky">Rare Language Coverage</Pill></li>
-          </ul>
+          <CapabilityStrip />
         }
       />
       <Container className="lg:!px-[160px]">

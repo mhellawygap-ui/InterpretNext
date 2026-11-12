@@ -12,7 +12,7 @@ const ITEMS = [
 export function WhyUs() {
   return (
     <section className="py-10">
-      <Container className="grid items-center gap-10 lg:grid-cols-[504px_1fr] lg:gap-4">
+      <Container className="grid items-center gap-10 lg:grid-cols-[minmax(0,504px)_minmax(0,1fr)] lg:gap-8">
         <SectionHeading
           eyebrow="Why InterpretNext?"
           title={
@@ -28,7 +28,7 @@ export function WhyUs() {
             </>
           }
         />
-        <div className="rounded-2xl border border-border bg-card px-6 pt-4 pb-7 shadow-[0_4px_4px_rgba(0,0,0,0.25)] lg:ml-auto lg:w-[716px]">
+        <div className="rounded-2xl border border-border bg-card px-6 pt-4 pb-7 shadow-[0_4px_24px_rgba(8,12,65,0.07)] w-full lg:ml-auto lg:max-w-[716px]">
           <h3 className="px-4 text-xl font-medium leading-[1.2] text-foreground">Interpretation Services</h3>
           <hr className="mt-4 border-border" />
           <ul className="mt-4 flex flex-col gap-4">
@@ -42,7 +42,7 @@ export function WhyUs() {
                   <p className="text-[13px] leading-[1.2] text-muted">What we’re built for</p>
                   <p className="mt-4 text-base font-medium leading-[1.2] text-foreground">{item.title}</p>
                 </div>
-                <span className="bg-brand-gradient inline-flex h-[35px] shrink-0 items-center rounded-2xl px-[18px] text-base font-medium text-white">
+                <span className="bg-brand-gradient inline-flex h-9 shrink-0 items-center rounded-2xl px-4 text-base font-medium text-white">
                   {item.badge}
                 </span>
               </li>

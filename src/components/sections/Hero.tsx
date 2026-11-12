@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Pill } from "@/components/ui/Pill";
+import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
 import { GradientText } from "@/components/ui/SectionHeading";
 
 function FloatingTag({ code, label, className }: { code: string; label: string; className: string }) {
   return (
     <div
-      className={`absolute z-10 flex h-[43px] items-center gap-2 rounded-lg border border-border bg-card px-3.5 text-[13px] leading-[1.2] text-foreground shadow-[0_4px_4px_rgba(0,0,0,0.25)] ${className}`}
+      className={`absolute z-10 flex h-11 items-center gap-2 rounded-lg border border-border bg-card px-3.5 text-[13px] leading-[1.2] text-foreground shadow-[0_4px_24px_rgba(8,12,65,0.07)] ${className}`}
     >
-      <span className="font-bold">{code}</span>
+      <span className="font-semibold">{code}</span>
       <span className="font-medium opacity-90">{label}</span>
     </div>
   );
@@ -21,7 +22,7 @@ function LiveCard() {
     <div className="relative mx-auto w-full max-w-[546px] pt-4 pb-6 lg:mx-0">
       <FloatingTag code="ET" label="Amharic - Available" className="-top-0 left-0 sm:-left-8" />
       <div
-        className="relative min-h-[323px] overflow-hidden rounded-2xl px-6 pt-[45px] pb-7 text-white"
+        className="relative min-h-[323px] overflow-hidden rounded-2xl px-6 pt-12 pb-7 text-white"
         style={{
           backgroundImage:
             "linear-gradient(237.76deg, #f32f7e 0%, #6528cb 9.7%, #080c41 19.4%)",
@@ -53,9 +54,9 @@ function LiveCard() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset("/images/frame12.svg")} alt="" width={101} height={60} className="mt-5" />
 
-        <div className="mt-[35px] flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
           <p className="text-[13px] font-medium leading-[1.2] text-border">
-            Interpreter: <strong className="font-bold text-white">Platinum Tier</strong> · Medical SME
+            Interpreter: <strong className="font-semibold text-white">Platinum Tier</strong> · Medical SME
           </p>
           <Pill tone="lilac" size="sm">Connected in 9s</Pill>
         </div>
@@ -68,7 +69,7 @@ function LiveCard() {
 export function Hero() {
   return (
     <section className="py-12 lg:pt-12 lg:pb-8">
-      <Container className="grid items-center gap-12 lg:grid-cols-[520px_1fr] lg:gap-[125px]">
+      <Container className="grid items-center gap-12 lg:grid-cols-[520px_1fr] lg:gap-32">
         <div>
           <Eyebrow dot>A Bayantech specialized brand</Eyebrow>
           <h1 className="font-display-wonk mt-6 max-w-[500px] text-[44px] font-bold leading-[1.2] text-black sm:text-[61px]">
@@ -81,14 +82,23 @@ export function Hero() {
             don&apos;t have.
           </p>
           <div className="mt-6 flex flex-wrap gap-4">
-            <Button href="/get-quote/" variant="outline">Get Quote</Button>
-            <Button href="/get-quote/?modality=unsure">Request Demo</Button>
+            <Button href="/get-quote/" variant="outline">Get quote</Button>
+            <Button href="/get-quote/?modality=unsure">Request demo</Button>
           </div>
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label="Highlights">
-            <li><Pill tone="lilac">OPI · VRI · RSI · On-site</Pill></li>
-            <li><Pill tone="blush">HIPAA · ISO 17100 · ISO 27001</Pill></li>
-            <li><Pill tone="sky">24/7 Coverage</Pill></li>
-          </ul>
+          <div className="mt-8">
+            <CapabilityStrip
+              tone="light"
+              grid
+              label="Highlights"
+              items={[
+                { icon: "vri", title: "VRI", sub: "Video remote" },
+                { icon: "rsi", title: "RSI", sub: "Simultaneous" },
+                { icon: "on-site", title: "On-site", sub: "In the room" },
+                { icon: "24-7", title: "24/7", sub: "Coverage" },
+              ]}
+            />
+            <p className="mt-4 text-sm text-muted">HIPAA-aligned · ISO 17100 · ISO 27001</p>
+          </div>
         </div>
         <LiveCard />
       </Container>

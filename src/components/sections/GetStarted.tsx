@@ -20,7 +20,7 @@ export function GetStarted() {
         />
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           <Button href="/get-quote/" variant="outline">Talk to sales</Button>
-          <Button href="/get-quote/?modality=unsure">Request Demo</Button>
+          <Button href="/get-quote/?modality=unsure">Request demo</Button>
         </div>
       </Container>
     </section>

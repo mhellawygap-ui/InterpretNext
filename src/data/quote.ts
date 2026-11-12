@@ -1,9 +1,9 @@
 export const MODALITY_OPTIONS = [
-  { id: "opi", emoji: "📞", title: "Over-the-Phone (OPI)", tagline: "Fast, voice-only conversations", body: "On-demand access in seconds. Ideal for clinical calls, legal intake, customer support, and emergency situations." },
-  { id: "vri", emoji: "📹", title: "Video Remote (VRI)", tagline: "Visual context and non-verbal cues", body: "Face-to-face via video. Best for medical consultations, depositions, ASL, and any setting where visual clarity matters." },
-  { id: "rsi", emoji: "🎤", title: "Simultaneous / Events (RSI)", tagline: "Live multilingual audiences", body: "Real-time interpretation for conferences, webinars, summits, and hybrid events—one or many language channels." },
-  { id: "onsite", emoji: "🤝", title: "On-Site / In-Person", tagline: "When presence makes the difference", body: "An interpreter travels to your location. VIP delegations, trade missions, court hearings, clinical settings, and site visits." },
-  { id: "unsure", emoji: "💬", title: "Not Sure / Multiple", tagline: "Help me choose the right model", body: "Describe your situation and our team will recommend the right modality mix for your volume, budget, and workflow." },
+  { id: "opi", icon: "/images/icons/telephone.png", emoji: "📞", title: "Over-the-Phone (OPI)", tagline: "Fast, voice-only conversations", body: "On-demand access in seconds. Ideal for clinical calls, legal intake, customer support, and emergency situations." },
+  { id: "vri", icon: "/images/brand/vri.webp", emoji: "📹", title: "Video Remote (VRI)", tagline: "Visual context and non-verbal cues", body: "Face-to-face via video. Best for medical consultations, depositions, ASL, and any setting where visual clarity matters." },
+  { id: "rsi", icon: "/images/brand/rsi.webp", emoji: "🎤", title: "Simultaneous / Events (RSI)", tagline: "Live multilingual audiences", body: "Real-time interpretation for conferences, webinars, summits, and hybrid events—one or many language channels." },
+  { id: "onsite", icon: "/images/brand/on-site.webp", emoji: "🤝", title: "On-Site / In-Person", tagline: "When presence makes the difference", body: "An interpreter travels to your location. VIP delegations, trade missions, court hearings, clinical settings, and site visits." },
+  { id: "unsure", icon: "/images/ai2.svg", emoji: "💬", title: "Not Sure / Multiple", tagline: "Help me choose the right model", body: "Describe your situation and our team will recommend the right modality mix for your volume, budget, and workflow." },
 ] as const;
 export type ModalityId = (typeof MODALITY_OPTIONS)[number]["id"];
 
@@ -48,9 +48,9 @@ export const URGENCY = [
 ];
 
 export const SCHEDULING = [
-  { id: "on-demand", emoji: "⚡", title: "On-demand", body: "Connect an interpreter immediately when needed, without pre-booking." },
-  { id: "scheduled", emoji: "📋", title: "Scheduled", body: "Book interpreters in advance for planned sessions, hearings, or events." },
-  { id: "both", emoji: "🔄", title: "Both", body: "A mix—mostly scheduled with occasional on-demand coverage for urgencies." },
+  { id: "on-demand", icon: "/images/brand/coverage-24-7.webp", emoji: "⚡", title: "On-demand", body: "Connect an interpreter immediately when needed, without pre-booking." },
+  { id: "scheduled", icon: "", emoji: "📋", title: "Scheduled", body: "Book interpreters in advance for planned sessions, hearings, or events." },
+  { id: "both", icon: "", emoji: "🔄", title: "Both", body: "A mix—mostly scheduled with occasional on-demand coverage for urgencies." },
 ];
 
 export const INTEGRATIONS = [

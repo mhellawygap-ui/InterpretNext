@@ -46,7 +46,7 @@ export function Industries() {
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 lg:-mx-1">
           {INDUSTRIES.map((item) => (
             <li key={item.title}>
-              <Link href={item.href} className="block h-full rounded-2xl border border-border bg-card p-6 transition-shadow hover:shadow-[0_8px_24px_rgba(101,40,203,0.15)]">
+              <Link href={item.href} className="block h-full rounded-2xl border border-border bg-card p-6 hover:shadow-[0_8px_24px_rgba(101,40,203,0.07)]">
               <div className="flex items-center gap-4">
                 <IconTile src={item.icon} />
                 <h3 className="text-xl font-semibold leading-[1.2] text-foreground xl:whitespace-nowrap">{item.title}</h3>

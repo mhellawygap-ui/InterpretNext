@@ -3,10 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { IconTile } from "@/components/ui/IconTile";
-import { Pill } from "@/components/ui/Pill";
+import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
 import { AssistantBanner } from "@/components/page/AssistantBanner";
 import { Chip } from "@/components/page/Chip";
 import { Highlight, PageHero } from "@/components/page/PageHero";
+import { ServicesArt } from "@/components/page/HeroArt";
 import { SERVICE_GROUPS, type ServiceItem } from "@/data/services";
 
 export const metadata: Metadata = {
@@ -34,16 +35,16 @@ function ServiceCard({ s }: { s: ServiceItem }) {
         <span className="sr-only">Toggle details</span>
       </summary>
       <div className="flex flex-col gap-6 px-4 pb-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-        <div className="max-w-[820px]">
+        <div className="max-w-[70ch]">
           <p className="text-xl font-medium leading-[1.2] text-foreground">{s.bestFor}</p>
           <p className="mt-3 text-base leading-[1.35] text-muted">{s.body}</p>
         </div>
         <Link
           href={`/get-quote/?modality=${s.quote}`}
-          className="inline-flex h-[35px] w-full shrink-0 items-center justify-center rounded-[13px] bg-brand text-[13px] font-semibold text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] hover:bg-accent-1 sm:w-[204px]"
-          aria-label={`Request ${s.title}`}
+          className="tap inline-flex h-10 w-full shrink-0 items-center justify-center rounded-xl bg-brand text-[13px] font-semibold text-white shadow-[0_2px_8px_rgba(8,12,65,0.06)] hover:bg-accent-1 sm:w-[204px]"
+          aria-label={`Request service: ${s.title}`}
         >
-          Request Service
+          Request service
         </Link>
       </div>
     </details>
@@ -63,16 +64,13 @@ export default function ServicesPage() {
         lead="Every conversation has its own setting, pace, and communication needs. InterpretNext offers flexible interpretation services that match the moment—from remote and on-site interpreting to specialized solutions built around your requirements."
         actions={
           <>
-            <Button href="#remote-interpretations" variant="white">Explore Services</Button>
+            <Button href="#remote-interpretations" variant="white">Explore services</Button>
             <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
           </>
         }
+        aside={<ServicesArt />}
         footer={
-          <ul className="flex flex-wrap gap-2">
-            <li><Pill tone="lilac">Healthcare Language Access</Pill></li>
-            <li><Pill tone="blush">Legal-Certified Interpreters</Pill></li>
-            <li><Pill tone="sky">Rare Language Coverage</Pill></li>
-          </ul>
+          <CapabilityStrip />
         }
       />
 

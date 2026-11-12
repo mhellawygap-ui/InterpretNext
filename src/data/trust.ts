@@ -123,7 +123,7 @@ export const LEGAL_DOCS = [
   { emoji: "🔗", title: "Subprocessor List", body: "A current list of third-party subprocessors used in delivering interpretation services, including data handling roles.", cta: "View subprocessors →", doc: "Subprocessor List" },
   { emoji: "🛡️", title: "Responsible Disclosure", body: "How to report a security vulnerability or privacy concern to our security team. We respond within 48 hours.", cta: "Report a vulnerability →", doc: "Security Questionnaire" },
   { emoji: "🏥", title: "Business Associate Agreement", body: "HIPAA-required BAA for US healthcare clients. Confirms InterpretNext's obligations as a business associate handling PHI.", cta: "Request BAA →", doc: "BAA (Healthcare)" },
-  { emoji: "🤝", title: "Non-Disclosure Agreement", body: "Standard NDA for enterprise procurement, legal engagements, and sensitive client relationships.", cta: "Request NDA →", doc: "NDA" },
+  { emoji: "🤝", brand: "nda", title: "Non-Disclosure Agreement", body: "Standard NDA for enterprise procurement, legal engagements, and sensitive client relationships.", cta: "Request NDA →", doc: "NDA" },
 ] as const;
 
 export const DOC_OPTIONS = [

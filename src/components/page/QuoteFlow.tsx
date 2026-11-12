@@ -1,9 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { asset } from "@/lib/asset";
+import { scrollToEl } from "@/lib/motion";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Highlight, PageHero } from "./PageHero";
+import { QuoteArt } from "./HeroArt";
 import {
   ACCESSIBILITY_NEEDS,
   COUNTRIES,
@@ -83,6 +87,23 @@ const EMPTY: Form = {
 
 type Errors = Partial<Record<keyof Form, string>>;
 
+const DRAFT_KEY = "interpretnext:quote-draft";
+
+const REGION_TO_COUNTRY: Record<string, string> = {
+  US: "United States", CA: "Canada", GB: "United Kingdom", IE: "Ireland", AE: "United Arab Emirates",
+  SA: "Saudi Arabia", EG: "Egypt", AU: "Australia",
+};
+
+/** Best-guess default for the country dropdown from the browser locale. */
+function countryFromLocale(): string {
+  try {
+    const region = new Intl.Locale(navigator.language).maximize().region ?? "";
+    return REGION_TO_COUNTRY[region] ?? "";
+  } catch {
+    return "";
+  }
+}
+
 function validate(step: number, f: Form): Errors {
   const e: Errors = {};
   if (step === 0 && !f.modality) e.modality = "Choose a modality, or select “Not Sure / Multiple”.";
@@ -90,11 +111,11 @@ function validate(step: number, f: Form): Errors {
     e.languages = "Select at least one language, or type one below.";
   if (step === 2 && !f.urgency) e.urgency = "Tell us how urgent your need is.";
   if (step === 3) {
-    if (!f.firstName.trim()) e.firstName = "Required";
-    if (!f.lastName.trim()) e.lastName = "Required";
-    if (!/^\S+@\S+\.\S+$/.test(f.email)) e.email = "Enter a valid business email";
-    if (!f.organization.trim()) e.organization = "Required";
-    if (!f.consent) e.consent = "Please accept to submit your request.";
+    if (!f.firstName.trim()) e.firstName = "Enter your first name so the specialist can address you.";
+    if (!f.lastName.trim()) e.lastName = "Enter your last name.";
+    if (!/^\S+@\S+\.\S+$/.test(f.email)) e.email = "Enter an email like name@organization.com — we send your quote there.";
+    if (!f.organization.trim()) e.organization = "Enter your organization so we route you to the right team.";
+    if (!f.consent) e.consent = "Accept the privacy terms so we can contact you about this quote.";
   }
   return e;
 }
@@ -121,10 +142,11 @@ const inputCls =
   "mt-2 h-11 w-full rounded-lg border border-border bg-card px-4 text-sm text-foreground outline-none placeholder:text-muted/70 focus:border-accent-1 focus:ring-2 focus:ring-accent-1/20";
 
 function TextField({
-  id, label, optional, value, onChange, placeholder, type = "text", error, autoComplete,
+  id, label, optional, value, onChange, placeholder, type = "text", error, autoComplete, onBlur, onFocus,
 }: {
   id: string; label: string; optional?: boolean; value: string; onChange: (v: string) => void;
   placeholder?: string; type?: string; error?: string; autoComplete?: string;
+  onBlur?: () => void; onFocus?: () => void;
 }) {
   return (
     <div>
@@ -135,6 +157,8 @@ function TextField({
         value={value}
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        onFocus={onFocus}
         placeholder={placeholder}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-err` : undefined}
@@ -177,7 +201,7 @@ function ChipGroup({
             type="button"
             aria-pressed={on}
             onClick={() => onToggle(o)}
-            className={`inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-[13px] transition-colors ${
+            className={`tap inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-[13px] ${
               on ? "border-accent-1 bg-accent-1 text-white" : "border-border bg-card text-foreground hover:border-accent-1"
             }`}
           >
@@ -199,12 +223,12 @@ function ChoiceCard({
       role="radio"
       aria-checked={selected}
       onClick={onClick}
-      className={`relative flex flex-col items-start rounded-xl border p-4 text-left transition-colors ${
+      className={`relative flex flex-col items-start rounded-xl border p-4 text-left ${
         selected ? "border-accent-1 bg-lilac/40 ring-1 ring-accent-1" : "border-border bg-card hover:border-accent-1"
       } ${className}`}
     >
       {selected && (
-        <span aria-hidden className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-accent-1 text-[11px] text-white">✓</span>
+        <span aria-hidden className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-accent-1 text-xs text-white">✓</span>
       )}
       {children}
     </button>
@@ -227,7 +251,7 @@ function Progress({ step }: { step: number }) {
       {STEPS.map((_, i) => (
         <span
           key={i}
-          className={`h-1.5 rounded-full transition-all ${
+          className={`h-1.5 rounded-full ${
             i < step ? "w-6 bg-[#22a45a]" : i === step ? "w-6 bg-accent-1" : "w-1.5 bg-border"
           }`}
         />
@@ -257,16 +281,63 @@ export function QuoteFlow() {
     setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
-  // Pre-select a modality from links like /get-quote/?modality=opi
+  /** Validate one field on blur (never while the user is still typing). */
+  const blurCheck = (k: keyof Form) => () => {
+    const msg = validate(step, f)[k];
+    if (msg) setErrors((e) => ({ ...e, [k]: msg }));
+  };
+  const clearOnFocus = (k: keyof Form) => () => setErrors((e) => ({ ...e, [k]: undefined }));
+
+  const [restored, setRestored] = useState(false);
+
+  // Restore an unfinished draft, infer the country from the browser locale,
+  // and honour ?modality=… deep links from the Services pages.
   useEffect(() => {
+    let next: Form = EMPTY;
+    let nextStep = 0;
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const d = JSON.parse(raw) as { f: Form; step: number };
+        next = { ...EMPTY, ...d.f };
+        nextStep = Math.min(Math.max(d.step ?? 0, 0), 3);
+      }
+    } catch {
+      /* storage unavailable — start fresh */
+    }
+    if (!next.country) next = { ...next, country: countryFromLocale() };
     const m = new URLSearchParams(window.location.search).get("modality");
-    if (m && MODALITY_OPTIONS.some((o) => o.id === m)) set("modality", m as ModalityId);
+    if (m && MODALITY_OPTIONS.some((o) => o.id === m)) next = { ...next, modality: m as ModalityId };
+    setF(next);
+    setStep(nextStep);
+    setRestored(true);
   }, []);
+
+  // Auto-save the draft so a refresh or accidental navigation loses nothing.
+  useEffect(() => {
+    if (!restored || done) return;
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ f, step }));
+    } catch {
+      /* ignore */
+    }
+  }, [f, step, restored, done]);
+
+  const startOver = () => {
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch {
+      /* ignore */
+    }
+    setF({ ...EMPTY, country: countryFromLocale() });
+    setErrors({});
+    setStep(0);
+  };
 
   const go = (next: number) => {
     setStep(next);
     setErrors({});
-    requestAnimationFrame(() => cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    requestAnimationFrame(() => scrollToEl(cardRef.current));
   };
 
   const next = () => {
@@ -276,8 +347,13 @@ export function QuoteFlow() {
     if (step < 3) go(step + 1);
     else {
       // TODO(backend): no endpoint exists yet — POST `f` to the CRM / sales inbox here.
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        /* ignore */
+      }
       setDone(true);
-      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+      requestAnimationFrame(() => scrollToEl(document.body));
     }
   };
 
@@ -309,7 +385,7 @@ export function QuoteFlow() {
             <strong className="text-brand">one business day</strong>—or sooner if your need is urgent.
           </p>
           <div className="mt-8 rounded-xl border border-border bg-card p-6 text-left">
-            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-muted">What we received</p>
+            <p className="text-xs font-semibold tracking-[0.12em] uppercase text-muted">What we received</p>
             <dl className="mt-4 grid grid-cols-[110px_1fr] gap-x-4 gap-y-2.5 text-sm">
               {rows.map(([k, v]) => (
                 <div key={k} className="contents">
@@ -319,7 +395,7 @@ export function QuoteFlow() {
               ))}
             </dl>
           </div>
-          <p className="mt-10 text-[11px] font-semibold tracking-[0.12em] uppercase text-muted">What happens next</p>
+          <p className="mt-10 text-xs font-semibold tracking-[0.12em] uppercase text-muted">What happens next</p>
           <ul className="mt-5 flex flex-col gap-5 text-left">
             {[
               ["📬", "Confirmation email", "A copy of your request has been sent to your email address."],
@@ -353,6 +429,7 @@ export function QuoteFlow() {
             Tell us what you need. We&apos;ll <Highlight>recommend</Highlight> the right model.
           </>
         }
+        aside={<QuoteArt />}
         lead="Four short steps. No commitment until you agree. A specialist responds within one business day with a tailored recommendation and pricing."
         footer={
           <ol className="flex flex-wrap items-center gap-2" aria-label="Quote steps">
@@ -403,7 +480,13 @@ export function QuoteFlow() {
                     <div role="radiogroup" aria-label="Modality" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                       {MODALITY_OPTIONS.map((m) => (
                         <ChoiceCard key={m.id} selected={f.modality === m.id} onClick={() => set("modality", m.id)}>
-                          <span aria-hidden className="text-2xl">{m.emoji}</span>
+                          {m.id === "unsure" ? (
+                            <span className="flex size-10 items-center justify-center rounded-xl bg-lilac">
+                              <Image src={asset(m.icon)} alt="" width={24} height={24} />
+                            </span>
+                          ) : (
+                            <Image src={asset(m.icon)} alt="" width={40} height={40} className={m.id === "opi" ? "size-10 rounded-xl bg-blush p-1.5" : "size-10"} />
+                          )}
                           <span className="mt-3 text-base font-semibold text-brand">{m.title}</span>
                           <span className="mt-1 text-[13px] font-semibold text-accent-1">{m.tagline}</span>
                           <span className="mt-2 text-sm leading-[1.4] text-muted">{m.body}</span>
@@ -432,6 +515,7 @@ export function QuoteFlow() {
                     <input
                       type="search"
                       aria-label="Search languages"
+                      style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2345444a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5' stroke-linecap='round'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "14px center", backgroundSize: "16px", paddingLeft: 40 }}
                       value={langQuery}
                       onChange={(e) => setLangQuery(e.target.value)}
                       placeholder="Search languages…"
@@ -493,7 +577,7 @@ export function QuoteFlow() {
                     <div role="radiogroup" aria-label="Scheduling" className="mt-3 grid gap-3 sm:grid-cols-3">
                       {SCHEDULING.map((s) => (
                         <ChoiceCard key={s.id} selected={f.scheduling === s.id} onClick={() => set("scheduling", s.id)}>
-                          <span aria-hidden className="text-xl">{s.emoji}</span>
+                          {s.icon ? <Image src={asset(s.icon)} alt="" width={32} height={32} className="size-8" /> : <span aria-hidden className="text-xl">{s.emoji}</span>}
                           <span className="mt-2 text-sm font-semibold text-brand">{s.title}</span>
                           <span className="mt-1 text-xs leading-[1.45] text-muted">{s.body}</span>
                         </ChoiceCard>
@@ -514,11 +598,11 @@ export function QuoteFlow() {
                 <div className="flex flex-col gap-6">
                   <StepHeader n={4} title="Your details" lead="We use your business contact to route your quote to the right team and set a realistic response timeline." />
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <TextField id="first-name" label="First name" autoComplete="given-name" value={f.firstName} onChange={(v) => set("firstName", v)} placeholder="Alex" error={errors.firstName} />
-                    <TextField id="last-name" label="Last name" autoComplete="family-name" value={f.lastName} onChange={(v) => set("lastName", v)} placeholder="Johnson" error={errors.lastName} />
-                    <TextField id="email" label="Business email" type="email" autoComplete="email" value={f.email} onChange={(v) => set("email", v)} placeholder="alex@organization.com" error={errors.email} />
+                    <TextField onBlur={blurCheck("firstName")} onFocus={clearOnFocus("firstName")} id="first-name" label="First name" autoComplete="given-name" value={f.firstName} onChange={(v) => set("firstName", v)} placeholder="Alex" error={errors.firstName} />
+                    <TextField onBlur={blurCheck("lastName")} onFocus={clearOnFocus("lastName")} id="last-name" label="Last name" autoComplete="family-name" value={f.lastName} onChange={(v) => set("lastName", v)} placeholder="Johnson" error={errors.lastName} />
+                    <TextField onBlur={blurCheck("email")} onFocus={clearOnFocus("email")} id="email" label="Business email" type="email" autoComplete="email" value={f.email} onChange={(v) => set("email", v)} placeholder="alex@organization.com" error={errors.email} />
                     <TextField id="phone" label="Phone number" optional type="tel" autoComplete="tel" value={f.phone} onChange={(v) => set("phone", v)} placeholder="+1 (555) 000-0000" />
-                    <TextField id="organization" label="Organization name" autoComplete="organization" value={f.organization} onChange={(v) => set("organization", v)} placeholder="Your hospital, firm, or company" error={errors.organization} />
+                    <TextField onBlur={blurCheck("organization")} onFocus={clearOnFocus("organization")} id="organization" label="Organization name" autoComplete="organization" value={f.organization} onChange={(v) => set("organization", v)} placeholder="Your hospital, firm, or company" error={errors.organization} />
                     <SelectField id="role" label="Your role" value={f.role} onChange={(v) => set("role", v)} options={ROLES} placeholder="Select role…" />
                   </div>
                   <div>
@@ -531,7 +615,7 @@ export function QuoteFlow() {
                           role="radio"
                           aria-checked={f.decision === d}
                           onClick={() => set("decision", d)}
-                          className={`min-h-11 rounded-lg border px-3 py-2 text-left text-[13px] transition-colors ${
+                          className={`min-h-11 rounded-lg border px-3 py-2 text-left text-[13px] ${
                             f.decision === d ? "border-accent-1 bg-lilac/40 text-brand ring-1 ring-accent-1" : "border-border bg-card text-foreground hover:border-accent-1"
                           }`}
                         >
@@ -561,14 +645,14 @@ export function QuoteFlow() {
 
               <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
                 {step > 0 ? (
-                  <button type="button" onClick={() => go(step - 1)} className="text-sm font-medium text-brand hover:text-accent-1">
+                  <button type="button" onClick={() => go(step - 1)} className="tap text-sm font-medium text-brand hover:text-accent-1">
                     ← Back
                   </button>
                 ) : (
-                  <span className="text-sm text-muted/60">← Back</span>
+                  <span aria-hidden className="invisible text-sm">← Back</span>
                 )}
-                <button type="submit" className="bg-brand-gradient inline-flex h-11 items-center rounded-lg px-5 text-sm font-semibold text-white shadow-[0_4px_12px_rgba(101,40,203,0.3)]">
-                  {step < 3 ? "Continue →" : "Submit request →"}
+                <button type="submit" className="inline-flex h-11 items-center rounded-lg bg-brand px-5 text-sm font-semibold text-white hover:bg-accent-1">
+                  {step < 3 ? "Continue →" : "Send request →"}
                 </button>
               </div>
             </form>
@@ -587,12 +671,15 @@ export function QuoteFlow() {
                   set("modality", "unsure");
                   go(0);
                 }}
-                className="mt-4 h-10 w-full rounded-lg border border-border text-sm font-medium text-accent-1 hover:border-accent-1"
+                className="mt-4 h-11 w-full rounded-lg border border-border text-sm font-medium text-accent-1 hover:border-accent-1"
               >
                 Book a consultation
               </button>
             </div>
-            <p className="text-[13px] leading-[1.5] text-muted/80">
+            <button type="button" onClick={startOver} className="tap w-fit text-left text-sm font-medium text-accent-1 underline">
+              Clear this form and start over
+            </button>
+            <p className="text-[13px] leading-[1.5] text-muted">
               InterpretNext is a brand of Bayantech / Teqneyat Group. Submitting this form does not constitute a binding contract. A specialist will confirm scope, pricing, and availability before any agreement is made.
             </p>
           </aside>

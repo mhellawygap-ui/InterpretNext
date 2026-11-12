@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { AvailabilityBadge, type Availability } from "@/components/page/Chip";
 import { LanguageExplorer } from "@/components/page/LanguageExplorer";
 import { Highlight, PageHero } from "@/components/page/PageHero";
+import { LanguagesArt } from "@/components/page/HeroArt";
 
 export const metadata: Metadata = {
   title: "Languages",
@@ -41,10 +42,11 @@ export default function LanguagesPage() {
             <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
           </>
         }
+        aside={<LanguagesArt />}
         footer={
-          <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-6">
             {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse text-center">
+              <div key={s.label} className="flex flex-col-reverse">
                 <dt className="mt-1 text-xs text-white/60">{s.label}</dt>
                 <dd className="font-display-wonk text-xl font-bold sm:text-[22px]">{s.value}</dd>
               </div>

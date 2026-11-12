@@ -1,3 +1,4 @@
+import { BrandIcon } from "@/components/ui/BrandIcon";
 import { Container } from "@/components/ui/Container";
 import { GradientText, SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -24,7 +25,10 @@ export function Compliance() {
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 lg:-mx-1">
           {STANDARDS.map((s) => (
             <li key={s.name} className="rounded-2xl border border-accent-1 bg-card px-3 py-6 text-center">
-              <p className="font-display-wonk text-[31px] font-bold leading-[1.2] text-accent-1">{s.name}</p>
+              <p className="font-display-wonk flex items-center justify-center gap-3 text-[31px] font-bold leading-[1.2] text-accent-1">
+                {s.name === "NDA" && <BrandIcon name="nda" size={40} />}
+                {s.name}
+              </p>
               <p className="mx-auto mt-6 max-w-[263px] text-base leading-[1.2] text-muted">{s.body}</p>
             </li>
           ))}

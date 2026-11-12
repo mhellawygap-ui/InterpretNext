@@ -33,7 +33,7 @@ const n2 = (i: number) => String(i + 1).padStart(2, "0");
 
 function Warning({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-4 flex gap-2 rounded-lg border border-[#f5dca6] bg-[#fff8e6] px-4 py-3 text-xs leading-[1.5] text-[#a35a00]">
+    <p className="mt-4 flex gap-2 rounded-lg border border-[#f5dca6] bg-[#fff8e6] px-4 py-3 text-xs leading-[1.5] text-warning-ink">
       <span aria-hidden>⚠</span>
       <span>{children}</span>
     </p>
@@ -45,7 +45,7 @@ function CheckList({ items }: { items: string[] }) {
     <ul className="mt-4 flex flex-col gap-2.5">
       {items.map((i) => (
         <li key={i} className="flex gap-2 text-sm leading-[1.4] text-muted">
-          <span aria-hidden className="text-[#178a3e]">✓</span>
+          <span aria-hidden className="text-success-ink">✓</span>
           {i}
         </li>
       ))}
@@ -55,20 +55,20 @@ function CheckList({ items }: { items: string[] }) {
 
 function StatusPanel() {
   return (
-    <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
-      <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/60">Trust status overview</p>
+    <div className="rounded-2xl border border-white/40 bg-brand/40 p-5">
+      <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Trust status overview</p>
       <ul className="mt-3 divide-y divide-white/10">
         {STATUS_OVERVIEW.map((s) => (
           <li key={s.name} className="flex items-center justify-between gap-3 py-3">
             <div>
               <p className="text-sm font-semibold">{s.name}</p>
-              <p className="text-xs text-white/50">{s.sub}</p>
+              <p className="text-xs text-white/70">{s.sub}</p>
             </div>
             <StatusBadge value={s.status} />
           </li>
         ))}
       </ul>
-      <Link href="#request-docs" className="mt-3 block text-center text-sm text-white/80 hover:text-white">
+      <Link href="#request-docs" className="mt-3 flex min-h-11 items-center justify-center text-sm text-white/80 hover:text-white">
         Contact security team →
       </Link>
     </div>
@@ -97,7 +97,7 @@ export default function TrustCenterPage() {
 
       <Container className="lg:!px-[112px]">
         {/* Certifications */}
-        <section id="certifications" className="mt-4 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-5 shadow-[0_4px_4px_rgba(0,0,0,0.12)] sm:p-8">
+        <section id="certifications" className="mt-4 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-5 shadow-[0_2px_16px_rgba(8,12,65,0.05)] sm:p-8">
           <SectionTitle
             eyebrow="Certifications & compliance"
             title="Standards we operate under"
@@ -116,7 +116,7 @@ export default function TrustCenterPage() {
                     <p className="mt-1 text-xs font-semibold text-accent-1">Certificate holder: {s.holder}</p>
                     <p className="mt-2 text-sm leading-[1.5] text-muted">{s.body}</p>
                   </div>
-                  <Link href="#request-docs" className="inline-flex h-9 w-fit shrink-0 items-center rounded-lg border border-lilac-strong px-4 text-xs font-medium text-accent-1 hover:bg-lilac/50">
+                  <Link href="#request-docs" className="tap inline-flex h-9 w-fit shrink-0 items-center rounded-lg border border-lilac-strong px-4 text-xs font-medium text-accent-1 hover:bg-lilac/50">
                     Request evidence
                   </Link>
                 </div>
@@ -152,14 +152,14 @@ export default function TrustCenterPage() {
             <div className="relative isolate flex min-h-[460px] flex-col overflow-hidden rounded-2xl p-7 text-white">
               <Image src={asset("/images/trust/security-posture.jpg")} alt="" fill sizes="(min-width: 1024px) 500px, 100vw" className="-z-20 object-cover" />
               <div aria-hidden className="absolute inset-0 -z-10" style={{ backgroundImage: "linear-gradient(180deg, rgba(8,12,65,0.85) 0%, rgba(101,40,203,0.65) 55%, rgba(243,47,126,0.8) 100%)" }} />
-              <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/60">Security posture</p>
+              <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Security posture</p>
               <p className="font-display-wonk mt-auto text-2xl leading-[1.25] font-bold">
                 Interpretation sessions carry PHI, attorney-client privilege, and government data. Our security model is built around that reality.
               </p>
               <dl className="mt-8 grid grid-cols-3 gap-4">
                 {SECURITY_STATS.map((s) => (
                   <div key={s.label} className="flex flex-col-reverse">
-                    <dt className="mt-1 text-[11px] text-white/60">{s.label}</dt>
+                    <dt className="mt-1 text-xs text-white/60">{s.label}</dt>
                     <dd className="font-display-wonk text-lg font-bold">{s.value}</dd>
                   </div>
                 ))}
@@ -169,7 +169,7 @@ export default function TrustCenterPage() {
               <ol className="divide-y divide-border">
                 {SECURITY_ITEMS.map((s, i) => (
                   <li key={s.title} className="flex gap-4 py-5 first:pt-0">
-                    <span className="font-display-wonk w-8 shrink-0 text-xl font-bold text-border">{n2(i)}</span>
+                    <span className="font-display-wonk w-8 shrink-0 text-xl font-bold text-muted">{n2(i)}</span>
                     <div>
                       <h3 className="text-sm font-semibold text-brand">{s.title}</h3>
                       <p className="mt-1.5 text-[13px] leading-[1.5] text-muted">{s.body}</p>
@@ -241,7 +241,7 @@ export default function TrustCenterPage() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 text-[11px] text-muted italic">Tier definitions subject to confirmation with operations.</p>
+              <p className="mt-3 text-xs text-muted italic">Tier definitions subject to confirmation with operations.</p>
             </div>
             <ol className="flex flex-col gap-3">
               {QUALITY_STEPS.map((q, i) => (
@@ -306,7 +306,7 @@ export default function TrustCenterPage() {
         {/* Security team */}
         <section id="request-docs" className="bg-banner mt-16 mb-10 grid scroll-mt-28 gap-10 rounded-[20px] px-6 py-10 text-white sm:px-10 lg:grid-cols-2 lg:px-10 lg:py-12">
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-white/60">Security team</p>
+            <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Security team</p>
             <h2 className="font-display-wonk mt-4 text-[30px] leading-[1.2] font-bold sm:text-[36px]">Need documentation for procurement?</h2>
             <p className="mt-5 text-sm leading-[1.6] text-white/80">
               Enterprise procurement teams often need certificates, DPAs, BAAs, and security questionnaire responses before contracting. Our team responds to verified business requests within two business days.
@@ -320,7 +320,7 @@ export default function TrustCenterPage() {
               ].map(([k, v]) => (
                 <div key={k} className="flex flex-col-reverse rounded-xl border border-white/20 px-4 py-3">
                   <dd className="mt-1 text-sm font-semibold">{v}</dd>
-                  <dt className="text-[10px] tracking-[0.08em] uppercase text-white/60">{k}</dt>
+                  <dt className="text-xs tracking-[0.08em] uppercase text-white/60">{k}</dt>
                 </div>
               ))}
             </dl>

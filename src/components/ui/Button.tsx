@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 type Variant = "primary" | "outline" | "white" | "ghost-light";
 
 const base =
-  "inline-flex h-12 items-center justify-center gap-2 rounded-lg px-4 text-base font-medium leading-[1.2] whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1";
+  "tap inline-flex h-12 items-center justify-center gap-2 rounded-lg px-4 text-base font-medium leading-[1.2] whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-accent-1",

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
+import { scrollToEl } from "@/lib/motion";
 import {
   AVAILABILITIES,
   DOMAINS,
@@ -36,7 +37,7 @@ function FilterRow<T extends string>({ label, options, value, onChange, activeCl
             type="button"
             aria-pressed={on}
             onClick={() => onChange(o)}
-            className={`h-8 rounded-full border px-3 text-[13px] transition-colors ${
+            className={`tap h-9 rounded-full border px-3 text-[13px] ${
               on ? `${activeClass} border-transparent text-white` : "border-border bg-card text-foreground hover:border-accent-1"
             }`}
           >
@@ -85,7 +86,7 @@ export function LanguageExplorer() {
     setRegion(r);
     setQuery("");
     history.replaceState(null, "", `?region=${encodeURIComponent(r)}#find-a-language`);
-    directoryRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToEl(directoryRef.current);
   };
 
   const reset = () => {
@@ -113,20 +114,20 @@ export function LanguageExplorer() {
                 className="absolute inset-0 -z-10"
                 style={{ backgroundImage: "linear-gradient(180deg, rgba(40,20,140,0.92) 0%, rgba(101,40,203,0.72) 50%, rgba(243,47,126,0.85) 100%)" }}
               />
-              <span className="inline-flex w-fit rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold tracking-[0.08em] uppercase">
+              <span className="inline-flex w-fit rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-[0.08em] uppercase">
                 {countBy(c.region)} languages
               </span>
               <h3 className="font-display-wonk mt-2 text-[25px] font-bold">{c.region}</h3>
               <p className="mt-2 text-[15px] leading-[1.3] text-white/90">{c.body}</p>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {c.chips.map((l) => (
-                  <li key={l} className="rounded-full border border-white/40 px-2.5 py-0.5 text-[11px]">{l}</li>
+                  <li key={l} className="rounded-full border border-white/40 px-2.5 py-0.5 text-xs">{l}</li>
                 ))}
               </ul>
               <button
                 type="button"
                 onClick={() => browse(c.region)}
-                className="mt-auto w-fit pt-5 text-left text-[13px] font-medium text-white/80 hover:text-white hover:underline"
+                className="tap mt-auto w-fit pt-5 text-left text-[13px] font-medium text-white/80 hover:text-white hover:underline"
               >
                 Browse {c.region.toLowerCase()} languages →
               </button>
@@ -139,7 +140,7 @@ export function LanguageExplorer() {
         id="find-a-language"
         ref={directoryRef}
         aria-labelledby="find-title"
-        className="mt-14 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-4 shadow-[0_4px_4px_rgba(0,0,0,0.12)] sm:p-8"
+        className="mt-14 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-4 shadow-[0_2px_16px_rgba(8,12,65,0.05)] sm:p-8"
       >
         <h2 id="find-title" className="font-display-wonk text-[25px] font-bold text-brand">Find a language</h2>
         <label className="relative mt-6 block">
@@ -159,9 +160,9 @@ export function LanguageExplorer() {
           <FilterRow label="Region" options={REGIONS} value={region} onChange={setRegion} activeClass="bg-brand" />
           <div className="flex flex-wrap gap-x-6 gap-y-3">
             <FilterRow label="Modality" options={MODALITIES} value={modality} onChange={setModality} activeClass="bg-accent-1" />
-            <FilterRow label="Availability" options={AVAILABILITIES} value={availability} onChange={setAvailability} activeClass="bg-[#c23cd6]" />
+            <FilterRow label="Availability" options={AVAILABILITIES} value={availability} onChange={setAvailability} activeClass="bg-filter-magenta" />
           </div>
-          <FilterRow label="Domain" options={DOMAINS} value={domain} onChange={setDomain} activeClass="bg-accent-2" />
+          <FilterRow label="Domain" options={DOMAINS} value={domain} onChange={setDomain} activeClass="bg-filter-pink" />
         </div>
 
         <p className="mt-6 text-sm text-muted" aria-live="polite">
@@ -173,8 +174,8 @@ export function LanguageExplorer() {
             <p className="font-semibold text-brand">No languages match these filters.</p>
             <p className="mt-1 text-sm text-muted">Try fewer filters, or ask us—we source languages that aren&apos;t listed.</p>
             <div className="mt-4 flex justify-center gap-3">
-              <button type="button" onClick={reset} className="h-10 rounded-lg border border-brand px-4 text-sm font-medium text-brand">Clear filters</button>
-              <a href={asset("/get-quote/")} className="inline-flex h-10 items-center rounded-lg bg-brand px-4 text-sm font-medium text-white">Request a language</a>
+              <button type="button" onClick={reset} className="h-11 rounded-lg border border-brand px-4 text-sm font-medium text-brand">Clear all filters</button>
+              <a href={asset("/get-quote/")} className="inline-flex h-11 items-center rounded-lg bg-brand px-4 text-sm font-medium text-white">Request a language</a>
             </div>
           </div>
         ) : (
@@ -187,7 +188,7 @@ export function LanguageExplorer() {
                     <p className="mt-0.5 h-5 truncate text-[13px] text-muted">{l.native}</p>
                   </div>
                   {l.featured && (
-                    <span className="shrink-0 rounded-full bg-lilac px-2 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase text-accent-1">
+                    <span className="shrink-0 rounded-full bg-lilac px-2 py-0.5 text-xs font-semibold tracking-[0.06em] uppercase text-accent-1">
                       Featured
                     </span>
                   )}
@@ -198,7 +199,7 @@ export function LanguageExplorer() {
                 </div>
                 <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Modalities">
                   {l.modalities.map((m) => (
-                    <li key={m}><Chip className="!h-5 !px-2 !text-[11px]">{m}</Chip></li>
+                    <li key={m}><Chip className="!h-5 !px-2 !text-xs">{m}</Chip></li>
                   ))}
                 </ul>
               </li>

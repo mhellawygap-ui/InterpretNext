@@ -25,7 +25,7 @@ export function HowItWorks() {
         <ol className="relative mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-[308px_304px_330px_1fr] lg:gap-0 lg:border-t lg:border-dashed lg:border-border lg:pt-6">
           {STEPS.map((s, i) => (
             <li key={s.title} className="relative lg:pr-8">
-              <span className="text-base text-accent-2 lg:absolute lg:-top-[59px]">
+              <span className="text-base text-filter-pink lg:absolute lg:-top-[59px]">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-2 text-[25px] font-medium leading-[1.2] text-foreground lg:mt-0">{s.title}</h3>

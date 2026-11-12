@@ -14,7 +14,7 @@ export function Container({
   return (
     <div
       className={`mx-auto w-full px-4 sm:px-8 ${
-        wide ? "max-w-[1432px] lg:px-[43px]" : "max-w-[1440px] lg:px-[100px]"
+        wide ? "max-w-[1432px] lg:px-11" : "max-w-[1440px] lg:px-[100px]"
       } ${className}`}
     >
       {children}

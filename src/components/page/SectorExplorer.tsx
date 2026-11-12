@@ -4,12 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { asset } from "@/lib/asset";
+import { scrollToEl } from "@/lib/motion";
 import { SECTORS, type Sector } from "@/data/industries";
+import { BrandIcon, type BrandIconName } from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "./Chip";
 import { CtaBanner } from "./CtaBanner";
 import { Faq } from "./Faq";
 import { SectionTitle } from "./SectionTitle";
+
+const MODALITY_ICONS: Record<string, BrandIconName> = { VRI: "vri", RSI: "rsi", "On-site": "on-site" };
+
+function ModalityIcon({ badge }: { badge: string }) {
+  const name = MODALITY_ICONS[badge];
+  if (name) return <BrandIcon name={name} size={36} />;
+  if (badge === "OPI")
+    return <Image src={asset("/images/icons/telephone.png")} alt="" width={36} height={36} className="size-9 rounded-lg bg-blush p-1.5" />;
+  return null;
+}
 
 function H3({ children }: { children: React.ReactNode }) {
   return <h3 className="font-display-wonk text-2xl font-bold text-brand">{children}</h3>;
@@ -75,7 +87,10 @@ function SectorPanel({ s }: { s: Sector }) {
         <ul className={`mt-6 grid gap-3 sm:grid-cols-2 ${cols}`}>
           {s.modalities.map((m) => (
             <li key={m.title} className="rounded-2xl border border-border bg-card p-5">
-              <Chip className="!h-5 !text-[11px]">{m.badge}</Chip>
+              <div className="flex items-center gap-2">
+                <ModalityIcon badge={m.badge} />
+                <Chip className="!h-6 !text-xs">{m.badge}</Chip>
+              </div>
               <p className="mt-3 text-lg font-semibold text-brand">{m.title}</p>
               <p className="mt-1 text-sm leading-[1.4] text-muted">{m.body}</p>
             </li>
@@ -92,10 +107,10 @@ function SectorPanel({ s }: { s: Sector }) {
         </div>
         <div className="rounded-2xl border border-[#cfe9d6] bg-[#eef8f0] p-6">
           <p className="flex items-center gap-2 text-lg font-semibold text-brand">
-            <span aria-hidden className="text-[#178a3e]">✓</span> Compliance &amp; trust
+            <span aria-hidden className="text-success-ink">✓</span> Compliance &amp; trust
           </p>
           <p className="mt-3 text-sm leading-[1.5] text-muted">{s.compliance}</p>
-          <Link href="/trust-center/" className="mt-4 inline-block text-sm font-medium text-[#178a3e] hover:underline">
+          <Link href="/trust-center/" className="tap mt-4 inline-block text-sm font-medium text-success-ink hover:underline">
             Visit Trust Center →
           </Link>
         </div>
@@ -139,7 +154,7 @@ export function SectorExplorer() {
   const select = useCallback((id: string, scroll = false) => {
     setActiveId(id);
     history.replaceState(null, "", `#${id}`);
-    if (scroll) sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (scroll) scrollToEl(sectionRef.current);
   }, []);
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -184,7 +199,7 @@ export function SectorExplorer() {
                 aria-controls="sector-panel"
                 tabIndex={selected ? 0 : -1}
                 onClick={() => select(s.id)}
-                className={`inline-flex h-[34px] items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors ${
+                className={`tap inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium ${
                   selected ? "border-brand bg-brand text-white" : "border-border bg-card text-foreground hover:border-accent-1"
                 }`}
               >
@@ -213,16 +228,16 @@ export function SectorExplorer() {
                 <button
                   type="button"
                   onClick={() => select(s.id, true)}
-                  className="flex h-full w-full flex-col items-start rounded-2xl border border-border bg-card p-5 text-left transition-shadow hover:shadow-[0_8px_24px_rgba(101,40,203,0.15)]"
+                  className="flex h-full w-full flex-col items-start rounded-2xl border border-border bg-card p-5 text-left hover:shadow-[0_8px_24px_rgba(101,40,203,0.07)]"
                 >
                   <span aria-hidden className="text-2xl">{s.emoji}</span>
                   <span className="mt-4 text-base font-semibold text-brand">{s.glance.title}</span>
                   <span className="mt-2 text-sm leading-[1.4] text-muted">{s.glance.tagline}</span>
                   <span className="mt-4 flex flex-wrap items-center gap-1.5">
                     {s.cover.slice(0, 2).map((c) => (
-                      <span key={c} className="inline-block max-w-[150px] truncate rounded-full bg-lilac-strong/60 px-2 text-[11px] leading-5 font-medium text-accent-1">{c}</span>
+                      <span key={c} className="inline-block max-w-[150px] truncate rounded-full bg-lilac-strong/60 px-2 text-xs leading-5 font-medium text-accent-1">{c}</span>
                     ))}
-                    {extra > 0 && <span className="text-[11px] text-muted">+{extra} more</span>}
+                    {extra > 0 && <span className="text-xs text-muted">+{extra} more</span>}
                   </span>
                 </button>
               </li>

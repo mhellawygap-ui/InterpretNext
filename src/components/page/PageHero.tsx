@@ -26,10 +26,10 @@ export function PageHero({
     <section className="pt-6 pb-6 lg:pt-8">
       <Container className="lg:!px-[112px]">
         <div className="bg-hero relative overflow-hidden rounded-2xl px-6 py-10 text-white sm:px-10 lg:px-6 lg:py-10">
-          <div className={aside ? "grid gap-10 lg:grid-cols-[1fr_360px] lg:items-center" : ""}>
+          <div className={aside ? "grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center" : ""}>
             <div>
               <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/70">{eyebrow}</p>
-              <h1 className="font-display-wonk mt-5 max-w-[860px] text-[36px] leading-[1.15] font-bold sm:text-[52px] lg:text-[61px]">
+              <h1 className="font-display-wonk mt-5 max-w-[860px] text-[36px] leading-[1.15] font-bold sm:text-[52px] lg:text-[56px]">
                 {title}
               </h1>
               <div className="mt-6 max-w-[600px] text-base leading-[1.35] text-white/85">{lead}</div>

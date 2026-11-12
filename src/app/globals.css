@@ -14,6 +14,15 @@
   --color-lilac: #ebdbff;
   --color-lilac-strong: #dec4ff;
   --color-violet: #9b4dff;
+  /* AA-contrast text tones for tinted backgrounds (≥4.5:1) */
+  --color-violet-ink: #5a1fbf;
+  --color-blush-ink: #a3104a;
+  --color-sky-ink: #0b5aa8;
+  --color-success-ink: #0d6a2e;
+  --color-info-ink: #1452ad;
+  --color-warning-ink: #8a4700;
+  --color-filter-magenta: #93199f;
+  --color-filter-pink: #c0124f;
   --color-blush: #ffcadf;
   --color-sky: #cbe1ff;
   --color-sky-border: #93addb;
@@ -75,4 +84,19 @@ body {
 /* Horizontal brand banner (CTA blocks) */
 @utility bg-banner {
   background-image: linear-gradient(90deg, #080c41 0%, #6528cb 50%, #f32f7e 100%);
+}
+
+/* Expands the pointer/touch target of a small control to at least 44×44px
+   without changing its visual size (WCAG 2.5.5 / profile default). */
+@utility tap {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
 }
