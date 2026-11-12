@@ -101,7 +101,6 @@ export function LanguageExplorer() {
     <>
       <section aria-labelledby="regions-title" className="pt-10">
         <SectionTitle
-          eyebrow="Regional expertise"
           title={<span id="regions-title">Where we run deepest</span>}
           lead="Our differentiation is rare-language depth—especially African and Middle Eastern language families that large providers underserve."
         />

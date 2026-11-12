@@ -35,7 +35,6 @@ export function Industries() {
     <section id="industries" className="scroll-mt-28 pt-10 pb-10">
       <Container>
         <SectionHeading
-          eyebrow="Industries"
           title={
             <>
               Built for where precision can&apos;t be <GradientText>optional</GradientText>.

@@ -13,7 +13,6 @@ export function HowItWorks() {
     <section className="py-10">
       <Container>
         <SectionHeading
-          eyebrow="How it works"
           title={
             <>
               From request <br className="hidden sm:block" />
@@ -22,7 +21,7 @@ export function HowItWorks() {
           }
           className="max-w-[618px]"
         />
-        <ol className="relative mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:border-t lg:border-dashed lg:border-border lg:pt-6">
+        <ol className="relative mt-10 lg:mt-24 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:border-t lg:border-dashed lg:border-border lg:pt-6">
           {STEPS.map((s, i) => (
             <li key={s.title} className="relative lg:pr-8">
               <span className="text-base text-filter-pink lg:absolute lg:-top-[59px]">

@@ -173,7 +173,6 @@ export function SectorExplorer() {
       <section id="sectors" ref={sectionRef} className="scroll-mt-28 pt-10">
         <SectionTitle
           align="center"
-          eyebrow="Industry expertise"
           title="Choose your sector"
           lead="Interpretation requirements differ dramatically by industry. Select yours to see the relevant services, qualifications, and compliance framework."
         />

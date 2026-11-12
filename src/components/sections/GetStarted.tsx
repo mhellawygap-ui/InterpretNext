@@ -8,7 +8,6 @@ export function GetStarted() {
       <Container className="flex flex-col items-center text-center">
         <SectionHeading
           align="center"
-          eyebrow="Get started"
           title={
             <>
               Let&apos;s talk about <br className="hidden sm:block" />

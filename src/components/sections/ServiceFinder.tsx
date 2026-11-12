@@ -91,7 +91,6 @@ export function ServiceFinder() {
     <section id="services" className="scroll-mt-28 pt-16 pb-10">
       <Container wide>
         <SectionHeading
-          eyebrow="Find your service"
           title={
             <>
               Tell us what’s happening.
@@ -101,7 +100,6 @@ export function ServiceFinder() {
           }
           lead="Instead of choosing between technical formats, start with what's actually happening a phone call, a face-to-face visit, a live event, or someone in the room. We'll show you which service fits."
           className="max-w-[850px] lg:px-3"
-          titleClassName="!mt-4"
         />
 
         <div role="tablist" aria-label="What's happening?" className="mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

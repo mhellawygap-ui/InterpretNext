@@ -14,7 +14,6 @@ export function Compliance() {
     <section id="compliance" className="scroll-mt-28 py-10">
       <Container>
         <SectionHeading
-          eyebrow="Compliance"
           title={
             <>
               The floor every contract starts <GradientText>above</GradientText>.

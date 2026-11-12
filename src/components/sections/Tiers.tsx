@@ -29,7 +29,6 @@ export function Tiers() {
     <section className="py-10">
       <Container>
         <SectionHeading
-          eyebrow="Our interprets"
           title={
             <>
               Certification-matched, not <GradientText>randomly assigned</GradientText>.

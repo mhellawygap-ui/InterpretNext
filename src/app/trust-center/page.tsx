@@ -101,7 +101,6 @@ export default function TrustCenterPage() {
         {/* Certifications */}
         <section id="certifications" className="mt-4 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-5 shadow-[0_2px_16px_rgba(8,12,65,0.05)] sm:p-8">
           <SectionTitle
-            eyebrow="Certifications & compliance"
             title="Standards we operate under"
             lead="Certifications listed below apply to Bayantech / Teqneyat Group as the operating entity behind InterpretNext. Entity mapping, scope, and certificate numbers are confirmed with legal before publication."
             action={<Button href="#request-docs" className="shrink-0 !h-11 !text-sm">Request certificates</Button>}
@@ -133,7 +132,7 @@ export default function TrustCenterPage() {
 
         {/* Pillars */}
         <section aria-labelledby="pillars-title" className="pt-16">
-          <SectionTitle align="center" eyebrow="What we cover" title={<span id="pillars-title">Four pillars of operational trust</span>} />
+          <SectionTitle align="center" title={<span id="pillars-title">Four pillars of operational trust</span>} />
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {PILLARS.map((p) => (
               <li key={p.id}>

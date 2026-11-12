@@ -13,7 +13,6 @@ export function WhyUs() {
     <section className="py-10">
       <Container className="grid items-center gap-10 lg:grid-cols-[minmax(0,504px)_minmax(0,1fr)] lg:gap-8">
         <SectionHeading
-          eyebrow="Why InterpretNext?"
           title={
             <>
               Built specifically for buyers who need <GradientText>certainty</GradientText>.
