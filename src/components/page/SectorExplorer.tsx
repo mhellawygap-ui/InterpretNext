@@ -6,22 +6,18 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "re
 import { asset } from "@/lib/asset";
 import { scrollToEl } from "@/lib/motion";
 import { SECTORS, type Sector } from "@/data/industries";
-import { BrandIcon, type BrandIconName } from "@/components/ui/BrandIcon";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "./Chip";
 import { CtaBanner } from "./CtaBanner";
 import { Faq } from "./Faq";
 import { SectionTitle } from "./SectionTitle";
 
-const MODALITY_ICONS: Record<string, BrandIconName> = { VRI: "vri", RSI: "rsi", "On-site": "on-site" };
-
-function ModalityIcon({ badge }: { badge: string }) {
-  const name = MODALITY_ICONS[badge];
-  if (name) return <BrandIcon name={name} size={36} />;
-  if (badge === "OPI")
-    return <Image src={asset("/images/icons/telephone.png")} alt="" width={36} height={36} className="size-9 rounded-lg bg-blush p-1.5" />;
-  return null;
-}
+// Recommended-modality cards use the services family only.
+const MODALITY_ICONS: Record<string, IconName> = {
+  OPI: "opi", VRI: "vri", RSI: "rsi", "On-site": "on-site", Telehealth: "vri",
+  CART: "captioning", "AI+Human": "ai-speech", AI: "ai-speech",
+};
 
 function H3({ children }: { children: React.ReactNode }) {
   return <h3 className="font-display-wonk text-2xl font-bold text-brand">{children}</h3>;
@@ -34,8 +30,8 @@ function SectorPanel({ s }: { s: Sector }) {
       {/* Hero card */}
       <div className="grid overflow-hidden rounded-[20px] lg:grid-cols-2">
         <div className="bg-gradient-to-r from-brand to-accent-1 px-6 py-10 text-white sm:px-10">
-          <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/70">
-            <span aria-hidden>{s.emoji}</span> {s.label}
+          <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.12em] uppercase text-white/80">
+            <Icon name={s.icon} size={28} /> {s.label}
           </p>
           <h3 className="font-display-wonk mt-4 text-[30px] leading-[1.1] font-bold sm:text-[36px]">{s.title}</h3>
           <p className="mt-5 text-base leading-[1.6] text-white/80">{s.intro}</p>
@@ -87,8 +83,8 @@ function SectorPanel({ s }: { s: Sector }) {
         <ul className={`mt-6 grid gap-3 sm:grid-cols-2 ${cols}`}>
           {s.modalities.map((m) => (
             <li key={m.title} className="rounded-2xl border border-border bg-card p-5">
-              <div className="flex items-center gap-2">
-                <ModalityIcon badge={m.badge} />
+              <div className="flex items-center gap-3">
+                <Icon name={MODALITY_ICONS[m.badge] ?? "unsure"} size={40} />
                 <Chip className="!h-6 !text-xs">{m.badge}</Chip>
               </div>
               <p className="mt-3 text-lg font-semibold text-brand">{m.title}</p>
@@ -203,7 +199,7 @@ export function SectorExplorer() {
                   selected ? "border-brand bg-brand text-white" : "border-border bg-card text-foreground hover:border-accent-1"
                 }`}
               >
-                <span aria-hidden>{s.emoji}</span>
+                <Icon name={s.icon} size={22} className="-ml-2" />
                 {s.label}
               </button>
             );
@@ -230,7 +226,7 @@ export function SectorExplorer() {
                   onClick={() => select(s.id, true)}
                   className="flex h-full w-full flex-col items-start rounded-2xl border border-border bg-card p-5 text-left hover:shadow-[0_8px_24px_rgba(101,40,203,0.07)]"
                 >
-                  <span aria-hidden className="text-2xl">{s.emoji}</span>
+                  <Icon name={s.icon} size={40} />
                   <span className="mt-4 text-base font-semibold text-brand">{s.glance.title}</span>
                   <span className="mt-2 text-sm leading-[1.4] text-muted">{s.glance.tagline}</span>
                   <span className="mt-4 flex flex-wrap items-center gap-1.5">

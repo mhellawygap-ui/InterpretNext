@@ -1,17 +1,15 @@
 "use client";
 
-import Image from "next/image";
-import { asset } from "@/lib/asset";
 import Link from "next/link";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
-import { IconTile } from "@/components/ui/IconTile";
+import { AskAssistantButton } from "@/components/assistant/Assistant";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { GradientText, SectionHeading } from "@/components/ui/SectionHeading";
 
 type Service = {
   id: string;
-  icon: string;
-  animated?: boolean;
+  icon: IconName;
   situation: string;
   situationHint: string;
   name: string;
@@ -29,8 +27,7 @@ type Service = {
 const SERVICES: Service[] = [
   {
     id: "opi",
-    icon: "/images/telephone-receiver.gif",
-    animated: true,
+    icon: "opi",
     situation: "Phone Call",
     situationHint: "Fast, voice-only conversations",
     name: "Over-the-Phone Interpretation",
@@ -44,7 +41,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "vri",
-    icon: "/images/brand/vri.webp",
+    icon: "vri",
     situation: "Video or In Person",
     situationHint: "Appointments, meetings, and consultations",
     name: "Video Remote & On-Site Interpretation",
@@ -58,7 +55,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "rsi",
-    icon: "/images/brand/rsi.webp",
+    icon: "rsi",
     situation: "Conference or Event",
     situationHint: "Live events and large audiences",
     name: "Remote Simultaneous Interpretation",
@@ -72,7 +69,7 @@ const SERVICES: Service[] = [
   },
   {
     id: "docs",
-    icon: "/images/page-facing-up.png",
+    icon: "doc-translation",
     situation: "Document or Content",
     situationHint: "Written and recorded materials",
     name: "Translation & Transcription",
@@ -124,7 +121,7 @@ export function ServiceFinder() {
                     : "border-accent-1 bg-[rgba(245,241,253,0.4)] hover:bg-lilac/50"
                 }`}
               >
-                <Image src={asset(s.icon)} alt="" width={40} height={40} unoptimized={s.animated} className={s.icon.includes("/brand/") ? "size-10" : "size-8"} />
+                <Icon name={s.icon} size={40} />
                 <span className="flex flex-col gap-2 leading-[1.2]">
                   <span className={`text-xl font-semibold ${selected ? "" : "text-brand"}`}>{s.situation}</span>
                   <span className={`text-base font-medium ${selected ? "" : "text-muted"}`}>{s.situationHint}</span>
@@ -142,7 +139,7 @@ export function ServiceFinder() {
         >
           <div className="max-w-[876px]">
             <div className="flex items-center gap-4">
-              <IconTile src={active.icon} size={63} radius={9} unoptimized={active.animated} />
+              <Icon name={active.icon} size={56} />
               <div className="flex flex-col items-start gap-2">
                 <h3 className="text-xl font-semibold leading-[1.2] text-foreground sm:text-[25px]">{active.name}</h3>
                 <span className="inline-flex h-5 items-center rounded-full bg-lilac-strong/60 px-2.5 text-xs font-medium text-accent-1">
@@ -162,7 +159,7 @@ export function ServiceFinder() {
           </div>
 
           <div className="flex w-full shrink-0 flex-col items-center gap-3 rounded-xl border-[0.5px] border-lilac-strong bg-white p-6 text-center lg:w-[308px]">
-            <IconTile src="/images/headphone.png" size={64} radius={32} tone="lilac" />
+            <Icon name="support" size={56} />
             <p className="text-xl font-semibold text-black">Ready to connect?</p>
             <p className="max-w-[268px] text-[13px] text-[#46464d]">
               Our network of professional linguists is available immediately.
@@ -178,10 +175,7 @@ export function ServiceFinder() {
 
         <div className="mt-8 flex flex-col gap-4 rounded-[15px] border-[0.5px] border-accent-1 bg-brand px-6 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-lilac">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset("/images/ai2.svg")} alt="" width={32} height={32} />
-            </span>
+            <Icon name="unsure" size={56} />
             <div className="text-white">
               <p className="text-xl font-medium leading-[1.2]">Not sure which one you need?</p>
               <p className="mt-3 text-[13px] leading-[1.2]">
@@ -189,12 +183,9 @@ export function ServiceFinder() {
               </p>
             </div>
           </div>
-          <Link
-            href="/get-quote/?modality=unsure"
-            className="inline-flex h-12 shrink-0 items-center justify-center rounded-xl border-[0.2px] border-accent-1 bg-background px-6 text-[13px] font-semibold shadow-[0_2px_8px_rgba(8,12,65,0.06)] sm:w-[214px]"
-          >
+          <AskAssistantButton intent="recommend" className="inline-flex h-12 shrink-0 items-center justify-center rounded-xl border-[0.2px] border-accent-1 bg-background px-6 text-[13px] font-semibold shadow-[0_2px_8px_rgba(8,12,65,0.06)] sm:w-[214px]">
             <span className="text-gradient">Ask the assistant</span>
-          </Link>
+          </AskAssistantButton>
         </div>
       </Container>
     </section>

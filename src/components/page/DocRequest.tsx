@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { DOC_OPTIONS, LEGAL_DOCS } from "@/data/trust";
-import { BrandIcon } from "@/components/ui/BrandIcon";
+import { Icon } from "@/components/ui/Icon";
 import { scrollToEl } from "@/lib/motion";
 
 const EVENT = "interpretnext:request-doc";
@@ -17,7 +17,7 @@ export function LegalDocGrid() {
     <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {LEGAL_DOCS.map((d) => (
         <li key={d.title} className="flex flex-col rounded-2xl border border-border bg-card p-5">
-          {"brand" in d ? <BrandIcon name="nda" size={40} /> : <span aria-hidden className="text-2xl">{d.emoji}</span>}
+          <Icon name={d.icon} size={44} />
           <h3 className="mt-4 text-base font-semibold text-brand">{d.title}</h3>
           <p className="mt-2 text-sm leading-[1.5] text-muted">{d.body}</p>
           <button

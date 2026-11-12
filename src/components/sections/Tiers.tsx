@@ -1,23 +1,23 @@
 import { Container } from "@/components/ui/Container";
-import { IconTile } from "@/components/ui/IconTile";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { GradientText, SectionHeading } from "@/components/ui/SectionHeading";
 
 const TIERS = [
   {
-    icon: "/images/2nd-place-medal.png",
+    icon: "silver" as IconName,
     name: "Silver",
     meta: "Qualified Bilingual",
     points: ["General OPI & volume support", "High-capacity base layer", "Vetted & background-checked"],
   },
   {
-    icon: "/images/1st-place-medal.png",
+    icon: "gold" as IconName,
     name: "Gold",
     meta: "Specialized . 5+ Years",
     points: ["All modalities (OPI/VRI/RSI)", "Government & business domains", "Subject-matter trained"],
     featured: true,
   },
   {
-    icon: "/images/3rd-place-medal.png",
+    icon: "platinum" as IconName,
     name: "Platinum",
     meta: "Medical & Legal SME · 10+ YEARS",
     points: ["Reserved for high-stakes calls", "Domain-certified specialists", "Premium-rate assignment tier"],
@@ -47,7 +47,7 @@ export function Tiers() {
               }`}
             >
               <div className="flex items-center gap-6">
-                <IconTile src={t.icon} />
+                <Icon name={t.icon} size={48} />
                 <div>
                   <h3 className={`font-display-wonk text-[31px] font-bold leading-[1.2] ${t.featured ? "text-white" : "text-black"}`}>
                     {t.name}

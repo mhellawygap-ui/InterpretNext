@@ -1,9 +1,11 @@
+import type { IconName } from "@/components/ui/Icon";
+
 export const MODALITY_OPTIONS = [
-  { id: "opi", icon: "/images/icons/telephone.png", emoji: "📞", title: "Over-the-Phone (OPI)", tagline: "Fast, voice-only conversations", body: "On-demand access in seconds. Ideal for clinical calls, legal intake, customer support, and emergency situations." },
-  { id: "vri", icon: "/images/brand/vri.webp", emoji: "📹", title: "Video Remote (VRI)", tagline: "Visual context and non-verbal cues", body: "Face-to-face via video. Best for medical consultations, depositions, ASL, and any setting where visual clarity matters." },
-  { id: "rsi", icon: "/images/brand/rsi.webp", emoji: "🎤", title: "Simultaneous / Events (RSI)", tagline: "Live multilingual audiences", body: "Real-time interpretation for conferences, webinars, summits, and hybrid events—one or many language channels." },
-  { id: "onsite", icon: "/images/brand/on-site.webp", emoji: "🤝", title: "On-Site / In-Person", tagline: "When presence makes the difference", body: "An interpreter travels to your location. VIP delegations, trade missions, court hearings, clinical settings, and site visits." },
-  { id: "unsure", icon: "/images/ai2.svg", emoji: "💬", title: "Not Sure / Multiple", tagline: "Help me choose the right model", body: "Describe your situation and our team will recommend the right modality mix for your volume, budget, and workflow." },
+  { id: "opi", icon: "opi" as IconName, title: "Over-the-Phone (OPI)", tagline: "Fast, voice-only conversations", body: "On-demand access in seconds. Ideal for clinical calls, legal intake, customer support, and emergency situations." },
+  { id: "vri", icon: "vri" as IconName, title: "Video Remote (VRI)", tagline: "Visual context and non-verbal cues", body: "Face-to-face via video. Best for medical consultations, depositions, ASL, and any setting where visual clarity matters." },
+  { id: "rsi", icon: "rsi" as IconName, title: "Simultaneous / Events (RSI)", tagline: "Live multilingual audiences", body: "Real-time interpretation for conferences, webinars, summits, and hybrid events—one or many language channels." },
+  { id: "onsite", icon: "on-site" as IconName, title: "On-Site / In-Person", tagline: "When presence makes the difference", body: "An interpreter travels to your location. VIP delegations, trade missions, court hearings, clinical settings, and site visits." },
+  { id: "unsure", icon: "unsure" as IconName, title: "Not Sure / Multiple", tagline: "Help me choose the right model", body: "Describe your situation and our team will recommend the right modality mix for your volume, budget, and workflow." },
 ] as const;
 export type ModalityId = (typeof MODALITY_OPTIONS)[number]["id"];
 
@@ -41,16 +43,16 @@ export const ACCESSIBILITY_NEEDS = [
 ];
 
 export const URGENCY = [
-  { id: "now", emoji: "⚡", title: "Right now", sub: "Emergency / ASAP" },
-  { id: "week", emoji: "📅", title: "This week", sub: "Within 7 days" },
-  { id: "month", emoji: "🗓️", title: "This month", sub: "Within 30 days" },
-  { id: "planning", emoji: "🔭", title: "Planning ahead", sub: "No immediate deadline" },
+  { id: "now", icon: "right-now" as IconName, title: "Right now", sub: "Emergency / ASAP" },
+  { id: "week", icon: "this-week" as IconName, title: "This week", sub: "Within 7 days" },
+  { id: "month", icon: "this-month" as IconName, title: "This month", sub: "Within 30 days" },
+  { id: "planning", icon: "planning" as IconName, title: "Planning ahead", sub: "No immediate deadline" },
 ];
 
 export const SCHEDULING = [
-  { id: "on-demand", icon: "/images/brand/coverage-24-7.webp", emoji: "⚡", title: "On-demand", body: "Connect an interpreter immediately when needed, without pre-booking." },
-  { id: "scheduled", icon: "", emoji: "📋", title: "Scheduled", body: "Book interpreters in advance for planned sessions, hearings, or events." },
-  { id: "both", icon: "", emoji: "🔄", title: "Both", body: "A mix—mostly scheduled with occasional on-demand coverage for urgencies." },
+  { id: "on-demand", icon: "on-demand" as IconName, title: "On-demand", body: "Connect an interpreter immediately when needed, without pre-booking." },
+  { id: "scheduled", icon: "scheduled" as IconName, title: "Scheduled", body: "Book interpreters in advance for planned sessions, hearings, or events." },
+  { id: "both", icon: "24-7" as IconName, title: "Both", body: "A mix—mostly scheduled with occasional on-demand coverage for urgencies." },
 ];
 
 export const INTEGRATIONS = [

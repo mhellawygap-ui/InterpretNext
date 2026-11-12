@@ -1,8 +1,9 @@
 import type { FaqItem } from "@/components/page/Faq";
+import type { IconName } from "@/components/ui/Icon";
 
 export type Sector = {
   id: string;
-  emoji: string;
+  icon: IconName;
   /** Tab label */
   label: string;
   /** Lower-case form used in "Ready to talk about your … program?" */
@@ -25,7 +26,7 @@ export type Sector = {
 export const SECTORS: Sector[] = [
   {
     id: "healthcare",
-    emoji: "🏥",
+    icon: "healthcare",
     label: "Healthcare",
     programName: "healthcare",
     title: "Make every patient interaction clear, timely, and compliant.",
@@ -61,7 +62,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "legal",
-    emoji: "⚖️",
+    icon: "legal",
     label: "Legal",
     programName: "legal",
     title: "Precision language where rights, liberty, and due process depend on it.",
@@ -97,7 +98,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "government",
-    emoji: "🏛️",
+    icon: "government",
     label: "Government & NGO",
     programName: "government & ngo",
     title: "Serve every resident. Reach every community.",
@@ -130,7 +131,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "global-business",
-    emoji: "🌐",
+    icon: "global-business",
     label: "Global Business",
     programName: "global business",
     title: "Negotiate, align, and grow—without language as a barrier.",
@@ -164,7 +165,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "conferences",
-    emoji: "🎤",
+    icon: "conferences",
     label: "Conferences & Events",
     programName: "conferences & events",
     title: "Every voice heard. Every language included.",
@@ -203,7 +204,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "on-site",
-    emoji: "🤝",
+    icon: "on-site-elite",
     label: "On-Site Elite",
     programName: "on-site elite",
     title: "Present, prepared, and trusted—when it has to be in the room.",
@@ -232,7 +233,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "accessibility",
-    emoji: "♿",
+    icon: "accessibility",
     label: "Accessibility",
     programName: "accessibility",
     title: "Inclusive communication isn't optional. It's infrastructure.",
@@ -261,7 +262,7 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "ai-powered",
-    emoji: "🤖",
+    icon: "ai-powered",
     label: "AI-Powered",
     programName: "ai-powered",
     title: "Speed and scale—with human accuracy where it counts.",

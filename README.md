@@ -65,6 +65,51 @@ src/
 public/images/         assets exported from Figma
 ```
 
+## Assistant
+
+A floating "Ask InterpretNext" launcher appears on every page (`src/components/assistant/`). It opens a
+slide-over chat panel: full screen on phones, a 400px side panel on desktop.
+
+- **Avatar:** the brand's headset mark (`public/images/brand/assistant-avatar.webp`). It does not
+  pretend to be a person, and the panel says it is an automated assistant.
+- **What it can do today:** answers come only from the site's own data (`engine.ts`). It recommends
+  a service from the visitor's situation, checks any of the 63 directory languages (including native
+  scripts), answers compliance questions with links to the Trust Center, and hands off to a specialist
+  through the quote form.
+- **Behaviour:** Esc closes the panel and keyboard focus stays inside while it is open, then returns
+  to the launcher. The conversation is kept for the browsing session. With reduced motion, the panel
+  fades instead of sliding.
+- **Opening it from other buttons:** call `openAssistant("recommend")` from anywhere. The
+  "Ask the assistant" buttons already do this.
+- **TODO(backend):** to connect a real AI or live chat, replace `respond()` in `engine.ts`; the UI
+  stays the same.
+
+## Icon system
+
+All icons come from one component, `src/components/ui/Icon.tsx`. Each icon is a rounded tile
+(26% radius) with a top-left → bottom-right gradient and a white glyph. That is the style of the
+supplied VRI, RSI, On-site, 24/7 and NDA tiles, which are used as-is from `public/images/brand/`.
+See every icon at `/icon-system/` (not linked from the nav).
+
+**Color encodes the dimension (vertical):**
+
+| Family | Color | Used for |
+| --- | --- | --- |
+| Services | one hue per modality (product identity) | OPI, VRI, RSI, On-site, Conference, ASL, Captioning, Document translation, AI speech, IMS |
+| Industries | violet → magenta | the 8 sectors |
+| Trust & compliance | NDA blue | certifications, legal documents, accessibility obligations |
+| Capabilities & process | 24/7 green | stats, availability, timing, next steps |
+| Tiers | metal per tier | Silver, Gold, Platinum |
+| Help | indigo | support and "not sure" entry points |
+
+**Rules**
+
+1. Every icon belongs to exactly one family. Don't borrow a glyph from another family.
+2. In a section, either every item gets an icon from the same family, or none do.
+3. Never mix families in one strip or row. Use `IconStrip` with `SERVICE_STRIP` or
+   `TRUST_STRIP`, or build a strip from a single family.
+4. No emoji or 3D illustrations as icons.
+
 ## Design tokens
 
 | Token | Value | Use |
@@ -89,3 +134,4 @@ Search the code for `TODO(` to find each of these.
 - **Sector photos** on `/industries/` were cropped from Figma screenshots (the Figma API rate limit blocked the original image export). Replace the files in `public/images/sectors/` with the source images for full resolution.
 - **No pages designed yet** for Client Login, About Bayantech, Careers or Case Studies, so those links point to existing pages.
 - Service-finder copy for the VRI/RSI/Docs panels on the home page and the home language marquee are still placeholders.
+- The assistant is rule-based (no AI or live-chat backend yet). See **Assistant** above.

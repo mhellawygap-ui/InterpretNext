@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { AvailabilityBadge, type Availability } from "@/components/page/Chip";
 import { LanguageExplorer } from "@/components/page/LanguageExplorer";
 import { Highlight, PageHero } from "@/components/page/PageHero";
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
     "200+ languages, including rare African and Middle Eastern dialects, with on-demand and scheduled availability listed for every language.",
 };
 
-const STATS = [
-  { value: "200+", label: "Languages & dialects" },
-  { value: "6", label: "World regions" },
-  { value: "OPI · VRI · RSI", label: "Interpretation modalities" },
-  { value: "On-demand & scheduled", label: "Transparent availability" },
+const STATS: { value: string; label: string; icon: IconName }[] = [
+  { value: "200+", label: "Languages & dialects", icon: "languages-200" },
+  { value: "6", label: "World regions", icon: "regions" },
+  { value: "OPI · VRI · RSI", label: "Interpretation modalities", icon: "modalities" },
+  { value: "On-demand & scheduled", label: "Transparent availability", icon: "24-7" },
 ];
 
 const AVAILABILITY_HELP: { value: Availability; body: string }[] = [
@@ -44,14 +45,17 @@ export default function LanguagesPage() {
         }
         aside={<LanguagesArt />}
         footer={
-          <dl className="grid grid-cols-2 gap-6">
+          <ul aria-label="Coverage at a glance" className="grid grid-cols-2 gap-6">
             {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse">
-                <dt className="mt-1 text-xs text-white/60">{s.label}</dt>
-                <dd className="font-display-wonk text-xl font-bold sm:text-[22px]">{s.value}</dd>
-              </div>
+              <li key={s.label} className="flex items-center gap-3">
+                <Icon name={s.icon} size={40} />
+                <p className="flex flex-col">
+                  <span className="font-display-wonk text-lg font-bold sm:text-xl">{s.value}</span>
+                  <span className="mt-1 text-xs text-white/80">{s.label}</span>
+                </p>
+              </li>
             ))}
-          </dl>
+          </ul>
         }
       />
 

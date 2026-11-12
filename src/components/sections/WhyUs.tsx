@@ -1,12 +1,11 @@
-import { asset } from "@/lib/asset";
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { GradientText, SectionHeading } from "@/components/ui/SectionHeading";
 
 const ITEMS = [
-  { icon: "/images/medical-symbol.png", title: "HIPAA-Compliant OPI & VRI for Healthcare", badge: "HIPAA" },
-  { icon: "/images/balance-scale.png", title: "Certified Legal & Court Interpretation", badge: "ISO 17100" },
-  { icon: "/images/globe-with-meridians.png", title: "Rare African & ME Dialect Coverage", badge: "200+" },
+  { icon: "healthcare" as IconName, title: "HIPAA-Compliant OPI & VRI for Healthcare", badge: "HIPAA" },
+  { icon: "legal" as IconName, title: "Certified Legal & Court Interpretation", badge: "ISO 17100" },
+  { icon: "global-business" as IconName, title: "Rare African & ME Dialect Coverage", badge: "200+" },
 ];
 
 export function WhyUs() {
@@ -37,12 +36,12 @@ export function WhyUs() {
                 key={item.title}
                 className="flex items-center gap-4 rounded-lg border border-border bg-background/50 px-4 py-4"
               >
-                <Image src={asset(item.icon)} alt="" width={32} height={32} className="shrink-0" />
+                <Icon name={item.icon} size={40} />
                 <div className="min-w-0 flex-1">
                   <p className="text-[13px] leading-[1.2] text-muted">What we’re built for</p>
                   <p className="mt-4 text-base font-medium leading-[1.2] text-foreground">{item.title}</p>
                 </div>
-                <span className="bg-brand-gradient inline-flex h-9 shrink-0 items-center rounded-2xl px-4 text-base font-medium text-white">
+                <span className="inline-flex h-9 shrink-0 items-center rounded-full border border-accent-1/40 bg-lilac/40 px-4 text-sm font-semibold text-violet-ink">
                   {item.badge}
                 </span>
               </li>

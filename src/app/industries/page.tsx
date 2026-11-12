@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
+import { IconStrip, TRUST_STRIP } from "@/components/ui/IconStrip";
 import { Highlight, PageHero } from "@/components/page/PageHero";
 import { IndustriesArt } from "@/components/page/HeroArt";
 import { SectorExplorer } from "@/components/page/SectorExplorer";
@@ -31,7 +31,7 @@ export default function IndustriesPage() {
         }
         aside={<IndustriesArt />}
         footer={
-          <CapabilityStrip />
+          <IconStrip label="Compliance we work under" items={TRUST_STRIP} />
         }
       />
       <Container className="lg:!px-[160px]">

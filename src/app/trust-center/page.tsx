@@ -4,6 +4,7 @@ import Link from "next/link";
 import { asset } from "@/lib/asset";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
 import { StatusBadge } from "@/components/page/Chip";
 import { DocRequestForm, LegalDocGrid } from "@/components/page/DocRequest";
 import { Highlight, PageHero } from "@/components/page/PageHero";
@@ -60,7 +61,8 @@ function StatusPanel() {
       <ul className="mt-3 divide-y divide-white/10">
         {STATUS_OVERVIEW.map((s) => (
           <li key={s.name} className="flex items-center justify-between gap-3 py-3">
-            <div>
+            <Icon name={s.icon} size={32} />
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold">{s.name}</p>
               <p className="text-xs text-white/70">{s.sub}</p>
             </div>
@@ -108,13 +110,16 @@ export default function TrustCenterPage() {
             {STANDARDS.map((s) => (
               <li key={s.name} className="rounded-xl bg-card p-5 sm:p-6">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="max-w-[640px]">
+                  <div className="flex max-w-[680px] gap-4">
+                    <Icon name={s.icon} size={48} />
+                    <div>
                     <div className="flex flex-wrap items-center gap-3">
                       <h3 className="font-display-wonk text-xl font-bold text-brand">{s.name}</h3>
                       <StatusBadge value={s.status} />
                     </div>
                     <p className="mt-1 text-xs font-semibold text-accent-1">Certificate holder: {s.holder}</p>
                     <p className="mt-2 text-sm leading-[1.5] text-muted">{s.body}</p>
+                    </div>
                   </div>
                   <Link href="#request-docs" className="tap inline-flex h-9 w-fit shrink-0 items-center rounded-lg border border-lilac-strong px-4 text-xs font-medium text-accent-1 hover:bg-lilac/50">
                     Request evidence
@@ -233,7 +238,7 @@ export default function TrustCenterPage() {
               <ul className="mt-8 flex flex-col gap-3">
                 {TIERS.map((t) => (
                   <li key={t.name} className="flex gap-3 rounded-xl border border-border bg-card p-4">
-                    <Image src={asset(t.icon)} alt="" width={24} height={24} className="size-6 shrink-0" />
+                    <Icon name={t.icon} size={36} />
                     <div>
                       <p className="text-sm font-semibold text-brand">{t.name}</p>
                       <p className="mt-1 text-xs leading-[1.5] text-muted">{t.body}</p>
@@ -269,7 +274,7 @@ export default function TrustCenterPage() {
             <ul className="grid gap-3 sm:grid-cols-2">
               {ACCESS_SERVICES.map((a) => (
                 <li key={a.title} className="rounded-xl border border-border bg-card p-4">
-                  <span aria-hidden className="text-xl">{a.emoji}</span>
+                  <Icon name={a.icon} size={40} />
                   <p className="mt-3 text-sm font-semibold text-brand">{a.title}</p>
                   <p className="mt-1 text-[13px] leading-[1.45] text-muted">{a.body}</p>
                 </li>

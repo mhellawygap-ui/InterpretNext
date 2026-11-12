@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { asset } from "@/lib/asset";
 import { scrollToEl } from "@/lib/motion";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Highlight, PageHero } from "./PageHero";
 import { QuoteArt } from "./HeroArt";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import {
   ACCESSIBILITY_NEEDS,
   COUNTRIES,
@@ -397,13 +396,13 @@ export function QuoteFlow() {
           </div>
           <p className="mt-10 text-xs font-semibold tracking-[0.12em] uppercase text-muted">What happens next</p>
           <ul className="mt-5 flex flex-col gap-5 text-left">
-            {[
-              ["📬", "Confirmation email", "A copy of your request has been sent to your email address."],
-              ["🎯", "Specialist routing", "Your request is routed to the team with the right language and domain expertise."],
-              ["📞", "We get in touch", "A specialist contacts you within one business day to discuss your needs and confirm pricing."],
-            ].map(([e, t, b]) => (
+            {([
+              ["email", "Confirmation email", "A copy of your request has been sent to your email address."],
+              ["routing", "Specialist routing", "Your request is routed to the team with the right language and domain expertise."],
+              ["callback", "We get in touch", "A specialist contacts you within one business day to discuss your needs and confirm pricing."],
+            ] as [IconName, string, string][]).map(([e, t, b]) => (
               <li key={t} className="flex gap-4">
-                <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-card text-lg">{e}</span>
+                <Icon name={e} size={36} />
                 <div>
                   <p className="text-sm font-semibold text-brand">{t}</p>
                   <p className="mt-0.5 text-[13px] text-muted">{b}</p>
@@ -480,13 +479,7 @@ export function QuoteFlow() {
                     <div role="radiogroup" aria-label="Modality" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                       {MODALITY_OPTIONS.map((m) => (
                         <ChoiceCard key={m.id} selected={f.modality === m.id} onClick={() => set("modality", m.id)}>
-                          {m.id === "unsure" ? (
-                            <span className="flex size-10 items-center justify-center rounded-xl bg-lilac">
-                              <Image src={asset(m.icon)} alt="" width={24} height={24} />
-                            </span>
-                          ) : (
-                            <Image src={asset(m.icon)} alt="" width={40} height={40} className={m.id === "opi" ? "size-10 rounded-xl bg-blush p-1.5" : "size-10"} />
-                          )}
+                          <Icon name={m.icon} size={44} />
                           <span className="mt-3 text-base font-semibold text-brand">{m.title}</span>
                           <span className="mt-1 text-[13px] font-semibold text-accent-1">{m.tagline}</span>
                           <span className="mt-2 text-sm leading-[1.4] text-muted">{m.body}</span>
@@ -558,7 +551,7 @@ export function QuoteFlow() {
                     <div role="radiogroup" aria-label="Urgency" className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
                       {URGENCY.map((u) => (
                         <ChoiceCard key={u.id} selected={f.urgency === u.id} onClick={() => set("urgency", u.id)}>
-                          <span aria-hidden className="text-xl">{u.emoji}</span>
+                          <Icon name={u.icon} size={36} />
                           <span className="mt-2 text-sm font-semibold text-brand">{u.title}</span>
                           <span className="text-xs text-muted">{u.sub}</span>
                         </ChoiceCard>
@@ -577,7 +570,7 @@ export function QuoteFlow() {
                     <div role="radiogroup" aria-label="Scheduling" className="mt-3 grid gap-3 sm:grid-cols-3">
                       {SCHEDULING.map((s) => (
                         <ChoiceCard key={s.id} selected={f.scheduling === s.id} onClick={() => set("scheduling", s.id)}>
-                          {s.icon ? <Image src={asset(s.icon)} alt="" width={32} height={32} className="size-8" /> : <span aria-hidden className="text-xl">{s.emoji}</span>}
+                          <Icon name={s.icon} size={36} />
                           <span className="mt-2 text-sm font-semibold text-brand">{s.title}</span>
                           <span className="mt-1 text-xs leading-[1.45] text-muted">{s.body}</span>
                         </ChoiceCard>
@@ -663,7 +656,7 @@ export function QuoteFlow() {
 
           <aside className="flex flex-col gap-5 lg:pt-0">
             <div className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-sm font-semibold text-brand">Need help?</p>
+              <p className="flex items-center gap-3 text-sm font-semibold text-brand"><Icon name="support" size={36} /> Need help?</p>
               <p className="mt-2 text-[13px] leading-[1.5] text-muted">Prefer to speak with someone instead? Book a consultation directly.</p>
               <button
                 type="button"

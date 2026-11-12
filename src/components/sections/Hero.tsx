@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Pill } from "@/components/ui/Pill";
-import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
+import { Icon } from "@/components/ui/Icon";
+import { IconStrip, SERVICE_STRIP } from "@/components/ui/IconStrip";
 import { GradientText } from "@/components/ui/SectionHeading";
 
 function FloatingTag({ code, label, className }: { code: string; label: string; className: string }) {
@@ -86,18 +87,22 @@ export function Hero() {
             <Button href="/get-quote/?modality=unsure">Request demo</Button>
           </div>
           <div className="mt-8">
-            <CapabilityStrip
-              tone="light"
-              grid
-              label="Highlights"
-              items={[
-                { icon: "vri", title: "VRI", sub: "Video remote" },
-                { icon: "rsi", title: "RSI", sub: "Simultaneous" },
-                { icon: "on-site", title: "On-site", sub: "In the room" },
-                { icon: "24-7", title: "24/7", sub: "Coverage" },
-              ]}
-            />
-            <p className="mt-4 text-sm text-muted">HIPAA-aligned · ISO 17100 · ISO 27001</p>
+            <IconStrip tone="light" columns={2} label="Interpretation modalities" items={SERVICE_STRIP} />
+            <ul aria-label="Certifications" className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
+              {(
+                [
+                  ["hipaa", "HIPAA-aligned"],
+                  ["iso-17100", "ISO 17100"],
+                  ["iso-27001", "ISO 27001"],
+                  ["nda", "NDA-signed"],
+                ] as const
+              ).map(([icon, text]) => (
+                <li key={icon} className="flex items-center gap-2 text-sm font-medium text-muted">
+                  <Icon name={icon} size={24} />
+                  {text}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <LiveCard />

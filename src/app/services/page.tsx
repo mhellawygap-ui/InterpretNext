@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { IconTile } from "@/components/ui/IconTile";
-import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
+import { Icon } from "@/components/ui/Icon";
+import { IconStrip, SERVICE_STRIP } from "@/components/ui/IconStrip";
 import { AssistantBanner } from "@/components/page/AssistantBanner";
 import { Chip } from "@/components/page/Chip";
 import { Highlight, PageHero } from "@/components/page/PageHero";
@@ -20,7 +20,7 @@ function ServiceCard({ s }: { s: ServiceItem }) {
   return (
     <details id={s.id} open className="group scroll-mt-32 rounded-2xl border border-border bg-card">
       <summary className="flex cursor-pointer list-none items-start gap-4 p-4 sm:p-6 [&::-webkit-details-marker]:hidden">
-        <IconTile src={s.icon} unoptimized={s.animated} />
+        <Icon name={s.icon} size={48} />
         <div className="min-w-0 flex-1">
           <h3 className="text-xl font-semibold leading-[1.2] text-foreground">{s.title}</h3>
           <ul className="mt-3 flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ export default function ServicesPage() {
         }
         aside={<ServicesArt />}
         footer={
-          <CapabilityStrip />
+          <IconStrip label="Interpretation modalities" items={SERVICE_STRIP} />
         }
       />
 

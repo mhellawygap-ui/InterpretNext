@@ -1,13 +1,16 @@
+import type { IconName } from "@/components/ui/Icon";
+
 export const STATUS_OVERVIEW = [
-  { name: "ISO 17100 Certification", sub: "Bayantech / Teqneyat Group", status: "Active" },
-  { name: "ISO 27001 Information Security", sub: "Bayantech / Teqneyat Group", status: "Active" },
-  { name: "GDPR Compliance", sub: "EU/EEA data handling", status: "Active" },
-  { name: "HIPAA / BAA Readiness", sub: "Healthcare clients — in review", status: "In Progress" },
-  { name: "ATA Membership", sub: "Professional standards body", status: "Active" },
+  { icon: "iso-17100" as IconName, name: "ISO 17100 Certification", sub: "Bayantech / Teqneyat Group", status: "Active" },
+  { icon: "iso-27001" as IconName, name: "ISO 27001 Information Security", sub: "Bayantech / Teqneyat Group", status: "Active" },
+  { icon: "gdpr" as IconName, name: "GDPR Compliance", sub: "EU/EEA data handling", status: "Active" },
+  { icon: "hipaa" as IconName, name: "HIPAA / BAA Readiness", sub: "Healthcare clients — in review", status: "In Progress" },
+  { icon: "ata" as IconName, name: "ATA Membership", sub: "Professional standards body", status: "Active" },
 ] as const;
 
 export const STANDARDS = [
   {
+    icon: "iso-17100" as IconName,
     name: "ISO 17100:2015",
     status: "Active",
     holder: "Bayantech / Teqneyat Group",
@@ -15,6 +18,7 @@ export const STANDARDS = [
     note: "Scope confirmation and entity mapping required before publication.",
   },
   {
+    icon: "iso-27001" as IconName,
     name: "ISO 27001",
     status: "Active",
     holder: "Bayantech / Teqneyat Group",
@@ -22,6 +26,7 @@ export const STANDARDS = [
     note: "Applicable entities and scope to be confirmed with legal and security teams.",
   },
   {
+    icon: "hipaa" as IconName,
     name: "HIPAA Alignment",
     status: "In Progress",
     holder: "InterpretNext / Bayantech",
@@ -29,12 +34,14 @@ export const STANDARDS = [
     note: "BAA readiness status to be confirmed with legal and compliance before publishing.",
   },
   {
+    icon: "ata" as IconName,
     name: "ATA Membership",
     status: "Active",
     holder: "Bayantech",
     body: "American Translators Association membership for professional standards in translation and interpretation.",
   },
   {
+    icon: "gdpr" as IconName,
     name: "GDPR Compliance",
     status: "Active",
     holder: "InterpretNext / Bayantech",
@@ -97,16 +104,16 @@ export const QUALITY_STEPS = [
 ];
 
 export const TIERS = [
-  { icon: "/images/2nd-place-medal.png", name: "Silver", body: "Assessed bilingual fluency, confidentiality agreement, background check." },
-  { icon: "/images/1st-place-medal.png", name: "Gold", body: "Domain certification or equivalent assessed competency, enhanced background check, QA track record." },
-  { icon: "/images/3rd-place-medal.png", name: "Platinum", body: "Multiple domain certifications, regulatory credential (court-certified, CHI, CMI), leadership track record." },
+  { icon: "silver" as IconName, name: "Silver", body: "Assessed bilingual fluency, confidentiality agreement, background check." },
+  { icon: "gold" as IconName, name: "Gold", body: "Domain certification or equivalent assessed competency, enhanced background check, QA track record." },
+  { icon: "platinum" as IconName, name: "Platinum", body: "Multiple domain certifications, regulatory credential (court-certified, CHI, CMI), leadership track record." },
 ];
 
 export const ACCESS_SERVICES = [
-  { emoji: "🤟", title: "ASL Interpretation", body: "RID-certified interpreters for Deaf and hard-of-hearing participants via VRI or in-person." },
-  { emoji: "📝", title: "CART / Live Captioning", body: "Certified CART providers for real-time transcription at events, webinars, and hearings." },
-  { emoji: "💻", title: "Platform accessibility", body: "WCAG 2.2 AA target across web, with keyboard navigation, visible focus, and readable contrast." },
-  { emoji: "🎧", title: "Reduced-motion support", body: "Respects prefers-reduced-motion for users sensitive to animation and parallax effects." },
+  { icon: "sign-language" as IconName, title: "ASL Interpretation", body: "RID-certified interpreters for Deaf and hard-of-hearing participants via VRI or in-person." },
+  { icon: "captions" as IconName, title: "CART / Live Captioning", body: "Certified CART providers for real-time transcription at events, webinars, and hearings." },
+  { icon: "platform-access" as IconName, title: "Platform accessibility", body: "WCAG 2.2 AA target across web, with keyboard navigation, visible focus, and readable contrast." },
+  { icon: "reduced-motion" as IconName, title: "Reduced-motion support", body: "Respects prefers-reduced-motion for users sensitive to animation and parallax effects." },
 ];
 
 export const ACCESS_STANDARDS = [
@@ -116,14 +123,14 @@ export const ACCESS_STANDARDS = [
 ];
 
 export const LEGAL_DOCS = [
-  { emoji: "🔒", title: "Privacy Policy", body: "How we collect, use, store, and protect personal data across our interpretation services and platforms.", cta: "Read policy →", doc: "Privacy Policy & DPA" },
-  { emoji: "📋", title: "Terms of Service", body: "The terms governing your use of InterpretNext interpretation services, platform access, and service agreements.", cta: "Read terms →", doc: "Privacy Policy & DPA" },
-  { emoji: "🗂️", title: "Data Processing Agreement", body: "The DPA covering how InterpretNext processes personal data on behalf of enterprise clients, including EU SCCs.", cta: "Request DPA →", doc: "Privacy Policy & DPA" },
-  { emoji: "♿", title: "Accessibility Statement", body: "Our commitment to WCAG 2.2 AA compliance, accessible interpretation delivery, and inclusive service design.", cta: "Read statement →", doc: null },
-  { emoji: "🔗", title: "Subprocessor List", body: "A current list of third-party subprocessors used in delivering interpretation services, including data handling roles.", cta: "View subprocessors →", doc: "Subprocessor List" },
-  { emoji: "🛡️", title: "Responsible Disclosure", body: "How to report a security vulnerability or privacy concern to our security team. We respond within 48 hours.", cta: "Report a vulnerability →", doc: "Security Questionnaire" },
-  { emoji: "🏥", title: "Business Associate Agreement", body: "HIPAA-required BAA for US healthcare clients. Confirms InterpretNext's obligations as a business associate handling PHI.", cta: "Request BAA →", doc: "BAA (Healthcare)" },
-  { emoji: "🤝", brand: "nda", title: "Non-Disclosure Agreement", body: "Standard NDA for enterprise procurement, legal engagements, and sensitive client relationships.", cta: "Request NDA →", doc: "NDA" },
+  { icon: "privacy-policy" as IconName, title: "Privacy Policy", body: "How we collect, use, store, and protect personal data across our interpretation services and platforms.", cta: "Read policy →", doc: "Privacy Policy & DPA" },
+  { icon: "terms" as IconName, title: "Terms of Service", body: "The terms governing your use of InterpretNext interpretation services, platform access, and service agreements.", cta: "Read terms →", doc: "Privacy Policy & DPA" },
+  { icon: "dpa" as IconName, title: "Data Processing Agreement", body: "The DPA covering how InterpretNext processes personal data on behalf of enterprise clients, including EU SCCs.", cta: "Request DPA →", doc: "Privacy Policy & DPA" },
+  { icon: "accessibility-statement" as IconName, title: "Accessibility Statement", body: "Our commitment to WCAG 2.2 AA compliance, accessible interpretation delivery, and inclusive service design.", cta: "Read statement →", doc: null },
+  { icon: "subprocessors" as IconName, title: "Subprocessor List", body: "A current list of third-party subprocessors used in delivering interpretation services, including data handling roles.", cta: "View subprocessors →", doc: "Subprocessor List" },
+  { icon: "disclosure" as IconName, title: "Responsible Disclosure", body: "How to report a security vulnerability or privacy concern to our security team. We respond within 48 hours.", cta: "Report a vulnerability →", doc: "Security Questionnaire" },
+  { icon: "baa" as IconName, title: "Business Associate Agreement", body: "HIPAA-required BAA for US healthcare clients. Confirms InterpretNext's obligations as a business associate handling PHI.", cta: "Request BAA →", doc: "BAA (Healthcare)" },
+  { icon: "nda" as IconName, title: "Non-Disclosure Agreement", body: "Standard NDA for enterprise procurement, legal engagements, and sensitive client relationships.", cta: "Request NDA →", doc: "NDA" },
 ] as const;
 
 export const DOC_OPTIONS = [
