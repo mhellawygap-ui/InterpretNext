@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import { LOGIN_HREF, PRIMARY_NAV, QUOTE_HREF, type NavItem } from "@/lib/nav";
 import { Button } from "@/components/ui/Button";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 
 function Caret({ open = false }: { open?: boolean }) {
   return (
@@ -86,6 +87,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
+      <ScrollProgress />
       <div className="mx-auto flex h-[72px] max-w-[1264px] items-center justify-between gap-6 px-6 md:px-8">
         <Link href="/" aria-label="InterpretNext home" className="relative block h-[72px] w-[172px] shrink-0 overflow-hidden">
           <Image

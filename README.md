@@ -56,13 +56,21 @@ Later items appear only as "Later release".
 
 ## Design system
 
-- **Look:** white canvas, one subtle surface tone (`surface`), navy text, a single violet accent. Pink only in the logo.
-  No gradients on text or buttons, and cards use a 1px border with no shadows.
-- **Spacing:** 1200px content width, sections 96px apart on desktop and 64px on mobile.
-- **Primitives** in `src/components/ui/`: `Section`, `SectionHeader`, `PageIntro`, `Button`, `Badge`, `Faq`, `CtaBand`, `Icon`.
-- **Icons** (`Icon.tsx`): line glyphs (24px grid, 1.75 stroke) on a soft tile. The tile color names the dimension:
-  services violet, industries rose, trust blue, capabilities green, tiers metal, help indigo.
-  In a section, every item gets an icon from the same family or none do, and one row never mixes families.
+- **Idea:** two languages meeting through a skilled person. The hero's "conversation bridge" (Arabic and English
+  joined through the InterpretNext mark by the logo gradient) is the signature element. Everything around it stays quiet.
+- **Rhythm:** sections alternate white, lavender (`surface`) and deep navy glow (`bg-glow`), so a change of
+  background marks a new kind of content. Inner pages open on a lavender wash (`bg-wash`).
+- **Color:** navy `#0b1045`, violet `#5b2bd1`, pink `#e0336f` (highlights, rare languages, logo gradient `bg-logo`).
+- **Type:** Fraunces headings (H1 64px, H2 44px) and Inter text (17px leads).
+- **Hierarchy:** featured service card, connected session timeline, highlighted InterpretNext column in the comparison, quote panel.
+- **Icons** (`Icon.tsx`): line glyphs on a soft tile, with the tile color naming the dimension. One family per section or row.
+- **Motion** (`src/components/motion/`):
+  - Scroll progress bar in the header.
+  - One-time hero entrance and a voice waveform.
+  - Scroll reveals, count-up facts and a timeline that fills.
+  - Language ribbon fed from the master list, with a pause button.
+  - Card lift on hover.
+  - Only transform and opacity animate. Everything is static under reduced motion, and content stays visible without JavaScript.
 
 ## Assistant
 

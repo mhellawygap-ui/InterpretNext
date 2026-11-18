@@ -14,13 +14,14 @@
 
   /* Neutrals */
   --color-background: #ffffff;     /* canvas */
-  --color-surface: #f7f7fb;        /* alternate sections */
+  --color-surface: #f5f2fd;        /* lavender mist: alternate sections */
+  --color-mist-strong: #ebe4fb;
   --color-card: #ffffff;
   --color-foreground: #0d0f2b;
   --color-muted: #555770;          /* body secondary — 7:1 on white */
   --color-subtle: #6b6d85;         /* meta */
-  --color-border: #e4e4ee;         /* hairlines */
-  --color-border-strong: #cfcfe0;
+  --color-border: #e5e0f2;         /* hairlines (violet-tinted) */
+  --color-border-strong: #cdc4e6;
 
   /* Tints (icon tiles, selected states) */
   --color-lilac: #f1ecfc;
@@ -93,3 +94,108 @@ body {
   html { scroll-behavior: auto; }
   .assistant-panel:not([hidden]) { animation: assistant-fade 150ms ease-out; }
 }
+
+/* ---------- Brand surfaces (v3) ---------- */
+
+/* Deep navy band with soft violet and magenta light: used for one or two emphasis sections per page */
+@utility bg-glow {
+  background-color: #0b1045;
+  background-image:
+    radial-gradient(60% 80% at 100% 0%, rgba(124, 58, 237, 0.38) 0%, rgba(124, 58, 237, 0) 60%),
+    radial-gradient(50% 70% at 0% 100%, rgba(224, 51, 111, 0.22) 0%, rgba(224, 51, 111, 0) 60%);
+}
+
+/* Lavender wash for inner-page intros */
+@utility bg-wash {
+  background-color: #f7f4fe;
+  background-image:
+    radial-gradient(55% 90% at 100% 0%, rgba(124, 58, 237, 0.12) 0%, rgba(124, 58, 237, 0) 65%),
+    radial-gradient(40% 70% at 0% 100%, rgba(224, 51, 111, 0.07) 0%, rgba(224, 51, 111, 0) 60%);
+}
+
+/* The logo gradient: navy → violet → pink */
+@utility bg-logo {
+  background-image: linear-gradient(90deg, #0b1045 0%, #5b2bd1 55%, #e0336f 100%);
+}
+
+/* ---------- Motion (v3) ----------
+   Only transform and opacity animate. Everything is static under reduced motion,
+   and .reveal content stays visible when JavaScript is unavailable (html.js gate). */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+html.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gentle lift for interactive cards */
+.lift {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px -18px rgba(11, 16, 69, 0.18);
+}
+
+/* Hero conversation sequence */
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes node-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes draw-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+@keyframes ring {
+  0% { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+.seq-1 { animation: bubble-in 600ms ease-out 150ms both; }
+.seq-2 { animation: node-in 500ms ease-out 650ms both; }
+.seq-3 { animation: bubble-in 600ms ease-out 1100ms both; }
+.seq-line { transform-origin: left; animation: draw-line 900ms ease-out 450ms both; }
+.wave-bar { transform-origin: center; animation: wave 1.2s ease-in-out infinite; }
+.ring { animation: ring 2.4s ease-out infinite; }
+.drift { animation: drift 4s ease-in-out infinite alternate; }
+.marquee-track { animation: marquee 60s linear infinite; }
+.marquee-track.reverse { animation-direction: reverse; animation-duration: 70s; }
+.marquee:hover .marquee-track,
+.marquee[data-paused="true"] .marquee-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal { opacity: 1; transform: none; transition: none; }
+  .lift, .lift:hover { transition: none; transform: none; }
+  .seq-1, .seq-2, .seq-3, .seq-line, .wave-bar, .ring, .drift, .marquee-track { animation: none !important; }
+  .wave-bar { transform: scaleY(0.7); }
+  .ring { opacity: 0; }
+}
+@keyframes draw-line-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.seq-line-y { transform-origin: top; animation: draw-line-y 1100ms ease-out 300ms both; }
+@media (prefers-reduced-motion: reduce) { .seq-line-y { animation: none !important; } }
+/* Session timeline fills once it is revealed */
+html.js .reveal .steps-fill { transform: scaleX(0); transition: transform 1400ms ease-out 200ms; }
+html.js .reveal.is-in .steps-fill { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) { html.js .reveal .steps-fill { transform: none; transition: none; } }

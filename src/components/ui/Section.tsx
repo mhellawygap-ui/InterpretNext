@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { Container } from "./Container";
 
-type Tone = "white" | "subtle" | "navy";
+type Tone = "white" | "subtle" | "navy" | "glow";
 
 const TONES: Record<Tone, string> = {
   white: "bg-background",
   subtle: "bg-surface",
   navy: "bg-brand-deep text-white",
+  glow: "bg-glow text-white",
 };
 
 /** Page section with consistent vertical rhythm (96px desktop / 64px mobile). */
@@ -64,7 +65,7 @@ export function SectionHeader({
         )}
         <h2
           id={id}
-          className={`font-display-wonk text-[30px] leading-[1.15] font-semibold tracking-[-0.01em] md:text-[40px] ${label ? "mt-3" : ""} ${dark ? "text-white" : "text-brand"}`}
+          className={`font-display-wonk text-[32px] leading-[1.12] font-semibold tracking-[-0.01em] md:text-[44px] ${label ? "mt-3" : ""} ${dark ? "text-white" : "text-brand"}`}
         >
           {title}
         </h2>

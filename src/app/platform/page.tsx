@@ -31,10 +31,10 @@ export default function PlatformPage() {
         media={<HeroMedia />}
       />
 
-      <Section labelledBy="protect-title">
-        <SectionHeader id="protect-title" title="How the platform protects your sessions" lead="Interpreted sessions carry health information, legal privilege and personal data. The platform is designed around that." />
+      <Section tone="glow" labelledBy="protect-title">
+        <SectionHeader dark id="protect-title" title="How the platform protects your sessions" lead="Interpreted sessions carry health information, legal privilege and personal data. The platform is designed around that." />
         <div className="mt-12">
-          <PlatformFeatures />
+          <PlatformFeatures dark />
         </div>
       </Section>
 
