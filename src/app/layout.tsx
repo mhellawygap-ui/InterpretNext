@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/sections/Header";
-import { Footer } from "@/components/sections/Footer";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { Assistant } from "@/components/assistant/Assistant";
 
 const inter = Inter({
@@ -19,9 +19,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: { default: "InterpretNext — Specialized interpretation, built for precision", template: "%s · InterpretNext" },
+  title: { default: "InterpretNext | Professional interpreting in 200+ languages", template: "%s | InterpretNext" },
   description:
-    "OPI, VRI, RSI, and On-Site interpretation across 200+ languages — with exclusive coverage of rare African, Middle Eastern, and Asian dialects.",
+    "Video, on-site and event interpreting in more than 200 languages, including rare African, Middle Eastern and Asian languages. An interpreting brand by bayanTech.",
 };
 
 export default function RootLayout({

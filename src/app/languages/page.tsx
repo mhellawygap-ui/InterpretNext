@@ -1,96 +1,117 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
-import { Icon, type IconName } from "@/components/ui/Icon";
-import { AvailabilityBadge, type Availability } from "@/components/page/Chip";
-import { LanguageExplorer } from "@/components/page/LanguageExplorer";
-import { Highlight, PageHero } from "@/components/page/PageHero";
-import { LanguagesArt } from "@/components/page/HeroArt";
+import { Icon } from "@/components/ui/Icon";
+import { PageIntro } from "@/components/ui/PageIntro";
+import { Section, SectionHeader } from "@/components/ui/Section";
+import { LanguageChecker } from "@/components/shared/LanguageChecker";
+import { LanguageRequest } from "@/components/page/LanguageRequest";
+import { LANGUAGES, REGIONS, REGION_SUMMARY, coverageDetail, type Region } from "@/data/languages";
 
 export const metadata: Metadata = {
   title: "Languages",
-  description:
-    "200+ languages, including rare African and Middle Eastern dialects, with on-demand and scheduled availability listed for every language.",
+  description: "Priority languages by region, rare languages sourced on request, and a form to request any language or dialect.",
 };
 
-const STATS: { value: string; label: string; icon: IconName }[] = [
-  { value: "200+", label: "Languages & dialects", icon: "languages-200" },
-  { value: "6", label: "World regions", icon: "regions" },
-  { value: "OPI · VRI · RSI", label: "Interpretation modalities", icon: "modalities" },
-  { value: "On-demand & scheduled", label: "Transparent availability", icon: "24-7" },
-];
-
-const AVAILABILITY_HELP: { value: Availability; body: string }[] = [
-  { value: "On-demand", body: "Interpreter can typically be connected within minutes, any time of day. Subject to volume and language tier." },
-  { value: "Scheduled", body: "Interpreter must be booked in advance—usually 24–48 hours. Reliable for planned consultations and events." },
-  { value: "Limited", body: "Availability varies by time and volume. Contact us to confirm coverage and scheduling options." },
-];
+const slug = (r: Region) => r.toLowerCase().replace(/&/g, "and").replace(/[^a-z]+/g, "-");
 
 export default function LanguagesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="InterpretNext · Language Coverage"
-        title={
-          <>
-            Depth, not just <Highlight>numbers</Highlight>.
-          </>
-        }
-        lead="We cover 200+ languages—including the rare dialects, regional variants, and underserved languages that mainstream providers consistently fail to staff reliably. On-demand and scheduled availability is listed transparently for every language."
+      <PageIntro
+        label="Languages"
+        title="More than 200 languages and dialects"
+        lead="Below are our priority languages by region, including rare languages that we source on request. If you do not see yours, ask us and we will confirm within one business day."
         actions={
           <>
-            <Button href="#find-a-language" variant="white">Find a language</Button>
-            <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
+            <Button href="#request" size="lg">Request a language</Button>
+            <Button href="#regions" variant="secondary" size="lg">Browse by region</Button>
           </>
         }
-        aside={<LanguagesArt />}
-        footer={
-          <ul aria-label="Coverage at a glance" className="grid grid-cols-2 gap-6">
-            {STATS.map((s) => (
-              <li key={s.label} className="flex items-center gap-3">
-                <Icon name={s.icon} size={40} />
-                <p className="flex flex-col">
-                  <span className="font-display-wonk text-lg font-bold sm:text-xl">{s.value}</span>
-                  <span className="mt-1 text-xs text-white/80">{s.label}</span>
-                </p>
-              </li>
-            ))}
-          </ul>
-        }
+        media={<LanguageChecker />}
       />
 
-      <Container className="pb-8 lg:!px-[112px]">
-        <LanguageExplorer />
+      <Section tight tone="subtle" labelledBy="coverage-title">
+        <h2 id="coverage-title" className="sr-only">How coverage works</h2>
+        <ul className="grid gap-6 md:grid-cols-2">
+          <li className="flex gap-4">
+            <Icon name="languages-200" size={44} />
+            <div>
+              <p className="flex items-center gap-3 font-semibold text-brand">Core network <Badge tone="success" dot>Standard notice</Badge></p>
+              <p className="mt-1.5 text-[15px] leading-[1.6] text-muted">{coverageDetail("priority")}</p>
+            </div>
+          </li>
+          <li className="flex gap-4">
+            <Icon name="rare" size={44} />
+            <div>
+              <p className="flex items-center gap-3 font-semibold text-brand">Sourced on request <Badge tone="violet" dot>We confirm lead time</Badge></p>
+              <p className="mt-1.5 text-[15px] leading-[1.6] text-muted">{coverageDetail("rare")}</p>
+            </div>
+          </li>
+        </ul>
+      </Section>
 
-        <section aria-labelledby="availability-title" className="mt-10">
-          <h2 id="availability-title" className="text-lg font-semibold text-brand">Understanding availability</h2>
-          <ul className="mt-4 grid gap-4 md:grid-cols-3">
-            {AVAILABILITY_HELP.map((a) => (
-              <li key={a.value} className="rounded-xl border border-border bg-card p-5">
-                <AvailabilityBadge value={a.value} />
-                <p className="mt-3 text-sm leading-[1.5] text-muted">{a.body}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <Section id="regions" labelledBy="regions-title">
+        <SectionHeader id="regions-title" title="Priority languages by region" lead="A selection of the languages we cover most often. The full network is larger." />
+        <nav aria-label="Regions" className="mt-8 flex flex-wrap gap-2">
+          {REGIONS.map((r) => (
+            <a key={r} href={`#${slug(r)}`} className="tap rounded-full border border-border px-4 py-2 text-sm font-medium text-brand hover:border-border-strong">{r}</a>
+          ))}
+        </nav>
+        <div className="mt-12 divide-y divide-border border-y border-border">
+          {REGIONS.map((r) => {
+            const list = LANGUAGES.filter((l) => l.region === r);
+            const core = list.filter((l) => l.coverage === "priority");
+            const rare = list.filter((l) => l.coverage === "rare");
+            return (
+              <section key={r} id={slug(r)} aria-labelledby={`${slug(r)}-title`} className="grid scroll-mt-24 gap-6 py-10 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-12">
+                <div>
+                  <h3 id={`${slug(r)}-title`} className="text-xl font-semibold text-brand">{r}</h3>
+                  <p className="mt-2 text-[15px] leading-[1.6] text-muted">{REGION_SUMMARY[r]}</p>
+                </div>
+                <div className="grid gap-8 sm:grid-cols-2">
+                  {core.length > 0 && (
+                    <div>
+                      <p className="text-sm font-semibold text-success-ink">Core network</p>
+                      <ul className="mt-3 grid gap-2 text-[15px] text-brand">
+                        {core.map((l) => (
+                          <li key={l.name}>{l.name}{l.native && l.native !== l.name && <span className="text-subtle"> · {l.native}</span>}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {rare.length > 0 && (
+                    <div>
+                      <p className="text-sm font-semibold text-violet-ink">Rare languages, sourced on request</p>
+                      <ul className="mt-3 grid gap-2 text-[15px] text-brand">
+                        {rare.map((l) => (
+                          <li key={l.name}>{l.name}{l.native && l.native !== l.name && <span className="text-subtle"> · {l.native}</span>}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      </Section>
 
-        <section aria-labelledby="source-title" className="bg-banner mt-10 grid gap-8 rounded-[20px] px-6 py-10 text-white sm:px-10 lg:grid-cols-2 lg:items-center lg:px-12">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Don&apos;t see your language?</p>
-            <h2 id="source-title" className="font-display-wonk mt-3 text-[28px] leading-[1.15] font-bold sm:text-[31px]">
-              We source what others can&apos;t staff.
-            </h2>
-            <p className="mt-4 text-base leading-[1.35] text-white/80">
-              Our operations team regularly locates qualified interpreters for languages not listed here—including rare dialects, regional varieties, and low-resource languages. Tell us what you need.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3">
-            <Button href="/get-quote/" variant="white" className="!h-12 w-full">Request a language</Button>
-            <Button href="/get-quote/?modality=unsure" variant="ghost-light" className="!h-12 w-full">Talk to our language team</Button>
-            <p className="text-center text-xs text-white/80">We respond within one business day with feasibility and scheduling options.</p>
-          </div>
-        </section>
-      </Container>
+      <Section tone="subtle" id="request" labelledBy="request-title">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,640px)] lg:gap-16">
+          <SectionHeader
+            id="request-title"
+            title="Request a language"
+            lead={
+              <>
+                Our language team regularly sources rare languages, regional dialects and low-resource languages. Tell us what you need and we will reply within one business day with feasibility and lead time. Prefer to talk? <Link href="/contact/" className="font-semibold text-accent-1 hover:underline">Contact our team</Link>.
+              </>
+            }
+          />
+          <LanguageRequest />
+        </div>
+      </Section>
     </>
   );
 }

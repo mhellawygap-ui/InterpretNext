@@ -1,143 +1,83 @@
 import type { IconName } from "@/components/ui/Icon";
 
-export const STATUS_OVERVIEW = [
-  { icon: "iso-17100" as IconName, name: "ISO 17100 Certification", sub: "Bayantech / Teqneyat Group", status: "Active" },
-  { icon: "iso-27001" as IconName, name: "ISO 27001 Information Security", sub: "Bayantech / Teqneyat Group", status: "Active" },
-  { icon: "gdpr" as IconName, name: "GDPR Compliance", sub: "EU/EEA data handling", status: "Active" },
-  { icon: "hipaa" as IconName, name: "HIPAA / BAA Readiness", sub: "Healthcare clients — in review", status: "In Progress" },
-  { icon: "ata" as IconName, name: "ATA Membership", sub: "Professional standards body", status: "Active" },
-] as const;
+/**
+ * DRAFT (legal approves all wording). Visitor-facing only — internal notes live in
+ * docs/CONTENT-STATUS.md, never on the page.
+ * - ISO 17100 is held until compliance confirms what can be stated for interpreting.
+ * - HIPAA reads "In progress" everywhere.
+ */
 
-export const STANDARDS = [
-  {
-    icon: "iso-17100" as IconName,
-    name: "ISO 17100:2015",
-    status: "Active",
-    holder: "Bayantech / Teqneyat Group",
-    body: "Translation and related services quality management—applicable to InterpretNext managed services as a Bayantech brand.",
-    note: "Scope confirmation and entity mapping required before publication.",
-  },
-  {
-    icon: "iso-27001" as IconName,
-    name: "ISO 27001",
-    status: "Active",
-    holder: "Bayantech / Teqneyat Group",
-    body: "Information security management system for data handling, storage, and access controls across operational systems.",
-    note: "Applicable entities and scope to be confirmed with legal and security teams.",
-  },
-  {
-    icon: "hipaa" as IconName,
-    name: "HIPAA Alignment",
-    status: "In Progress",
-    holder: "InterpretNext / Bayantech",
-    body: "Healthcare data handling, PHI flow controls, subcontractor agreements, and Business Associate Agreement (BAA) readiness for US healthcare clients.",
-    note: "BAA readiness status to be confirmed with legal and compliance before publishing.",
-  },
-  {
-    icon: "ata" as IconName,
-    name: "ATA Membership",
-    status: "Active",
-    holder: "Bayantech",
-    body: "American Translators Association membership for professional standards in translation and interpretation.",
-  },
-  {
-    icon: "gdpr" as IconName,
-    name: "GDPR Compliance",
-    status: "Active",
-    holder: "InterpretNext / Bayantech",
-    body: "Data protection regulation compliance for EU/EEA client data, including data processing agreements and subprocessor controls.",
-  },
-] as const;
+export type Standard = {
+  icon: IconName;
+  name: string;
+  status: "Active" | "In progress";
+  holder: string;
+  body: string;
+};
 
-export const PILLARS = [
-  { n: "01", id: "security", title: "Security", image: "/images/trust/security.jpg", body: "Data encryption, access controls, platform security, and incident response protocols." },
-  { n: "02", id: "privacy", title: "Privacy", image: "/images/trust/privacy.jpg", body: "GDPR alignment, PHI handling, DPA availability, and subprocessor transparency." },
-  { n: "03", id: "quality", title: "Quality", image: "/images/trust/quality.jpg", body: "Interpreter governance, credentialing, language assessment, and QA monitoring." },
-  { n: "04", id: "accessibility", title: "Accessibility", image: "/images/trust/accessibility.jpg", body: "WCAG 2.2 AA compliance, ASL access, CART, and inclusive service delivery." },
+export const STANDARDS: Standard[] = [
+  { icon: "iso-27001", name: "ISO 27001", status: "Active", holder: "bayanTech", body: "Information security management covering how data is handled, stored and accessed." },
+  { icon: "gdpr", name: "GDPR", status: "Active", holder: "InterpretNext by bayanTech", body: "Data processing agreements and subprocessor controls for clients with EU and EEA data." },
+  { icon: "hipaa", name: "HIPAA", status: "In progress", holder: "InterpretNext by bayanTech", body: "Readiness for US healthcare clients, including Business Associate Agreements and PHI handling." },
+  { icon: "ata", name: "ATA membership", status: "Active", holder: "bayanTech", body: "Membership of the American Translators Association and its professional standards." },
 ];
 
-export const SECURITY_ITEMS = [
-  { title: "Data encryption", body: "All interpretation sessions—OPI, VRI, and RSI—are transmitted over encrypted channels. Data at rest is encrypted using AES-256. Encryption standards are reviewed periodically." },
-  { title: "Access controls", body: "Role-based access control limits interpreter and staff access to the minimum required for the engagement. Client data is never accessible to interpreters outside the active session." },
-  { title: "Incident response", body: "A documented incident response plan covers detection, containment, notification, and post-incident review. Affected clients are notified within regulatory timelines." },
-  { title: "Subcontractor controls", body: "Technology subprocessors are reviewed for security posture and must meet InterpretNext's minimum security requirements. The subprocessor list is available on request." },
-  { title: "Vulnerability management", body: "Regular security reviews are applied to platform infrastructure. A responsible disclosure policy allows external researchers to report vulnerabilities safely." },
-  { title: "Audit logging", body: "Session metadata—language, modality, timestamp, duration—is logged for billing, QA, and compliance. Session content is not retained unless contractually required." },
+export const SECURITY_ITEMS: { icon: IconName; title: string; body: string }[] = [
+  { icon: "encryption", title: "Encryption", body: "Video sessions are encrypted in transit. Stored booking data is encrypted at rest." },
+  { icon: "access-control", title: "Access control", body: "Role-based access limits interpreters and staff to what an assignment needs, while it is active." },
+  { icon: "retention", title: "No session recording", body: "Session content is not recorded or stored at launch. Booking details are kept for billing and quality review." },
+  { icon: "audit-log", title: "Audit logging", body: "Bookings, joins and changes are logged for billing, quality and compliance." },
+  { icon: "disclosure", title: "Incident response", body: "A documented plan covers detection, containment, notification and review." },
+  { icon: "subprocessors", title: "Subprocessor review", body: "Technology subprocessors are reviewed against our security requirements. The list is available on request." },
 ];
 
-export const SECURITY_STATS = [
-  { value: "AES-256", label: "Encryption standard" },
-  { value: "Zero", label: "Content retained by default" },
-  { value: "RBAC", label: "Access model" },
+export const PRIVACY = {
+  gdpr: [
+    "Data processing agreements for EU and EEA clients",
+    "Standard Contractual Clauses for international transfers",
+    "A documented process for data subject requests",
+    "Retention and deletion rules by data category",
+  ],
+  healthcare: [
+    "Business Associate Agreements for US healthcare clients (in progress)",
+    "Interpreter access to patient information limited to the session",
+    "No retention of session content",
+    "Breach notification in line with HIPAA timelines",
+  ],
+};
+
+export const QUALITY_STEPS: { title: string; body: string }[] = [
+  { title: "Vetting and credentials", body: "Identity checks, credential validation and references before an interpreter joins the network." },
+  { title: "Language assessment", body: "Assessed in both working languages by qualified assessors, including subject terminology." },
+  { title: "Background checks", body: "Screening suited to the setting, with enhanced checks for regulated healthcare work." },
+  { title: "Confidentiality and ethics", body: "Every interpreter signs a confidentiality agreement and our code of conduct." },
+  { title: "Quality monitoring", body: "Session reviews, client feedback and periodic reassessment." },
+  { title: "Corrective action", body: "A documented process for quality concerns, without disrupting your service." },
 ];
 
-export const GDPR_ITEMS = [
-  "Data processing agreements (DPAs) available for EU/EEA clients",
-  "EU Standard Contractual Clauses (SCCs) for international transfers",
-  "Data subject access request process documented",
-  "Retention and deletion policies applied by data category",
-  "Subprocessor list maintained and updated quarterly",
+/** Ordered by level: 1 Silver, 2 Gold, 3 Platinum. */
+export const TIERS: { icon: IconName; level: number; name: string; meta: string; body: string; points: string[] }[] = [
+  { icon: "silver", level: 1, name: "Silver", meta: "Qualified bilingual", body: "Assessed fluency, confidentiality agreement and background check.", points: ["General interpreting", "High-volume scheduled sessions", "Vetted and background-checked"] },
+  { icon: "gold", level: 2, name: "Gold", meta: "Specialist, 5+ years", body: "Domain certification or equivalent assessment and a quality track record.", points: ["Video, on-site and events", "Government and business subjects", "Subject-matter trained"] },
+  { icon: "platinum", level: 3, name: "Platinum", meta: "Medical and legal specialist, 10+ years", body: "Several domain credentials and a senior track record.", points: ["High-stakes assignments", "Credentialed medical and legal specialists", "Senior interpreter oversight"] },
 ];
 
-export const HEALTHCARE_ITEMS = [
-  "Business Associate Agreement (BAA) available for qualified US healthcare clients",
-  "PHI is not retained after session completion without explicit contractual agreement",
-  "Interpreter access to patient information is limited to active session duration",
-  "Subcontractor PHI obligations flow-down is documented",
-  "Incident notification follows HIPAA Breach Notification Rule timelines",
+export const ACCESS_ITEMS: { icon: IconName; title: string; body: string }[] = [
+  { icon: "sign-language", title: "Sign language interpreting", body: "Certified interpreters for Deaf and hard-of-hearing participants, by video or in person." },
+  { icon: "captions", title: "Live captioning", body: "Real-time captions for events, webinars and hearings." },
+  { icon: "platform-access", title: "Accessible website", body: "We aim for WCAG 2.2 AA: keyboard navigation, visible focus and readable contrast." },
+  { icon: "reduced-motion", title: "Reduced motion", body: "The site respects your device's reduced-motion setting." },
 ];
 
-export const DATA_FLOW = [
-  { title: "Client initiates session", body: "Request authenticated. Session metadata logged." },
-  { title: "Interpreter matched & connected", body: "Match by language, domain, availability. Encrypted channel established." },
-  { title: "Session in progress", body: "Audio/video encrypted in transit. No content stored by default." },
-  { title: "Session ends", body: "Metadata retained for billing & QA. Content deleted per retention policy." },
+export const LEGAL_DOCS: { icon: IconName; title: string; body: string; cta: string; doc: string | null }[] = [
+  { icon: "privacy-policy", title: "Privacy policy", body: "How we collect, use, store and protect personal data.", cta: "Request the policy", doc: "Privacy policy and DPA" },
+  { icon: "terms", title: "Terms of service", body: "The terms for our interpreting services and platform.", cta: "Request the terms", doc: "Privacy policy and DPA" },
+  { icon: "dpa", title: "Data processing agreement", body: "How we process personal data for enterprise clients, including EU clauses.", cta: "Request the DPA", doc: "Privacy policy and DPA" },
+  { icon: "accessibility-statement", title: "Accessibility statement", body: "Our accessibility commitment and current conformance.", cta: "Read about accessibility", doc: null },
+  { icon: "subprocessors", title: "Subprocessor list", body: "Third parties we use to deliver the service, with their roles.", cta: "Request the list", doc: "Subprocessor list" },
+  { icon: "disclosure", title: "Responsible disclosure", body: "How to report a security concern to our team.", cta: "Report a concern", doc: "Security questionnaire" },
+  { icon: "baa", title: "Business associate agreement", body: "For US healthcare clients, once HIPAA readiness is complete.", cta: "Ask about BAAs", doc: "BAA (healthcare)" },
+  { icon: "nda", title: "Non-disclosure agreement", body: "Our standard NDA for procurement and sensitive engagements.", cta: "Request the NDA", doc: "NDA" },
 ];
 
-export const QUALITY_STEPS = [
-  { title: "Vetting & credentialing", body: "Every interpreter undergoes identity verification, credential validation, and reference checks before joining the network. Medical and legal interpreters must hold domain-relevant certifications or demonstrate equivalent assessed competency." },
-  { title: "Language assessment", body: "Interpreters are assessed in both working languages by qualified assessors—not self-reported fluency. Assessments include domain-specific terminology testing for medical, legal, and technical contexts." },
-  { title: "Background checks", body: "All interpreters undergo background screening commensurate with their service context. Healthcare interpreters serving regulated environments receive enhanced checks including criminal record verification." },
-  { title: "Confidentiality & ethics", body: "Every interpreter signs a confidentiality agreement and acknowledges our code of conduct, covering impartiality, non-disclosure, professional conduct, and mandatory reporting obligations." },
-  { title: "Ongoing quality monitoring", body: "Call quality review, client satisfaction tracking, and periodic re-assessment are applied to all active interpreters. Performance data informs matching algorithms and corrective action processes." },
-  { title: "Corrective action & removal", body: "A documented corrective action process is triggered by quality flags, client complaints, or compliance concerns. Interpreters may be suspended or removed pending investigation with no impact to service continuity." },
-];
-
-export const TIERS = [
-  { icon: "silver" as IconName, name: "Silver", body: "Assessed bilingual fluency, confidentiality agreement, background check." },
-  { icon: "gold" as IconName, name: "Gold", body: "Domain certification or equivalent assessed competency, enhanced background check, QA track record." },
-  { icon: "platinum" as IconName, name: "Platinum", body: "Multiple domain certifications, regulatory credential (court-certified, CHI, CMI), leadership track record." },
-];
-
-export const ACCESS_SERVICES = [
-  { icon: "sign-language" as IconName, title: "ASL Interpretation", body: "RID-certified interpreters for Deaf and hard-of-hearing participants via VRI or in-person." },
-  { icon: "captions" as IconName, title: "CART / Live Captioning", body: "Certified CART providers for real-time transcription at events, webinars, and hearings." },
-  { icon: "platform-access" as IconName, title: "Platform accessibility", body: "WCAG 2.2 AA target across web, with keyboard navigation, visible focus, and readable contrast." },
-  { icon: "reduced-motion" as IconName, title: "Reduced-motion support", body: "Respects prefers-reduced-motion for users sensitive to animation and parallax effects." },
-];
-
-export const ACCESS_STANDARDS = [
-  { title: "ADA Title II & III", body: "Public and private entities covered by the Americans with Disabilities Act are required to provide effective communication access. InterpretNext ASL and CART services support this obligation." },
-  { title: "WCAG 2.2 AA", body: "Our website and client-facing platform target WCAG 2.2 Level AA compliance. Our accessibility statement documents current conformance and known gaps." },
-  { title: "Section 508", body: "For government and federally-funded clients, our platform and documentation are designed with Section 508 requirements in mind." },
-];
-
-export const LEGAL_DOCS = [
-  { icon: "privacy-policy" as IconName, title: "Privacy Policy", body: "How we collect, use, store, and protect personal data across our interpretation services and platforms.", cta: "Read policy →", doc: "Privacy Policy & DPA" },
-  { icon: "terms" as IconName, title: "Terms of Service", body: "The terms governing your use of InterpretNext interpretation services, platform access, and service agreements.", cta: "Read terms →", doc: "Privacy Policy & DPA" },
-  { icon: "dpa" as IconName, title: "Data Processing Agreement", body: "The DPA covering how InterpretNext processes personal data on behalf of enterprise clients, including EU SCCs.", cta: "Request DPA →", doc: "Privacy Policy & DPA" },
-  { icon: "accessibility-statement" as IconName, title: "Accessibility Statement", body: "Our commitment to WCAG 2.2 AA compliance, accessible interpretation delivery, and inclusive service design.", cta: "Read statement →", doc: null },
-  { icon: "subprocessors" as IconName, title: "Subprocessor List", body: "A current list of third-party subprocessors used in delivering interpretation services, including data handling roles.", cta: "View subprocessors →", doc: "Subprocessor List" },
-  { icon: "disclosure" as IconName, title: "Responsible Disclosure", body: "How to report a security vulnerability or privacy concern to our security team. We respond within 48 hours.", cta: "Report a vulnerability →", doc: "Security Questionnaire" },
-  { icon: "baa" as IconName, title: "Business Associate Agreement", body: "HIPAA-required BAA for US healthcare clients. Confirms InterpretNext's obligations as a business associate handling PHI.", cta: "Request BAA →", doc: "BAA (Healthcare)" },
-  { icon: "nda" as IconName, title: "Non-Disclosure Agreement", body: "Standard NDA for enterprise procurement, legal engagements, and sensitive client relationships.", cta: "Request NDA →", doc: "NDA" },
-] as const;
-
-export const DOC_OPTIONS = [
-  "Privacy Policy & DPA",
-  "ISO Certificates",
-  "BAA (Healthcare)",
-  "Security Questionnaire",
-  "Subprocessor List",
-  "NDA",
-] as const;
+export const DOC_OPTIONS = ["Privacy policy and DPA", "ISO 27001 certificate", "BAA (healthcare)", "Security questionnaire", "Subprocessor list", "NDA"] as const;

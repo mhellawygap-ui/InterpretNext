@@ -4,8 +4,7 @@ import Link from "next/link";
 import { scrollToEl } from "@/lib/motion";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
-import { Highlight, PageHero } from "./PageHero";
-import { QuoteArt } from "./HeroArt";
+import { PageIntro } from "@/components/ui/PageIntro";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import {
   ACCESSIBILITY_NEEDS,
@@ -27,8 +26,8 @@ import {
   type ModalityId,
 } from "@/data/quote";
 
-const STEPS = ["Modality", "Languages & setting", "Timing & volume", "Your details"];
-const STEP_LABELS = ["Choose modality", "Languages & setting", "Timing & volume", "Your details"];
+const STEPS = ["Service", "Languages & setting", "Timing & volume", "Your details"];
+const STEP_LABELS = ["Choose a service", "Languages & setting", "Timing & volume", "Your details"];
 
 type Form = {
   modality: ModalityId | "";
@@ -105,14 +104,14 @@ function countryFromLocale(): string {
 
 function validate(step: number, f: Form): Errors {
   const e: Errors = {};
-  if (step === 0 && !f.modality) e.modality = "Choose a modality, or select “Not Sure / Multiple”.";
+  if (step === 0 && !f.modality) e.modality = "Choose a service, or choose “Not sure yet”.";
   if (step === 1 && f.languages.length === 0 && !f.otherLanguage.trim())
     e.languages = "Select at least one language, or type one below.";
   if (step === 2 && !f.urgency) e.urgency = "Tell us how urgent your need is.";
   if (step === 3) {
     if (!f.firstName.trim()) e.firstName = "Enter your first name so the specialist can address you.";
     if (!f.lastName.trim()) e.lastName = "Enter your last name.";
-    if (!/^\S+@\S+\.\S+$/.test(f.email)) e.email = "Enter an email like name@organization.com — we send your quote there.";
+    if (!/^\S+@\S+\.\S+$/.test(f.email)) e.email = "Enter an email like name@organization.com. We send your quote there.";
     if (!f.organization.trim()) e.organization = "Enter your organization so we route you to the right team.";
     if (!f.consent) e.consent = "Accept the privacy terms so we can contact you about this quote.";
   }
@@ -381,7 +380,7 @@ export function QuoteFlow() {
           <h1 className="font-display-wonk mt-6 text-[32px] leading-[1.15] font-bold text-brand sm:text-[39px]">Your quote request is in.</h1>
           <p className="mx-auto mt-4 max-w-[460px] text-[15px] leading-[1.5] text-muted">
             We&apos;ve received your request and will route it to the right specialist team. Expect a response within{" "}
-            <strong className="text-brand">one business day</strong>—or sooner if your need is urgent.
+            <strong className="text-brand">one business day</strong>, or sooner if your need is urgent.
           </p>
           <div className="mt-8 rounded-xl border border-border bg-card p-6 text-left">
             <p className="text-xs font-semibold tracking-[0.12em] uppercase text-muted">What we received</p>
@@ -421,33 +420,27 @@ export function QuoteFlow() {
 
   return (
     <>
-      <PageHero
-        eyebrow="InterpretNext · Get a Quote"
-        title={
-          <>
-            Tell us what you need. We&apos;ll <Highlight>recommend</Highlight> the right model.
-          </>
-        }
-        aside={<QuoteArt />}
-        lead="Four short steps. No commitment until you agree. A specialist responds within one business day with a tailored recommendation and pricing."
-        footer={
-          <ol className="flex flex-wrap items-center gap-2" aria-label="Quote steps">
-            {STEPS.map((s, i) => (
-              <li key={s} className="flex items-center gap-2">
-                <span
-                  aria-current={i === step ? "step" : undefined}
-                  className={`rounded-full px-3 py-1 text-[13px] ${
-                    i === step ? "bg-white font-medium text-brand" : i < step ? "bg-white/30 text-white" : "bg-white/15 text-white/60"
-                  }`}
-                >
-                  {i + 1}. {s}
-                </span>
-                {i < STEPS.length - 1 && <span aria-hidden className="text-white/40">›</span>}
-              </li>
-            ))}
-          </ol>
-        }
-      />
+      <PageIntro
+        label="Request a quote"
+        title="Tell us what you need"
+        lead="Four short steps, with no commitment. A specialist replies within one business day with a recommendation and pricing."
+      >
+        <ol className="flex flex-wrap items-center gap-2" aria-label="Quote steps">
+          {STEPS.map((s, i) => (
+            <li key={s} className="flex items-center gap-2">
+              <span
+                aria-current={i === step ? "step" : undefined}
+                className={`rounded-full border px-3 py-1.5 text-[13px] font-medium ${
+                  i === step ? "border-brand bg-brand text-white" : i < step ? "border-[#cdebd9] bg-mint text-success-ink" : "border-border text-muted"
+                }`}
+              >
+                {i + 1}. {s}
+              </span>
+              {i < STEPS.length - 1 && <span aria-hidden className="text-subtle">›</span>}
+            </li>
+          ))}
+        </ol>
+      </PageIntro>
 
       <Container className="pb-12 lg:!px-[160px]">
         <div className="grid gap-6 lg:grid-cols-[1fr_280px] lg:gap-7">
@@ -473,7 +466,7 @@ export function QuoteFlow() {
                   <StepHeader
                     n={1}
                     title="What do you need?"
-                    lead={'Choose the interpretation modality that fits your situation. Not sure? Select "Not Sure" and we\'ll recommend the right model.'}
+                    lead={'Choose the service that fits your situation. If you are not sure, choose "Not sure yet" and we will recommend one.'}
                   />
                   <div>
                     <div role="radiogroup" aria-label="Modality" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -566,7 +559,7 @@ export function QuoteFlow() {
                     <SelectField id="frequency" label="How often do you need interpretation?" value={f.frequency} onChange={(v) => set("frequency", v)} options={FREQUENCIES} placeholder="Select frequency…" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-brand">Do you need on-demand or scheduled interpretation?</p>
+                    <p className="text-sm font-semibold text-brand">Is this a one-off or ongoing need?</p>
                     <div role="radiogroup" aria-label="Scheduling" className="mt-3 grid gap-3 sm:grid-cols-3">
                       {SCHEDULING.map((s) => (
                         <ChoiceCard key={s.id} selected={f.scheduling === s.id} onClick={() => set("scheduling", s.id)}>
@@ -673,7 +666,7 @@ export function QuoteFlow() {
               Clear this form and start over
             </button>
             <p className="text-[13px] leading-[1.5] text-muted">
-              InterpretNext is a brand of Bayantech / Teqneyat Group. Submitting this form does not constitute a binding contract. A specialist will confirm scope, pricing, and availability before any agreement is made.
+              InterpretNext is an interpreting brand by bayanTech. Submitting this form does not constitute a binding contract. A specialist will confirm scope, pricing, and availability before any agreement is made.
             </p>
           </aside>
         </div>

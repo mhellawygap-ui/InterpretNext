@@ -1,21 +1,27 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
-type Variant = "primary" | "outline" | "white" | "ghost-light";
+type Variant = "primary" | "secondary" | "on-dark" | "on-dark-outline" | "link";
+type Size = "md" | "lg";
 
 const base =
-  "tap inline-flex h-12 items-center justify-center gap-2 rounded-lg px-4 text-base font-medium leading-[1.2] whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-1";
+  "tap inline-flex items-center justify-center gap-2 rounded-[10px] font-semibold leading-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand text-white hover:bg-accent-1",
-  outline: "border-[0.5px] border-brand bg-transparent text-brand hover:bg-brand/5",
-  /** On gradient heroes / banners */
-  white: "bg-white text-brand hover:bg-lilac",
-  "ghost-light": "border border-white/40 bg-white/5 text-white hover:bg-white/15",
+  primary: "bg-brand text-white hover:bg-[#1c2270]",
+  secondary: "border border-border-strong bg-white text-brand hover:border-brand",
+  "on-dark": "bg-white text-brand hover:bg-lilac",
+  "on-dark-outline": "border border-white/50 text-white hover:bg-white/10",
+  link: "!h-auto !px-0 text-accent-1 hover:underline underline-offset-4",
 };
 
-type ButtonProps = ComponentProps<typeof Link> & { variant?: Variant };
+const sizes: Record<Size, string> = {
+  md: "h-11 px-5 text-[15px]",
+  lg: "h-12 px-6 text-base",
+};
 
-export function Button({ variant = "primary", className = "", ...props }: ButtonProps) {
-  return <Link className={`${base} ${variants[variant]} ${className}`} {...props} />;
+type ButtonProps = ComponentProps<typeof Link> & { variant?: Variant; size?: Size };
+
+export function Button({ variant = "primary", size = "md", className = "", ...props }: ButtonProps) {
+  return <Link className={`${base} ${sizes[size]} ${variants[variant]} ${className}`} {...props} />;
 }

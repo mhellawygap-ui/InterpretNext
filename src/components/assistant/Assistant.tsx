@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { asset } from "@/lib/asset";
 import { Icon } from "@/components/ui/Icon";
-import { AvailabilityBadge } from "@/components/page/Chip";
+import { Badge } from "@/components/ui/Badge";
+import { coverageLabel } from "@/data/languages";
 import { GREETING, MAIN_CHIPS, respond, type BotMessage, type Chip, type Intent, type Message } from "./engine";
 
 const OPEN_EVENT = "interpretnext:open-assistant";
@@ -54,14 +55,11 @@ function CardView({ m }: { m: BotMessage }) {
         <div className="flex items-start justify-between gap-2">
           <div>
             <p className="text-sm font-semibold text-brand">{l.name}</p>
-            {l.native && <p className="text-xs text-muted">{l.native}</p>}
+            {l.native && l.native !== l.name && <p className="text-xs text-muted">{l.native}</p>}
           </div>
-          <AvailabilityBadge value={l.availability} />
+          <Badge tone={l.coverage === "priority" ? "success" : "violet"} dot>{coverageLabel(l.coverage)}</Badge>
         </div>
-        <p className="mt-2 text-xs text-muted">
-          {l.region} · {l.modalities.join(" · ")}
-          {l.speakers ? ` · ${l.speakers} speakers` : ""}
-        </p>
+        <p className="mt-2 text-xs text-muted">{l.region}</p>
       </div>
     );
   }
@@ -209,13 +207,13 @@ export function Assistant() {
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls="assistant-panel"
-        className={`fixed right-4 bottom-4 z-[60] flex h-14 items-center gap-3 rounded-full border border-border bg-white py-2 pr-5 pl-2 text-left shadow-[0_8px_32px_rgba(8,12,65,0.07)] hover:border-accent-1 sm:right-6 sm:bottom-6 print:hidden ${
+        className={`fixed right-4 bottom-4 z-[60] flex h-14 items-center gap-2.5 rounded-full border border-border bg-white py-2 pr-4 pl-2 sm:gap-3 sm:pr-5 text-left shadow-[0_8px_32px_rgba(8,12,65,0.07)] hover:border-accent-1 sm:right-6 sm:bottom-6 print:hidden ${
           open ? "invisible" : ""
         }`}
       >
         <Avatar size={40} status />
         <span className="leading-[1.2]">
-          <span className="block text-sm font-semibold text-brand">Ask InterpretNext</span>
+          <span className="block text-sm font-semibold text-brand"><span className="sm:hidden">Ask</span><span className="hidden sm:inline">Ask InterpretNext</span></span>
           <span className="hidden text-xs text-muted sm:block">Automated · find the right service</span>
         </span>
       </button>
@@ -232,12 +230,12 @@ export function Assistant() {
         onKeyDown={onKeyDown}
         className="assistant-panel fixed inset-0 z-[70] flex flex-col bg-background sm:inset-auto sm:top-4 sm:right-4 sm:bottom-4 sm:w-[400px] sm:rounded-2xl sm:border sm:border-border sm:shadow-[0_16px_48px_rgba(8,12,65,0.07)] print:hidden"
       >
-        <div className="bg-banner flex items-center gap-3 px-4 py-3 text-white sm:rounded-t-2xl">
+        <div className="flex items-center gap-3 bg-brand-deep px-4 py-3 text-white sm:rounded-t-2xl">
           <Avatar size={44} status />
           <div className="min-w-0 flex-1">
             <h2 id="assistant-title" className="text-base font-semibold leading-tight">InterpretNext Assistant</h2>
             <p id="assistant-desc" className="text-xs text-white/85">
-              Automated · specialists on call 24/7
+              Automated assistant · answers from our site
             </p>
           </div>
           <button type="button" onClick={restart} className="tap rounded-lg px-2 py-1 text-xs font-medium text-white/90 underline-offset-2 hover:underline">

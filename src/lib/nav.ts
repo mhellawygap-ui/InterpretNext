@@ -1,95 +1,73 @@
-/** Single source of truth for site routes, the header dropdowns and the footer. */
+import { CLIENT_PORTAL_URL } from "@/data/site";
+import { SERVICES } from "@/data/services";
+import { SECTORS } from "@/data/industries";
 
-export type NavLink = { label: string; href: string };
-export type NavGroup = NavLink & { children: NavLink[] };
+/** Single source of truth for routes, header menus and footer. */
+
+export type NavLink = { label: string; href: string; description?: string };
+export type NavItem = NavLink & { children?: NavLink[] };
 
 export const QUOTE_HREF = "/get-quote/";
+export const CONTACT_HREF = "/contact/";
+export const LOGIN_HREF = CLIENT_PORTAL_URL ?? "/client-login/";
 
-export const PRIMARY_NAV: NavGroup[] = [
+export const PRIMARY_NAV: NavItem[] = [
   {
     label: "Services",
     href: "/services/",
     children: [
-      { label: "OPI · Over the Phone", href: "/services/#opi" },
-      { label: "VRI · Video Remote", href: "/services/#vri" },
-      { label: "RSI · Simultaneous", href: "/services/#rsi" },
-      { label: "On-Site Elite", href: "/services/#on-site" },
-      { label: "Conference & Hybrid", href: "/services/#conference" },
-      { label: "ASL & Sign Language VRI", href: "/services/#asl" },
-      { label: "Document Translation", href: "/services/#document-translation" },
-      { label: "AI Speech Translation", href: "/services/#ai-speech" },
-      { label: "Interpreter Management System", href: "/services/#ims" },
+      ...SERVICES.map((s) => ({ label: s.title, href: `/services/#${s.id}`, description: s.bestFor })),
+      { label: "Coming in later releases", href: "/services/#later" },
     ],
   },
   {
     label: "Industries",
     href: "/industries/",
+    children: SECTORS.map((s) => ({ label: s.label, href: `/industries/#${s.id}` })),
+  },
+  { label: "Languages", href: "/languages/" },
+  {
+    label: "Platform",
+    href: "/platform/",
     children: [
-      { label: "Healthcare", href: "/industries/#healthcare" },
-      { label: "Legal", href: "/industries/#legal" },
-      { label: "Government & NGO", href: "/industries/#government" },
-      { label: "Global Business", href: "/industries/#global-business" },
-      { label: "Conferences & Events", href: "/industries/#conferences" },
-      { label: "On-Site Elite", href: "/industries/#on-site" },
-      { label: "Accessibility", href: "/industries/#accessibility" },
-      { label: "AI-Powered", href: "/industries/#ai-powered" },
+      { label: "Secure platform", href: "/platform/", description: "Encryption, access control and data handling" },
+      { label: "How a session works", href: "/how-it-works/", description: "From request to follow-up" },
+      { label: "Integrations", href: "/platform/#integrations", description: "Works with the tools you use" },
     ],
   },
+  { label: "Pricing", href: "/pricing/" },
   {
-    label: "Languages",
-    href: "/languages/",
+    label: "Company",
+    href: "/about/",
     children: [
-      { label: "All languages", href: "/languages/#find-a-language" },
-      { label: "African", href: "/languages/?region=African#find-a-language" },
-      { label: "Middle Eastern", href: "/languages/?region=Middle+Eastern#find-a-language" },
-      { label: "Asian", href: "/languages/?region=Asian#find-a-language" },
-      { label: "European", href: "/languages/?region=European#find-a-language" },
-      { label: "Americas", href: "/languages/?region=Americas#find-a-language" },
-      { label: "Oceania", href: "/languages/?region=Oceania#find-a-language" },
-    ],
-  },
-  {
-    label: "Trust Center",
-    href: "/trust-center/",
-    children: [
-      { label: "Certifications", href: "/trust-center/#certifications" },
-      { label: "Security", href: "/trust-center/#security" },
-      { label: "Privacy", href: "/trust-center/#privacy" },
-      { label: "Quality", href: "/trust-center/#quality" },
-      { label: "Accessibility", href: "/trust-center/#accessibility" },
-      { label: "Legal documents", href: "/trust-center/#legal-documents" },
+      { label: "About InterpretNext", href: "/about/" },
+      { label: "Trust Center", href: "/trust-center/" },
+      { label: "Contact", href: CONTACT_HREF },
     ],
   },
 ];
 
 export const FOOTER_COLUMNS: { title: string; links: NavLink[] }[] = [
+  { title: "Services", links: SERVICES.map((s) => ({ label: s.title, href: `/services/#${s.id}` })) },
+  { title: "Industries", links: SECTORS.filter((s) => !s.later).map((s) => ({ label: s.label, href: `/industries/#${s.id}` })) },
   {
-    title: "Services",
+    title: "Platform",
     links: [
-      { label: "OPI · Over the Phone", href: "/services/#opi" },
-      { label: "VRI · Video Remote", href: "/services/#vri" },
-      { label: "RSI · Simultaneous", href: "/services/#rsi" },
-      { label: "On-Site Elite", href: "/services/#on-site" },
-    ],
-  },
-  {
-    title: "Industries",
-    links: [
-      { label: "Healthcare", href: "/industries/#healthcare" },
-      { label: "Legal", href: "/industries/#legal" },
-      { label: "Government & NGO", href: "/industries/#government" },
-      { label: "Global Business", href: "/industries/#global-business" },
+      { label: "Secure platform", href: "/platform/" },
+      { label: "How a session works", href: "/how-it-works/" },
+      { label: "Integrations", href: "/platform/#integrations" },
+      { label: "Languages", href: "/languages/" },
+      { label: "Pricing", href: "/pricing/" },
     ],
   },
   {
     title: "Company",
     links: [
-      // TODO(content): no About / Careers / Case Studies pages are designed yet.
-      { label: "About Bayantech", href: "/#top" },
-      { label: "Interpreter Network", href: "/trust-center/#quality" },
-      { label: "Compliance & Security", href: "/trust-center/" },
-      { label: "Language Coverage", href: "/languages/" },
-      { label: "Contact Sales", href: QUOTE_HREF },
+      { label: "About InterpretNext", href: "/about/" },
+      { label: "Trust Center", href: "/trust-center/" },
+      { label: "Contact", href: CONTACT_HREF },
+      { label: "Client login", href: LOGIN_HREF },
+      { label: "Request a quote", href: QUOTE_HREF },
     ],
   },
 ];
@@ -98,5 +76,5 @@ export const LEGAL_LINKS: NavLink[] = [
   { label: "Privacy", href: "/trust-center/#legal-documents" },
   { label: "Terms", href: "/trust-center/#legal-documents" },
   { label: "Accessibility", href: "/trust-center/#accessibility" },
-  { label: "Trust Center", href: "/trust-center/" },
+  { label: "Security", href: "/trust-center/#security" },
 ];

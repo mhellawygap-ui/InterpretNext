@@ -1,42 +1,44 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { IconStrip, TRUST_STRIP } from "@/components/ui/IconStrip";
-import { Highlight, PageHero } from "@/components/page/PageHero";
-import { IndustriesArt } from "@/components/page/HeroArt";
+import { CtaBand } from "@/components/ui/CtaBand";
+import { PageIntro } from "@/components/ui/PageIntro";
 import { SectorExplorer } from "@/components/page/SectorExplorer";
 
 export const metadata: Metadata = {
   title: "Industries",
-  description:
-    "Specialist interpretation for healthcare, legal, government & NGO, global business, conferences, on-site, accessibility and AI-powered programs.",
+  description: "Interpreting for healthcare, legal, government and NGOs, enterprise, conferences and events, on-site assignments and accessibility.",
 };
 
 export default function IndustriesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="InterpretNext · Industries"
-        title={
-          <>
-            Interpretation built for your <Highlight>industry&apos;s</Highlight> stakes.
-          </>
-        }
-        lead="Every sector has its own compliance requirements, terminology, and consequences when communication breaks down. InterpretNext matches specialist interpreters to the exact context—not just the language."
+      <PageIntro
+        label="Industries"
+        title="Interpreting matched to your sector"
+        lead="Every sector has its own terminology, obligations and risks. Choose yours to see the services, interpreter qualifications and compliance that apply."
         actions={
           <>
-            <Button href="#sectors" variant="white">Explore industries</Button>
-            <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
+            <Button href="/get-quote/" size="lg">Request a quote</Button>
+            <Button href="#sectors" variant="secondary" size="lg">Explore sectors</Button>
           </>
         }
-        aside={<IndustriesArt />}
-        footer={
-          <IconStrip label="Compliance we work under" items={TRUST_STRIP} />
+      />
+      <section id="sectors" aria-label="Sectors" className="scroll-mt-24 py-16 md:py-24">
+        <Container>
+          <SectorExplorer />
+        </Container>
+      </section>
+      <CtaBand
+        title="Plan language access for your organization"
+        body="Tell us your languages, settings and volume. We reply within one business day."
+        actions={
+          <>
+            <Button href="/get-quote/" variant="on-dark" size="lg">Request a quote</Button>
+            <Button href="/contact/" variant="on-dark-outline" size="lg">Contact our team</Button>
+          </>
         }
       />
-      <Container className="lg:!px-[160px]">
-        <SectorExplorer />
-      </Container>
     </>
   );
 }

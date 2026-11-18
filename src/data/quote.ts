@@ -1,38 +1,31 @@
 import type { IconName } from "@/components/ui/Icon";
+import { LANGUAGES } from "./languages";
 
+/** Launch-release modes only (see data/site.ts RELEASES). DRAFT copy. */
 export const MODALITY_OPTIONS = [
-  { id: "opi", icon: "opi" as IconName, title: "Over-the-Phone (OPI)", tagline: "Fast, voice-only conversations", body: "On-demand access in seconds. Ideal for clinical calls, legal intake, customer support, and emergency situations." },
-  { id: "vri", icon: "vri" as IconName, title: "Video Remote (VRI)", tagline: "Visual context and non-verbal cues", body: "Face-to-face via video. Best for medical consultations, depositions, ASL, and any setting where visual clarity matters." },
-  { id: "rsi", icon: "rsi" as IconName, title: "Simultaneous / Events (RSI)", tagline: "Live multilingual audiences", body: "Real-time interpretation for conferences, webinars, summits, and hybrid events—one or many language channels." },
-  { id: "onsite", icon: "on-site" as IconName, title: "On-Site / In-Person", tagline: "When presence makes the difference", body: "An interpreter travels to your location. VIP delegations, trade missions, court hearings, clinical settings, and site visits." },
-  { id: "unsure", icon: "unsure" as IconName, title: "Not Sure / Multiple", tagline: "Help me choose the right model", body: "Describe your situation and our team will recommend the right modality mix for your volume, budget, and workflow." },
+  { id: "vri", icon: "vri" as IconName, title: "Video remote interpreting", tagline: "Scheduled video sessions", body: "An interpreter joins your video session through a secure link. Best for consultations, interviews and meetings." },
+  { id: "onsite", icon: "on-site" as IconName, title: "On-site interpreting", tagline: "An interpreter in the room", body: "For hearings, clinical settings, delegations and site visits where presence matters." },
+  { id: "rsi", icon: "rsi" as IconName, title: "Event interpreting", tagline: "Several languages, one audience", body: "Simultaneous interpreting for webinars, conferences and hybrid events." },
+  { id: "docs", icon: "doc-translation" as IconName, title: "Document translation", tagline: "Written materials", body: "Consent forms, records, contracts and certificates." },
+  { id: "unsure", icon: "unsure" as IconName, title: "Not sure yet", tagline: "Help me choose", body: "Describe your situation and we will recommend the right mix of services." },
 ] as const;
 export type ModalityId = (typeof MODALITY_OPTIONS)[number]["id"];
 
 export const SESSION_TYPES = [
-  "Hospital & Clinic On-Demand",
-  "Telehealth / Virtual Care",
-  "Emergency & ER Rapid-Response",
-  "Mental Health Interpreting",
-  "Court & Legal Intake",
-  "Social Services / Case Management",
-  "Emergency / 911 Language Support",
-  "Multilingual Customer Support",
-  "HR & Employee Relations",
+  "Medical appointments",
+  "Telehealth visits",
+  "Mental health",
+  "Court and legal",
+  "Immigration interviews",
+  "Social services",
+  "Public meetings",
+  "Business meetings",
+  "HR and employee relations",
   "Other",
 ];
 
-export const QUOTE_LANGUAGES = [
-  "Arabic (MSA)", "Arabic (Gulf)", "Arabic (Levantine)", "Arabic (Egyptian)",
-  "Amharic", "Tigrinya", "Somali", "Oromo", "Swahili", "Hausa", "Yoruba",
-  "Igbo", "Farsi / Persian", "Dari", "Pashto", "Kurdish (Kurmanji)",
-  "Kurdish (Sorani)", "Urdu", "Turkish", "Mandarin Chinese", "Cantonese",
-  "Japanese", "Korean", "Hindi", "Vietnamese", "Tagalog / Filipino", "Burmese",
-  "Khmer", "Thai", "Indonesian", "Bengali", "Hmong", "Spanish", "French",
-  "Portuguese (Brazilian)", "Portuguese (European)", "Russian", "German", "Italian",
-  "Polish", "Ukrainian", "Romanian", "Dutch", "Greek", "Haitian Creole",
-  "ASL (American Sign Language)", "Other / Not listed",
-];
+/** Read from the master language list so every form matches the directory. */
+export const QUOTE_LANGUAGES = [...LANGUAGES.map((l) => l.name), "Other / not listed"];
 
 export const ACCESSIBILITY_NEEDS = [
   "ASL / Sign Language",
@@ -43,27 +36,19 @@ export const ACCESSIBILITY_NEEDS = [
 ];
 
 export const URGENCY = [
-  { id: "now", icon: "right-now" as IconName, title: "Right now", sub: "Emergency / ASAP" },
+  { id: "48h", icon: "within-48h" as IconName, title: "Within 48 hours", sub: "Short notice" },
   { id: "week", icon: "this-week" as IconName, title: "This week", sub: "Within 7 days" },
   { id: "month", icon: "this-month" as IconName, title: "This month", sub: "Within 30 days" },
-  { id: "planning", icon: "planning" as IconName, title: "Planning ahead", sub: "No immediate deadline" },
+  { id: "planning", icon: "planning" as IconName, title: "Planning ahead", sub: "No fixed date yet" },
 ];
 
 export const SCHEDULING = [
-  { id: "on-demand", icon: "on-demand" as IconName, title: "On-demand", body: "Connect an interpreter immediately when needed, without pre-booking." },
-  { id: "scheduled", icon: "scheduled" as IconName, title: "Scheduled", body: "Book interpreters in advance for planned sessions, hearings, or events." },
-  { id: "both", icon: "24-7" as IconName, title: "Both", body: "A mix—mostly scheduled with occasional on-demand coverage for urgencies." },
+  { id: "one-off", icon: "one-off" as IconName, title: "One-off", body: "A single session, hearing or event." },
+  { id: "recurring", icon: "recurring" as IconName, title: "Recurring", body: "Regular sessions, such as weekly clinics or case reviews." },
+  { id: "program", icon: "tiers" as IconName, title: "Ongoing program", body: "Language access across a team or organization." },
 ];
 
-export const INTEGRATIONS = [
-  "EHR / Epic",
-  "Telephony / PBX",
-  "Contact center (Genesys / Five9)",
-  "API / webhook",
-  "SSO / SAML",
-  "Custom LMS",
-  "None required",
-];
+export const INTEGRATIONS = ["Video meeting platform", "Calendar invites", "Single sign-on (later release)", "Reporting exports (later release)", "None required"];
 
 export const DECISION_TIMELINE = [
   "Immediately",
@@ -80,7 +65,7 @@ export const COUNTRIES = ["United States", "Canada", "United Kingdom", "Ireland"
 export const INDUSTRIES = ["Healthcare", "Legal", "Government & NGO", "Global Business", "Conferences & Events", "Education", "Insurance", "Other"];
 export const DURATIONS = ["Under 15 minutes", "15–60 minutes", "1–4 hours", "Half day", "Full day", "Multi-day"];
 export const VOLUMES = ["Under 100 minutes / month", "100–1,000 minutes / month", "1,000–10,000 minutes / month", "10,000+ minutes / month", "One-off session / event", "Not sure yet"];
-export const FREQUENCIES = ["One-time", "Weekly", "Several times a week", "Daily", "Ongoing / 24/7 coverage"];
-export const PLATFORMS = ["Zoom", "Microsoft Teams", "Webex", "Google Meet", "Our own telehealth platform", "Phone system / PBX", "Other", "None"];
+export const FREQUENCIES = ["One-time", "Weekly", "Several times a week", "Daily", "Ongoing program"];
+export const PLATFORMS = ["Zoom", "Microsoft Teams", "Webex", "Google Meet", "Our own telehealth platform", "Other", "None"];
 export const ROLES = ["Language access / interpreter services lead", "Operations", "Procurement", "Clinical / medical staff", "Legal / compliance", "Event organizer", "Executive", "Other"];
-export const HEAR_ABOUT = ["Search engine", "Referral / word of mouth", "LinkedIn", "Conference or event", "Bayantech", "Other"];
+export const HEAR_ABOUT = ["Search engine", "Referral / word of mouth", "LinkedIn", "Conference or event", "bayanTech", "Other"];

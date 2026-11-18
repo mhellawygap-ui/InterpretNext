@@ -1,337 +1,172 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { asset } from "@/lib/asset";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
-import { StatusBadge } from "@/components/page/Chip";
+import { PageIntro } from "@/components/ui/PageIntro";
+import { Section, SectionHeader } from "@/components/ui/Section";
 import { DocRequestForm, LegalDocGrid } from "@/components/page/DocRequest";
-import { Highlight, PageHero } from "@/components/page/PageHero";
-import { SectionTitle } from "@/components/page/SectionTitle";
-import {
-  ACCESS_SERVICES,
-  ACCESS_STANDARDS,
-  DATA_FLOW,
-  GDPR_ITEMS,
-  HEALTHCARE_ITEMS,
-  PILLARS,
-  QUALITY_STEPS,
-  SECURITY_ITEMS,
-  SECURITY_STATS,
-  STANDARDS,
-  STATUS_OVERVIEW,
-  TIERS,
-} from "@/data/trust";
+import { ACCESS_ITEMS, PRIVACY, QUALITY_STEPS, SECURITY_ITEMS, STANDARDS, TIERS } from "@/data/trust";
 
 export const metadata: Metadata = {
   title: "Trust Center",
-  description:
-    "How InterpretNext protects client data, governs its interpreter network, and maintains quality standards across every engagement.",
+  description: "How InterpretNext protects client data, vets interpreters and supports accessibility.",
 };
 
-const n2 = (i: number) => String(i + 1).padStart(2, "0");
+const SECTIONS = [
+  ["certifications", "Certifications"],
+  ["security", "Security"],
+  ["privacy", "Privacy"],
+  ["quality", "Quality"],
+  ["accessibility", "Accessibility"],
+  ["legal-documents", "Legal documents"],
+] as const;
 
-function Warning({ children }: { children: React.ReactNode }) {
+function Check({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-4 flex gap-2 rounded-lg border border-[#f5dca6] bg-[#fff8e6] px-4 py-3 text-xs leading-[1.5] text-warning-ink">
-      <span aria-hidden>⚠</span>
-      <span>{children}</span>
-    </p>
-  );
-}
-
-function CheckList({ items }: { items: string[] }) {
-  return (
-    <ul className="mt-4 flex flex-col gap-2.5">
-      {items.map((i) => (
-        <li key={i} className="flex gap-2 text-sm leading-[1.4] text-muted">
-          <span aria-hidden className="text-success-ink">✓</span>
-          {i}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function StatusPanel() {
-  return (
-    <div className="rounded-2xl border border-white/40 bg-brand/40 p-5">
-      <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Trust status overview</p>
-      <ul className="mt-3 divide-y divide-white/10">
-        {STATUS_OVERVIEW.map((s) => (
-          <li key={s.name} className="flex items-center justify-between gap-3 py-3">
-            <Icon name={s.icon} size={32} />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold">{s.name}</p>
-              <p className="text-xs text-white/70">{s.sub}</p>
-            </div>
-            <StatusBadge value={s.status} />
-          </li>
-        ))}
-      </ul>
-      <Link href="#request-docs" className="mt-3 flex min-h-11 items-center justify-center text-sm text-white/80 hover:text-white">
-        Contact security team →
-      </Link>
-    </div>
+    <li className="flex gap-3 text-[15px] leading-[1.55] text-brand">
+      <svg aria-hidden viewBox="0 0 24 24" className="mt-0.5 size-5 shrink-0 text-success-ink" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5 9-10" /></svg>
+      {children}
+    </li>
   );
 }
 
 export default function TrustCenterPage() {
   return (
     <>
-      <PageHero
-        eyebrow="InterpretNext · Trust Center"
-        title={
-          <>
-            Security, quality and governance for <Highlight>high-stakes</Highlight> interpretation.
-          </>
-        }
-        lead="InterpretNext is a brand of Bayantech / Teqneyat Group. This Trust Center documents how we protect client data, govern our interpreter network, and maintain quality standards across every interpretation engagement."
+      <PageIntro
+        label="Trust Center"
+        title="Security, privacy and quality"
+        lead="How we protect client data, vet our interpreters and make our services accessible. InterpretNext is an interpreting brand by bayanTech."
         actions={
           <>
-            <Button href="#certifications" variant="white">Explore certifications</Button>
-            <Button href="/get-quote/?modality=unsure" variant="ghost-light">Discuss your use case</Button>
+            <Button href="#request-docs" size="lg">Request documents</Button>
+            <Button href="/contact/" variant="secondary" size="lg">Contact our team</Button>
           </>
         }
-        aside={<StatusPanel />}
-      />
+      >
+        <nav aria-label="Trust Center sections" className="flex flex-wrap gap-2">
+          {SECTIONS.map(([id, label]) => (
+            <a key={id} href={`#${id}`} className="tap rounded-full border border-border px-4 py-2 text-sm font-medium text-brand hover:border-border-strong">{label}</a>
+          ))}
+        </nav>
+      </PageIntro>
 
-      <Container className="lg:!px-[112px]">
-        {/* Certifications */}
-        <section id="certifications" className="mt-4 scroll-mt-28 rounded-2xl border border-border bg-[#f4f2fa] p-5 shadow-[0_2px_16px_rgba(8,12,65,0.05)] sm:p-8">
-          <SectionTitle
-            title="Standards we operate under"
-            lead="Certifications listed below apply to Bayantech / Teqneyat Group as the operating entity behind InterpretNext. Entity mapping, scope, and certificate numbers are confirmed with legal before publication."
-            action={<Button href="#request-docs" className="shrink-0 !h-11 !text-sm">Request certificates</Button>}
-          />
-          <ul className="mt-8 flex flex-col gap-3">
-            {STANDARDS.map((s) => (
-              <li key={s.name} className="rounded-xl bg-card p-5 sm:p-6">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex max-w-[680px] gap-4">
-                    <Icon name={s.icon} size={48} />
-                    <div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="font-display-wonk text-xl font-bold text-brand">{s.name}</h3>
-                      <StatusBadge value={s.status} />
-                    </div>
-                    <p className="mt-1 text-xs font-semibold text-accent-1">Certificate holder: {s.holder}</p>
-                    <p className="mt-2 text-sm leading-[1.5] text-muted">{s.body}</p>
-                    </div>
-                  </div>
-                  <Link href="#request-docs" className="tap inline-flex h-9 w-fit shrink-0 items-center rounded-lg border border-lilac-strong px-4 text-xs font-medium text-accent-1 hover:bg-lilac/50">
-                    Request evidence
-                  </Link>
+      <Section id="certifications" labelledBy="cert-title">
+        <SectionHeader id="cert-title" label="Certifications" title="Standards we work to" lead="Certificates and agreements are available to verified business clients on request." />
+        <ul className="mt-12 grid gap-5 md:grid-cols-2">
+          {STANDARDS.map((s) => (
+            <li key={s.name} className="flex gap-5 rounded-2xl border border-border bg-white p-7">
+              <Icon name={s.icon} size={48} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="text-lg font-semibold text-brand">{s.name}</h3>
+                  <Badge tone={s.status === "Active" ? "success" : "warning"} dot>{s.status}</Badge>
                 </div>
-                {"note" in s && s.note && <Warning>{s.note}</Warning>}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Pillars */}
-        <section aria-labelledby="pillars-title" className="pt-16">
-          <SectionTitle align="center" title={<span id="pillars-title">Four pillars of operational trust</span>} />
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {PILLARS.map((p) => (
-              <li key={p.id}>
-                <Link href={`#${p.id}`} className="group relative isolate flex min-h-[240px] flex-col overflow-hidden rounded-2xl p-5 text-white">
-                  <Image src={asset(p.image)} alt="" fill sizes="(min-width: 1024px) 300px, 50vw" className="-z-20 object-cover transition-transform group-hover:scale-105" />
-                  <div aria-hidden className="absolute inset-0 -z-10" style={{ backgroundImage: "linear-gradient(180deg, rgba(40,20,140,0.9) 0%, rgba(101,40,203,0.75) 55%, rgba(243,47,126,0.85) 100%)" }} />
-                  <span className="text-xs text-white/60">{p.n}</span>
-                  <span className="font-display-wonk mt-auto text-2xl font-bold">{p.title}</span>
-                  <span className="mt-2 text-sm leading-[1.35] text-white/85">{p.body}</span>
-                  <span className="mt-4 text-xs text-white/70 group-hover:text-white">View section →</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Security */}
-        <section id="security" className="mt-16 scroll-mt-28 border-t border-border pt-16">
-          <SectionTitle eyebrow="Security" title="Built for sensitive conversations." />
-          <div className="mt-10 grid gap-10 lg:grid-cols-2">
-            <div className="relative isolate flex min-h-[460px] flex-col overflow-hidden rounded-2xl p-7 text-white">
-              <Image src={asset("/images/trust/security-posture.jpg")} alt="" fill sizes="(min-width: 1024px) 500px, 100vw" className="-z-20 object-cover" />
-              <div aria-hidden className="absolute inset-0 -z-10" style={{ backgroundImage: "linear-gradient(180deg, rgba(8,12,65,0.85) 0%, rgba(101,40,203,0.65) 55%, rgba(243,47,126,0.8) 100%)" }} />
-              <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Security posture</p>
-              <p className="font-display-wonk mt-auto text-2xl leading-[1.25] font-bold">
-                Interpretation sessions carry PHI, attorney-client privilege, and government data. Our security model is built around that reality.
-              </p>
-              <dl className="mt-8 grid grid-cols-3 gap-4">
-                {SECURITY_STATS.map((s) => (
-                  <div key={s.label} className="flex flex-col-reverse">
-                    <dt className="mt-1 text-xs text-white/60">{s.label}</dt>
-                    <dd className="font-display-wonk text-lg font-bold">{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            <div>
-              <ol className="divide-y divide-border">
-                {SECURITY_ITEMS.map((s, i) => (
-                  <li key={s.title} className="flex gap-4 py-5 first:pt-0">
-                    <span className="font-display-wonk w-8 shrink-0 text-xl font-bold text-muted">{n2(i)}</span>
-                    <div>
-                      <h3 className="text-sm font-semibold text-brand">{s.title}</h3>
-                      <p className="mt-1.5 text-[13px] leading-[1.5] text-muted">{s.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <div className="mt-4 flex justify-end">
-                <Button href="#request-docs" className="!h-10 !text-sm">Contact security team</Button>
+                <p className="mt-1 text-sm text-subtle">Holder: {s.holder}</p>
+                <p className="mt-3 text-[15px] leading-[1.6] text-muted">{s.body}</p>
+                <Link href="#request-docs" className="tap mt-4 inline-block text-[15px] font-semibold text-accent-1 hover:underline">Request evidence →</Link>
               </div>
-            </div>
-          </div>
-        </section>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-        {/* Privacy */}
-        <section id="privacy" className="mt-16 scroll-mt-28 border-t border-border pt-16">
-          <SectionTitle
-            align="center"
-            eyebrow="Privacy"
-            title="How we handle your data"
-            lead="InterpretNext processes data as both a data controller (platform and billing) and a data processor (on behalf of clients). Our obligations in each role are documented separately."
-          />
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <h3 className="text-base font-semibold text-brand">GDPR compliance</h3>
-              <CheckList items={GDPR_ITEMS} />
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <h3 className="text-base font-semibold text-brand">Healthcare data handling</h3>
-              <CheckList items={HEALTHCARE_ITEMS} />
-              <Warning>
-                HIPAA status requires legal and compliance review before being stated as a guarantee. Contact us to discuss your specific compliance requirements.
-              </Warning>
-            </div>
-          </div>
-          <div className="mt-4 rounded-2xl border border-border bg-card p-6">
-            <h3 className="text-base font-semibold text-brand">Session data flow</h3>
-            <ol className="mt-5 grid gap-3 md:grid-cols-4">
-              {DATA_FLOW.map((d, i) => (
-                <li key={d.title} className="relative rounded-xl bg-[#f4f2fa] p-4">
-                  <span className="text-xs font-semibold text-accent-1">{n2(i)}</span>
-                  <p className="mt-1 text-sm font-semibold text-brand">{d.title}</p>
-                  <p className="mt-1.5 text-xs leading-[1.5] text-muted">{d.body}</p>
-                  {i < DATA_FLOW.length - 1 && (
-                    <span aria-hidden className="absolute top-1/2 -right-3 hidden -translate-y-1/2 text-accent-1 md:block">→</span>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+      <Section tone="subtle" id="security" labelledBy="sec-title">
+        <SectionHeader id="sec-title" label="Security" title="Built for sensitive conversations" lead="Interpreted sessions can include health information, legal privilege and personal data. Our controls are designed around that." />
+        <ul className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {SECURITY_ITEMS.map((s) => (
+            <li key={s.title} className="flex gap-4">
+              <Icon name={s.icon} size={44} />
+              <div>
+                <h3 className="font-semibold text-brand">{s.title}</h3>
+                <p className="mt-1.5 text-[15px] leading-[1.6] text-muted">{s.body}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-        {/* Quality */}
-        <section id="quality" className="mt-16 scroll-mt-28 border-t border-border pt-16">
-          <div className="grid gap-10 lg:grid-cols-[300px_1fr] lg:gap-12">
-            <div>
-              <SectionTitle eyebrow="Quality" title="Certification-matched, not randomly assigned." />
-              <p className="mt-6 text-sm leading-[1.5] text-muted">
-                Every interpreter in the InterpretNext network goes through a structured vetting process. Domain matching, language assessment, and ongoing QA are not optional additions—they are baseline requirements.
-              </p>
-              <ul className="mt-8 flex flex-col gap-3">
-                {TIERS.map((t) => (
-                  <li key={t.name} className="flex gap-3 rounded-xl border border-border bg-card p-4">
-                    <Icon name={t.icon} size={36} />
-                    <div>
-                      <p className="text-sm font-semibold text-brand">{t.name}</p>
-                      <p className="mt-1 text-xs leading-[1.5] text-muted">{t.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 text-xs text-muted italic">Tier definitions subject to confirmation with operations.</p>
+      <Section id="privacy" labelledBy="priv-title">
+        <SectionHeader id="priv-title" label="Privacy" title="How we handle your data" lead="We act as a data controller for our platform and billing, and as a data processor on behalf of clients." />
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-white p-7">
+            <h3 className="text-lg font-semibold text-brand">GDPR</h3>
+            <ul className="mt-5 flex flex-col gap-3">{PRIVACY.gdpr.map((p) => <Check key={p}>{p}</Check>)}</ul>
+          </div>
+          <div className="rounded-2xl border border-border bg-white p-7">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-semibold text-brand">Healthcare data</h3>
+              <Badge tone="warning" dot>HIPAA in progress</Badge>
             </div>
-            <ol className="flex flex-col gap-3">
-              {QUALITY_STEPS.map((q, i) => (
-                <li key={q.title} className="flex gap-4 rounded-2xl border border-border bg-card p-5 sm:p-6">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f4f2fa] text-xs font-semibold text-accent-1">{n2(i)}</span>
+            <ul className="mt-5 flex flex-col gap-3">{PRIVACY.healthcare.map((p) => <Check key={p}>{p}</Check>)}</ul>
+          </div>
+        </div>
+      </Section>
+
+      <Section tone="subtle" id="quality" labelledBy="qual-title">
+        <SectionHeader id="qual-title" label="Quality" title="How we vet and match interpreters" />
+        <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:gap-16">
+          <ol className="grid gap-5 sm:grid-cols-2">
+            {QUALITY_STEPS.map((q, i) => (
+              <li key={q.title} className="rounded-2xl border border-border bg-white p-6">
+                <span className="text-sm font-semibold text-subtle">0{i + 1}</span>
+                <h3 className="mt-2 font-semibold text-brand">{q.title}</h3>
+                <p className="mt-1.5 text-[15px] leading-[1.6] text-muted">{q.body}</p>
+              </li>
+            ))}
+          </ol>
+          <div>
+            <h3 className="text-lg font-semibold text-brand">Interpreter tiers</h3>
+            <ul className="mt-5 flex flex-col gap-4">
+              {TIERS.map((t) => (
+                <li key={t.name} className="flex gap-4 rounded-2xl border border-border bg-white p-5">
+                  <Icon name={t.icon} size={44} />
                   <div>
-                    <h3 className="text-sm font-semibold text-brand">{q.title}</h3>
-                    <p className="mt-1.5 text-[13px] leading-[1.55] text-muted">{q.body}</p>
+                    <p className="font-semibold text-brand">Tier {t.level}: {t.name}</p>
+                    <p className="text-sm text-subtle">{t.meta}</p>
+                    <p className="mt-2 text-[15px] leading-[1.55] text-muted">{t.body}</p>
                   </div>
                 </li>
               ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* Accessibility */}
-        <section id="accessibility" className="mt-16 scroll-mt-28 border-t border-border pt-16">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div>
-              <SectionTitle eyebrow="Accessibility" title="Inclusive communication is infrastructure." />
-              <p className="mt-6 text-sm leading-[1.5] text-muted">
-                Accessibility at InterpretNext covers two dimensions: the accessibility of our own platform and content (WCAG 2.2 AA), and the accessibility services we deliver to end users—ASL interpretation and CART live captioning.
-              </p>
-            </div>
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {ACCESS_SERVICES.map((a) => (
-                <li key={a.title} className="rounded-xl border border-border bg-card p-4">
-                  <Icon name={a.icon} size={40} />
-                  <p className="mt-3 text-sm font-semibold text-brand">{a.title}</p>
-                  <p className="mt-1 text-[13px] leading-[1.45] text-muted">{a.body}</p>
-                </li>
-              ))}
             </ul>
           </div>
-          <div className="mt-8 rounded-2xl border border-border bg-card p-6">
-            <h3 className="text-base font-semibold text-brand">Standards and obligations</h3>
-            <ul className="mt-5 grid gap-6 md:grid-cols-3">
-              {ACCESS_STANDARDS.map((a) => (
-                <li key={a.title}>
-                  <p className="flex items-center gap-2 text-sm font-semibold text-brand">
-                    <span aria-hidden className="size-1.5 rounded-full bg-accent-1" />
-                    {a.title}
-                  </p>
-                  <p className="mt-2 text-[13px] leading-[1.5] text-muted">{a.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        </div>
+      </Section>
 
-        {/* Legal documents */}
-        <section id="legal-documents" className="mt-16 scroll-mt-28 border-t border-border pt-16">
-          <SectionTitle
-            eyebrow="Legal documents"
-            title="Governance on paper"
-            lead="Documents available for review, download, or countersignature. Some documents require a verified business request."
-            action={<Button href="#request-docs" className="shrink-0 !h-11 !text-sm">Request documentation package</Button>}
-          />
+      <Section id="accessibility" labelledBy="a11y-title">
+        <SectionHeader id="a11y-title" label="Accessibility" title="Accessible services and an accessible website" lead="We provide sign language interpreting and live captioning, and we build our own website to WCAG 2.2 AA." />
+        <ul className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {ACCESS_ITEMS.map((a) => (
+            <li key={a.title}>
+              <Icon name={a.icon} size={44} />
+              <h3 className="mt-5 font-semibold text-brand">{a.title}</h3>
+              <p className="mt-1.5 text-[15px] leading-[1.6] text-muted">{a.body}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-10 max-w-[70ch] text-[15px] leading-[1.6] text-muted">
+          Our sign language and captioning services help clients meet obligations under ADA Titles II and III and Section 508. If something on this site is hard to use, please <Link href="/contact/" className="font-semibold text-accent-1 hover:underline">tell us</Link>.
+        </p>
+      </Section>
+
+      <Section tone="subtle" id="legal-documents" labelledBy="docs-title">
+        <SectionHeader id="docs-title" label="Legal documents" title="Policies and agreements" lead="Some documents are shared only after a verified business request." />
+        <div className="mt-12">
           <LegalDocGrid />
-        </section>
+        </div>
+      </Section>
 
-        {/* Security team */}
-        <section id="request-docs" className="bg-banner mt-16 mb-10 grid scroll-mt-28 gap-10 rounded-[20px] px-6 py-10 text-white sm:px-10 lg:grid-cols-2 lg:px-10 lg:py-12">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.12em] uppercase text-white/60">Security team</p>
-            <h2 className="font-display-wonk mt-4 text-[30px] leading-[1.2] font-bold sm:text-[36px]">Need documentation for procurement?</h2>
-            <p className="mt-5 text-sm leading-[1.6] text-white/80">
-              Enterprise procurement teams often need certificates, DPAs, BAAs, and security questionnaire responses before contracting. Our team responds to verified business requests within two business days.
-            </p>
-            <dl className="mt-8 grid grid-cols-2 gap-3">
-              {[
-                ["ISO certificates", "On request"],
-                ["Security questionnaires", "Supported"],
-                ["BAA (healthcare)", "Available"],
-                ["Response time", "2 business days"],
-              ].map(([k, v]) => (
-                <div key={k} className="flex flex-col-reverse rounded-xl border border-white/20 px-4 py-3">
-                  <dd className="mt-1 text-sm font-semibold">{v}</dd>
-                  <dt className="text-xs tracking-[0.08em] uppercase text-white/60">{k}</dt>
-                </div>
-              ))}
-            </dl>
-          </div>
+      <Section id="request-docs" labelledBy="req-title">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,620px)] lg:gap-16">
+          <SectionHeader
+            id="req-title"
+            title="Request security documentation"
+            lead="Procurement teams often need certificates, a DPA or a completed security questionnaire before contracting. We reply to verified business requests within two business days."
+          />
           <DocRequestForm />
-        </section>
-      </Container>
+        </div>
+      </Section>
     </>
   );
 }

@@ -1,7 +1,8 @@
 import type { IconName } from "@/components/ui/Icon";
 import { LANGUAGES, type Language } from "@/data/languages";
 import { SECTORS } from "@/data/industries";
-import { SERVICE_GROUPS, type ServiceItem } from "@/data/services";
+import { SERVICES, type ServiceItem } from "@/data/services";
+import { coverageDetail } from "@/data/languages";
 
 /**
  * Rule-based assistant. There is no AI backend yet, so every answer comes from the
@@ -38,7 +39,6 @@ export type Intent =
   | { type: "specialist" }
   | { type: "text"; text: string; expect?: "language" };
 
-const SERVICES = SERVICE_GROUPS.flatMap((g) => g.items);
 const service = (id: string) => SERVICES.find((s) => s.id === id)!;
 
 export const MAIN_CHIPS: Chip[] = [
@@ -55,19 +55,30 @@ export const GREETING: BotMessage = {
 };
 
 const SITUATION_CHIPS: Chip[] = [
-  { label: "A phone call", intent: { type: "situation", service: "opi" } },
-  { label: "A video or face-to-face visit", intent: { type: "situation", service: "vri" } },
-  { label: "A live event or webinar", intent: { type: "situation", service: "rsi" } },
+  { label: "A scheduled appointment or interview", intent: { type: "situation", service: "video-remote" } },
   { label: "Someone must be in the room", intent: { type: "situation", service: "on-site" } },
-  { label: "Deaf or hard-of-hearing participants", intent: { type: "situation", service: "asl" } },
-  { label: "Documents to translate", intent: { type: "situation", service: "document-translation" } },
+  { label: "An online event with several languages", intent: { type: "situation", service: "simultaneous" } },
+  { label: "A conference, in person and online", intent: { type: "situation", service: "conference" } },
+  { label: "Deaf or hard-of-hearing participants", intent: { type: "situation", service: "sign-language" } },
+  { label: "Documents to translate", intent: { type: "situation", service: "documents" } },
 ];
+
+/** Planned capabilities: answer honestly that they are not in the launch release. */
+const LATER_REPLY: BotMessage = {
+  from: "bot",
+  text: "Phone dial-in, on-demand instant calls, session recording and AI speech translation are planned for later releases. At launch we offer scheduled video, on-site and event interpreting.",
+  actions: [
+    { label: "See services at launch", href: "/services/", primary: true },
+    { label: "Roadmap", href: "/services/#later" },
+  ],
+  chips: [{ label: "Recommend a service", intent: { type: "recommend" } }, { label: "Talk to a specialist", intent: { type: "specialist" } }],
+};
 
 function serviceReply(id: string, lead?: string): BotMessage {
   const s = service(id);
   return {
     from: "bot",
-    text: lead ?? `For that, I'd recommend ${s.title.replace(/^(OPI|VRI|RSI)-/, "")}.`,
+    text: lead ?? `For that, I'd recommend ${s.title.toLowerCase()}.`,
     card: { kind: "service", service: s },
     actions: [
       { label: "Get a quote", href: `/get-quote/?modality=${s.quote}`, primary: true },
@@ -111,27 +122,21 @@ function languageReply(q: string): BotMessage {
   if (!l) {
     return {
       from: "bot",
-      text: `"${q}" isn't in our public directory yet, but our operations team regularly sources rare dialects and low-resource languages. Tell us what you need and we'll confirm feasibility within one business day.`,
+      text: `"${q}" isn't in our published list yet. Our language team regularly sources rare dialects and low-resource languages, and confirms feasibility within one business day.`,
       actions: [
-        { label: "Request this language", href: "/get-quote/", primary: true },
-        { label: "Browse all languages", href: "/languages/#find-a-language" },
+        { label: "Request this language", href: `/languages/?request=${encodeURIComponent(q)}#request`, primary: true },
+        { label: "Browse languages", href: "/languages/#regions" },
       ],
       chips: [{ label: "Check another language", intent: { type: "language-prompt" } }, ...MAIN_CHIPS.slice(0, 1)],
     };
   }
-  const when =
-    l.availability === "On-demand"
-      ? "can usually be connected within minutes, any time of day"
-      : l.availability === "Scheduled"
-        ? "is booked in advance, usually 24–48 hours ahead"
-        : "has limited availability, so we confirm coverage and timing with you first";
   return {
     from: "bot",
-    text: `Yes, we cover ${l.name}. It ${when}.`,
+    text: l.coverage === "priority" ? `Yes, ${l.name} is in our core network. ${coverageDetail("priority")}` : `Yes, we cover ${l.name}. ${coverageDetail("rare")}`,
     card: { kind: "language", language: l },
     actions: [
       { label: `Get a ${l.name} quote`, href: "/get-quote/", primary: true },
-      { label: `See ${l.region} languages`, href: `/languages/?region=${encodeURIComponent(l.region)}#find-a-language` },
+      { label: `See ${l.region} languages`, href: `/languages/#regions` },
     ],
     chips: [{ label: "Check another language", intent: { type: "language-prompt" } }, { label: "Recommend a service", intent: { type: "recommend" } }],
   };
@@ -139,12 +144,12 @@ function languageReply(q: string): BotMessage {
 
 const COMPLIANCE: BotMessage = {
   from: "bot",
-  text: "InterpretNext operates under Bayantech / Teqneyat Group certifications, with signed confidentiality on every session. Certificates, DPAs and BAAs are available on request for procurement.",
+  text: "InterpretNext is an interpreting brand by bayanTech, with signed confidentiality on every session. HIPAA readiness is in progress. Certificates and DPAs are available on request for procurement.",
   card: {
     kind: "trust",
     items: [
-      { icon: "hipaa", title: "HIPAA-aligned workflows", href: "/trust-center/#privacy" },
-      { icon: "iso-17100", title: "ISO 17100 quality", href: "/trust-center/#certifications" },
+      { icon: "hipaa", title: "HIPAA readiness in progress", href: "/trust-center/#privacy" },
+      { icon: "gdpr", title: "GDPR data processing", href: "/trust-center/#privacy" },
       { icon: "iso-27001", title: "ISO 27001 security", href: "/trust-center/#security" },
       { icon: "nda", title: "NDA on every linguist", href: "/trust-center/#legal-documents" },
     ],
@@ -167,15 +172,14 @@ const SPECIALIST: BotMessage = {
 };
 
 const KEYWORD_SERVICES: [RegExp, string][] = [
-  [/\b(phone|call|telephone|opi|hotline|helpdesk)\b/, "opi"],
-  [/\b(video|vri|zoom|teams|telehealth|virtual)\b/, "vri"],
-  [/\b(conference|webinar|summit|event|rsi|simultaneous|channels?)\b/, "rsi"],
-  [/\b(on[- ]?site|in person|in-person|delegation|site visit|escort|factory)\b/, "on-site"],
-  [/\b(asl|sign language|deaf|hard of hearing|cart|caption)/, "asl"],
-  [/\b(document|translate|translation|contract|certificate|records?)\b/, "document-translation"],
-  [/\b(ai|machine|automatic|transcription)\b/, "ai-speech"],
-  [/\b(schedul\w*|ims|management system|coordinat\w*)\b/, "ims"],
+  [/\b(video|vri|zoom|teams|telehealth|virtual|appointment|interview)\b/, "video-remote"],
+  [/\b(webinar|online event|simultaneous|rsi|channels?|board meeting)\b/, "simultaneous"],
+  [/\b(conference|summit|assembly|hybrid)\b/, "conference"],
+  [/\b(on[- ]?site|in person|in-person|delegation|site visit|escort|factory|hearing)\b/, "on-site"],
+  [/\b(asl|sign language|deaf|hard of hearing|cart|caption)/, "sign-language"],
+  [/\b(document|translate|translation|contract|certificate|records?)\b/, "documents"],
 ];
+const LATER_WORDS = /\b(phone|call me|dial|telephone|opi|hotline|on-?demand|instant|right now|immediately|record\w*|ai|machine|automatic)\b/;
 
 export function respond(intent: Intent): BotMessage {
   switch (intent.type) {
@@ -202,6 +206,7 @@ export function respond(intent: Intent): BotMessage {
       if (/\b(hipaa|iso|gdpr|nda|baa|dpa|security|secure|complian\w*|privacy|confidential\w*)\b/.test(t)) return COMPLIANCE;
       const lang = findLanguage(intent.text);
       if (lang) return languageReply(lang.name);
+      if (LATER_WORDS.test(t)) return LATER_REPLY;
       for (const [re, id] of KEYWORD_SERVICES) if (re.test(t)) return serviceReply(id);
       const SECTOR_WORDS: Record<string, string[]> = {
         healthcare: ["healthcare", "health", "medical"],

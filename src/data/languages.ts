@@ -1,117 +1,153 @@
-import type { Availability } from "@/components/page/Chip";
+/**
+ * MASTER LANGUAGE LIST — DRAFT (operations will supply the approved list).
+ * Every language feature on the site (directory, search/checker, assistant, quote form) reads
+ * from this one list, so replacing it here updates the whole site.
+ *
+ * - One region per language (Spanish → Americas, Urdu → South Asia).
+ * - No speaker counts.
+ * - coverage: "priority" = staffed in our core network;
+ *             "rare"     = sourced on request; we confirm feasibility and lead time first.
+ */
 
-export const REGIONS = ["African", "Middle Eastern", "Asian", "European", "Americas", "Oceania"] as const;
+export const REGIONS = [
+  "Africa",
+  "Middle East & North Africa",
+  "South Asia",
+  "East & Southeast Asia",
+  "Europe",
+  "Americas",
+  "Pacific",
+] as const;
 export type Region = (typeof REGIONS)[number];
-export const MODALITIES = ["OPI", "VRI", "RSI", "On-site"] as const;
-export type Modality = (typeof MODALITIES)[number];
-export const AVAILABILITIES: Availability[] = ["On-demand", "Scheduled", "Limited"];
-export const DOMAINS = ["Medical", "Legal", "Government", "Business", "Events", "Accessibility"] as const;
-export type Domain = (typeof DOMAINS)[number];
+
+export type Coverage = "priority" | "rare";
 
 export type Language = {
   name: string;
   native?: string;
   region: Region;
-  availability: Availability;
-  speakers?: string;
-  modalities: Modality[];
-  featured?: boolean;
+  coverage: Coverage;
+  /** Other names or spellings people search for */
+  aka?: string[];
 };
 
-const O = "On-demand" as const, S = "Scheduled" as const, L = "Limited" as const;
-const B: Modality[] = ["OPI", "VRI"];
-const BO: Modality[] = ["OPI", "VRI", "On-site"];
-const ALL: Modality[] = ["OPI", "VRI", "RSI", "On-site"];
-const P: Modality[] = ["OPI"];
+const P = "priority" as const, R = "rare" as const;
 
-// Order, availability, speaker counts and modalities are transcribed from the Figma directory.
 export const LANGUAGES: Language[] = [
-  { name: "Amharic", native: "አማርኛ", region: "African", availability: O, speakers: "57M+", modalities: BO, featured: true },
-  { name: "Tigrinya", native: "ትግርኛ", region: "African", availability: O, speakers: "9M+", modalities: B, featured: true },
-  { name: "Somali", native: "Soomaali", region: "African", availability: O, speakers: "21M+", modalities: BO, featured: true },
-  { name: "Oromo", native: "Afaan Oromoo", region: "African", availability: O, speakers: "45M+", modalities: B, featured: true },
-  { name: "Hausa", native: "Harshen Hausa", region: "African", availability: S, speakers: "80M+", modalities: B },
-  { name: "Yoruba", native: "Yorùbá", region: "African", availability: S, speakers: "45M+", modalities: B },
-  { name: "Igbo", native: "Ásụ̀sụ̀ Ìgbò", region: "African", availability: S, speakers: "44M+", modalities: B },
-  { name: "Swahili", native: "Kiswahili", region: "African", availability: O, speakers: "200M+", modalities: ["OPI", "VRI", "On-site", "RSI"] },
-  { name: "Wolof", native: "Wollof", region: "African", availability: S, speakers: "12M+", modalities: P },
-  { name: "Fula / Fulani", native: "Fulfulde", region: "African", availability: L, speakers: "40M+", modalities: P },
-  { name: "Dinka", native: "Thuɔŋjäŋ", region: "African", availability: L, speakers: "2M+", modalities: P },
-  { name: "Nuer", native: "Thok Naath", region: "African", availability: L, speakers: "1.5M+", modalities: P },
-  { name: "Kinyarwanda", native: "Ikinyarwanda", region: "African", availability: S, speakers: "12M+", modalities: B },
-  { name: "Lingala", native: "Lingála", region: "African", availability: S, speakers: "25M+", modalities: P },
-  { name: "Arabic (MSA)", native: "اللغة العربية", region: "Middle Eastern", availability: O, speakers: "310M+", modalities: ALL, featured: true },
-  { name: "Arabic (Gulf)", native: "عربي خليجي", region: "Middle Eastern", availability: O, modalities: BO, featured: true },
-  { name: "Arabic (Levantine)", native: "عربي شامي", region: "Middle Eastern", availability: O, modalities: BO, featured: true },
-  { name: "Arabic (Egyptian)", native: "مصري", region: "Middle Eastern", availability: O, modalities: BO },
-  { name: "Arabic (Maghrebi)", native: "دارجة", region: "Middle Eastern", availability: S, modalities: B },
-  { name: "Farsi / Persian", native: "فارسی", region: "Middle Eastern", availability: O, speakers: "80M+", modalities: BO, featured: true },
-  { name: "Dari", native: "دری", region: "Middle Eastern", availability: O, speakers: "25M+", modalities: B },
-  { name: "Pashto", native: "پښتو", region: "Middle Eastern", availability: O, speakers: "50M+", modalities: B },
-  { name: "Kurdish (Kurmanji)", native: "Kurmancî", region: "Middle Eastern", availability: S, speakers: "15M+", modalities: B },
-  { name: "Kurdish (Sorani)", native: "سۆرانی", region: "Middle Eastern", availability: S, speakers: "6M+", modalities: B },
-  { name: "Turkish", native: "Türkçe", region: "Middle Eastern", availability: O, speakers: "88M+", modalities: ALL },
-  { name: "Urdu", native: "اردو", region: "Middle Eastern", availability: O, speakers: "230M+", modalities: BO },
-  { name: "Hebrew", native: "עברית", region: "Middle Eastern", availability: S, speakers: "9M+", modalities: BO },
-  { name: "Mandarin Chinese", native: "普通话", region: "Asian", availability: O, speakers: "920M+", modalities: ALL, featured: true },
-  { name: "Cantonese", native: "廣東話", region: "Asian", availability: O, speakers: "85M+", modalities: BO, featured: true },
-  { name: "Japanese", native: "日本語", region: "Asian", availability: O, speakers: "125M+", modalities: ALL },
-  { name: "Korean", native: "한국어", region: "Asian", availability: O, speakers: "77M+", modalities: ALL },
-  { name: "Hindi", native: "हिन्दी", region: "Asian", availability: O, speakers: "600M+", modalities: BO, featured: true },
-  { name: "Vietnamese", native: "Tiếng Việt", region: "Asian", availability: O, speakers: "97M+", modalities: BO },
-  { name: "Tagalog / Filipino", native: "Wikang Filipino", region: "Asian", availability: O, speakers: "90M+", modalities: BO },
-  { name: "Burmese", native: "မြန်မာဘာသာ", region: "Asian", availability: S, speakers: "42M+", modalities: B },
-  { name: "Khmer", native: "ភាសាខ្មែរ", region: "Asian", availability: S, speakers: "16M+", modalities: B },
-  { name: "Thai", native: "ภาษาไทย", region: "Asian", availability: O, speakers: "61M+", modalities: BO },
-  { name: "Bengali", native: "বাংলা", region: "Asian", availability: O, speakers: "230M+", modalities: B },
-  { name: "Punjabi", native: "ਪੰਜਾਬੀ", region: "Asian", availability: S, speakers: "125M+", modalities: B },
-  { name: "Nepali", native: "नेपाली", region: "Asian", availability: S, speakers: "17M+", modalities: B },
-  { name: "Sinhalese", native: "සිංහල", region: "Asian", availability: L, speakers: "17M+", modalities: P },
-  { name: "Lao", native: "ພາສາລາວ", region: "Asian", availability: L, speakers: "30M+", modalities: P },
-  { name: "Hmong", native: "Hmoob", region: "Asian", availability: S, speakers: "4M+", modalities: B },
-  { name: "Indonesian", native: "Bahasa Indonesia", region: "Asian", availability: O, speakers: "270M+", modalities: ["OPI", "VRI", "On-site", "RSI"] },
-  { name: "Spanish", native: "Español", region: "European", availability: O, speakers: "500M+", modalities: ALL, featured: true },
-  { name: "French", native: "Français", region: "European", availability: O, speakers: "280M+", modalities: ALL, featured: true },
-  { name: "Portuguese", native: "Português", region: "European", availability: O, speakers: "250M+", modalities: ALL },
-  { name: "Russian", native: "Русский", region: "European", availability: O, speakers: "255M+", modalities: ["OPI", "VRI", "On-site", "RSI"] },
-  { name: "German", native: "Deutsch", region: "European", availability: O, speakers: "132M+", modalities: ALL },
-  { name: "Italian", native: "Italiano", region: "European", availability: O, speakers: "68M+", modalities: ALL },
-  { name: "Polish", native: "Polski", region: "European", availability: O, speakers: "45M+", modalities: BO },
-  { name: "Ukrainian", native: "Українська", region: "European", availability: O, speakers: "37M+", modalities: BO },
-  { name: "Romanian", native: "Română", region: "European", availability: O, speakers: "26M+", modalities: BO },
-  { name: "Dutch", native: "Nederlands", region: "European", availability: O, speakers: "24M+", modalities: ["OPI", "VRI", "On-site", "RSI"] },
-  { name: "Greek", native: "Ελληνικά", region: "European", availability: S, speakers: "13M+", modalities: BO },
-  { name: "Albanian", native: "Shqip", region: "European", availability: S, speakers: "8M+", modalities: B },
-  { name: "Czech", native: "Čeština", region: "European", availability: S, speakers: "10M+", modalities: BO },
-  { name: "Haitian Creole", native: "Kreyòl ayisyen", region: "Americas", availability: O, speakers: "12M+", modalities: BO, featured: true },
-  { name: "Portuguese (Brazilian)", native: "Português Brasileiro", region: "Americas", availability: O, speakers: "215M+", modalities: ALL },
-  { name: "Quechua", native: "Qhichwa", region: "Americas", availability: L, speakers: "10M+", modalities: P },
-  { name: "Guaraní", native: "Avañe'ẽ", region: "Americas", availability: L, speakers: "6M+", modalities: P },
-  { name: "Samoan", native: "Gagana Samoa", region: "Oceania", availability: S, speakers: "500K+", modalities: B },
-  { name: "Tongan", native: "lea faka-Tonga", region: "Oceania", availability: L, speakers: "200K+", modalities: P },
+  // Africa
+  { name: "Amharic", native: "አማርኛ", region: "Africa", coverage: P },
+  { name: "Somali", native: "Soomaali", region: "Africa", coverage: P },
+  { name: "Swahili", native: "Kiswahili", region: "Africa", coverage: P },
+  { name: "Hausa", native: "Harshen Hausa", region: "Africa", coverage: P },
+  { name: "Yoruba", native: "Yorùbá", region: "Africa", coverage: P },
+  { name: "Igbo", native: "Asụsụ Igbo", region: "Africa", coverage: P },
+  { name: "Tigrinya", native: "ትግርኛ", region: "Africa", coverage: R },
+  { name: "Oromo", native: "Afaan Oromoo", region: "Africa", coverage: R },
+  { name: "Wolof", native: "Wolof", region: "Africa", coverage: R },
+  { name: "Fula", native: "Fulfulde", region: "Africa", coverage: R, aka: ["Fulani", "Pulaar"] },
+  { name: "Mandinka", native: "Mandinka", region: "Africa", coverage: R },
+  { name: "Dinka", native: "Thuɔŋjäŋ", region: "Africa", coverage: R },
+  { name: "Nuer", native: "Thok Naath", region: "Africa", coverage: R },
+  { name: "Zaghawa", native: "Beria", region: "Africa", coverage: R },
+  { name: "Kinyarwanda", native: "Ikinyarwanda", region: "Africa", coverage: R },
+  { name: "Lingala", native: "Lingála", region: "Africa", coverage: R },
+
+  // Middle East & North Africa
+  { name: "Arabic (Modern Standard)", native: "العربية الفصحى", region: "Middle East & North Africa", coverage: P, aka: ["Arabic", "MSA"] },
+  { name: "Arabic (Gulf)", native: "عربي خليجي", region: "Middle East & North Africa", coverage: P },
+  { name: "Arabic (Levantine)", native: "عربي شامي", region: "Middle East & North Africa", coverage: P, aka: ["Syrian", "Lebanese", "Jordanian", "Palestinian"] },
+  { name: "Arabic (Egyptian)", native: "مصري", region: "Middle East & North Africa", coverage: P },
+  { name: "Arabic (Sudanese)", native: "عربي سوداني", region: "Middle East & North Africa", coverage: R, aka: ["Sudanese"] },
+  { name: "Arabic (Maghrebi)", native: "الدارجة", region: "Middle East & North Africa", coverage: R, aka: ["Darija", "Moroccan", "Algerian", "Tunisian"] },
+  { name: "Farsi", native: "فارسی", region: "Middle East & North Africa", coverage: P, aka: ["Persian"] },
+  { name: "Turkish", native: "Türkçe", region: "Middle East & North Africa", coverage: P },
+  { name: "Hebrew", native: "עברית", region: "Middle East & North Africa", coverage: P },
+  { name: "Kurdish (Kurmanji)", native: "Kurmancî", region: "Middle East & North Africa", coverage: R },
+  { name: "Kurdish (Sorani)", native: "سۆرانی", region: "Middle East & North Africa", coverage: R },
+  { name: "Chaldean Neo-Aramaic", native: "ܣܘܪܝܬ", region: "Middle East & North Africa", coverage: R, aka: ["Chaldean", "Assyrian"] },
+
+  // South Asia
+  { name: "Hindi", native: "हिन्दी", region: "South Asia", coverage: P },
+  { name: "Urdu", native: "اردو", region: "South Asia", coverage: P },
+  { name: "Bengali", native: "বাংলা", region: "South Asia", coverage: P, aka: ["Bangla"] },
+  { name: "Punjabi", native: "ਪੰਜਾਬੀ", region: "South Asia", coverage: P },
+  { name: "Dari", native: "دری", region: "South Asia", coverage: P },
+  { name: "Pashto", native: "پښتو", region: "South Asia", coverage: P },
+  { name: "Nepali", native: "नेपाली", region: "South Asia", coverage: R },
+  { name: "Sinhala", native: "සිංහල", region: "South Asia", coverage: R, aka: ["Sinhalese"] },
+  { name: "Rohingya", native: "Ruáingga", region: "South Asia", coverage: R },
+
+  // East & Southeast Asia
+  { name: "Mandarin", native: "普通话", region: "East & Southeast Asia", coverage: P, aka: ["Chinese"] },
+  { name: "Cantonese", native: "廣東話", region: "East & Southeast Asia", coverage: P },
+  { name: "Vietnamese", native: "Tiếng Việt", region: "East & Southeast Asia", coverage: P },
+  { name: "Korean", native: "한국어", region: "East & Southeast Asia", coverage: P },
+  { name: "Japanese", native: "日本語", region: "East & Southeast Asia", coverage: P },
+  { name: "Tagalog", native: "Wikang Tagalog", region: "East & Southeast Asia", coverage: P, aka: ["Filipino"] },
+  { name: "Thai", native: "ภาษาไทย", region: "East & Southeast Asia", coverage: P },
+  { name: "Indonesian", native: "Bahasa Indonesia", region: "East & Southeast Asia", coverage: P },
+  { name: "Burmese", native: "မြန်မာဘာသာ", region: "East & Southeast Asia", coverage: R, aka: ["Myanmar"] },
+  { name: "Karen", native: "ကညီ", region: "East & Southeast Asia", coverage: R },
+  { name: "Khmer", native: "ភាសាខ្មែរ", region: "East & Southeast Asia", coverage: R, aka: ["Cambodian"] },
+  { name: "Lao", native: "ພາສາລາວ", region: "East & Southeast Asia", coverage: R },
+  { name: "Hmong", native: "Hmoob", region: "East & Southeast Asia", coverage: R },
+  { name: "Uyghur", native: "ئۇيغۇرچە", region: "East & Southeast Asia", coverage: R },
+
+  // Europe
+  { name: "French", native: "Français", region: "Europe", coverage: P },
+  { name: "Portuguese (European)", native: "Português", region: "Europe", coverage: P },
+  { name: "Russian", native: "Русский", region: "Europe", coverage: P },
+  { name: "Ukrainian", native: "Українська", region: "Europe", coverage: P },
+  { name: "German", native: "Deutsch", region: "Europe", coverage: P },
+  { name: "Italian", native: "Italiano", region: "Europe", coverage: P },
+  { name: "Polish", native: "Polski", region: "Europe", coverage: P },
+  { name: "Romanian", native: "Română", region: "Europe", coverage: P },
+  { name: "Greek", native: "Ελληνικά", region: "Europe", coverage: P },
+  { name: "Albanian", native: "Shqip", region: "Europe", coverage: R },
+
+  // Americas
+  { name: "Spanish", native: "Español", region: "Americas", coverage: P },
+  { name: "Portuguese (Brazilian)", native: "Português brasileiro", region: "Americas", coverage: P },
+  { name: "Haitian Creole", native: "Kreyòl ayisyen", region: "Americas", coverage: P },
+  { name: "American Sign Language", native: "ASL", region: "Americas", coverage: P, aka: ["ASL", "Sign language"] },
+  { name: "Mam", native: "Qyol Mam", region: "Americas", coverage: R },
+  { name: "K'iche'", native: "K'iche'", region: "Americas", coverage: R, aka: ["Quiché"] },
+  { name: "Q'anjob'al", native: "Q'anjob'al", region: "Americas", coverage: R },
+  { name: "Mixtec", native: "Tu'un savi", region: "Americas", coverage: R },
+  { name: "Quechua", native: "Runa Simi", region: "Americas", coverage: R },
+
+  // Pacific
+  { name: "Samoan", native: "Gagana Sāmoa", region: "Pacific", coverage: R },
+  { name: "Tongan", native: "Lea faka-Tonga", region: "Pacific", coverage: R },
+  { name: "Chuukese", native: "Chuuk", region: "Pacific", coverage: R },
+  { name: "Marshallese", native: "Kajin M̧ajeļ", region: "Pacific", coverage: R },
 ];
 
-/**
- * The Figma file has a Domain filter but no per-language domain data.
- * TODO(content): replace this derivation with real domain coverage per language.
- */
-export function domainsFor(l: Language): Domain[] {
-  const d: Domain[] = ["Medical", "Legal", "Government"];
-  if (l.modalities.includes("On-site")) d.push("Business");
-  if (l.modalities.includes("RSI")) d.push("Events");
-  return d;
+export const REGION_SUMMARY: Record<Region, string> = {
+  Africa: "East, West and Central African languages, including many that general providers cannot staff.",
+  "Middle East & North Africa": "Arabic by dialect, plus Farsi, Turkish, Hebrew and Kurdish.",
+  "South Asia": "Hindi, Urdu, Bengali, Punjabi, Dari, Pashto and regional languages.",
+  "East & Southeast Asia": "Chinese, Korean, Japanese and Southeast Asian languages, including Karen and Hmong.",
+  Europe: "Major and Eastern European languages, with event-ready interpreter teams.",
+  Americas: "Spanish, Brazilian Portuguese, Haitian Creole, ASL and Indigenous languages of Latin America.",
+  Pacific: "Pacific Islander languages for healthcare and public services.",
+};
+
+function norm(s: string) {
+  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’]/g, "").trim();
 }
 
-export const REGION_CARDS: {
-  region: Region;
-  image: string;
-  body: string;
-  chips: string[];
-}[] = [
-  { region: "African", image: "/images/regions/african.jpg", body: "Our deepest coverage—including rare East, West, and Central African languages that most providers cannot reliably staff.", chips: ["Amharic", "Tigrinya", "Somali", "Swahili", "Oromo"] },
-  { region: "Middle Eastern", image: "/images/regions/middle-eastern.jpg", body: "Strong Arabic dialect differentiation—Gulf, Levantine, Egyptian, Maghrebi—plus Farsi, Dari, Pashto, and Kurdish variants.", chips: ["Arabic (MSA)", "Arabic (Gulf)", "Farsi", "Urdu", "Turkish"] },
-  { region: "Asian", image: "/images/regions/asian.jpg", body: "Mandarin, Cantonese, Japanese, Korean and Southeast Asian languages including Hmong, Burmese, and Khmer.", chips: ["Mandarin", "Hindi", "Japanese", "Korean", "Vietnamese"] },
-  { region: "European", image: "/images/regions/european.jpg", body: "Full European coverage spanning major and Eastern European languages with RSI-ready interpreter teams for live events.", chips: ["Spanish", "French", "Russian", "German", "Ukrainian"] },
-  { region: "Americas", image: "/images/regions/americas.jpg", body: "Spanish dialects, Haitian Creole, Brazilian Portuguese, and indigenous languages of the Americas.", chips: ["Spanish", "Haitian Creole", "Portuguese (BR)", "Quechua"] },
-  { region: "Oceania", image: "/images/regions/oceania.jpg", body: "Pacific Islander languages including Samoan, Tongan, and other Pacific community languages for healthcare and government.", chips: ["Samoan", "Tongan"] },
-];
+/** Search by English name, native name or alternative name. */
+export function searchLanguages(query: string): Language[] {
+  const q = norm(query);
+  if (!q) return [];
+  return LANGUAGES.filter((l) =>
+    [l.name, l.native ?? "", ...(l.aka ?? [])].some((v) => norm(v).includes(q) || (q.length >= 3 && q.includes(norm(v)) && norm(v).length >= 3)),
+  );
+}
+
+export const coverageLabel = (c: Coverage) => (c === "priority" ? "Core network" : "Sourced on request");
+export const coverageDetail = (c: Coverage) =>
+  c === "priority"
+    ? "Interpreters in our core network. Book video, on-site or event sessions with standard notice."
+    : "We source qualified interpreters for this language on request and confirm feasibility and lead time before you book.";
