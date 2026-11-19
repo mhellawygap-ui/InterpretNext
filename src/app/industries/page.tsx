@@ -7,7 +7,7 @@ import { SectorExplorer } from "@/components/page/SectorExplorer";
 
 export const metadata: Metadata = {
   title: "Industries",
-  description: "Interpreting for healthcare, legal, government and NGOs, enterprise, conferences and events, on-site assignments and accessibility.",
+  description: "Interpreting for healthcare, legal, government and public-sector work, NGOs and international organizations, and business and events.",
 };
 
 export default function IndustriesPage() {
@@ -15,8 +15,8 @@ export default function IndustriesPage() {
     <>
       <PageIntro
         label="Industries"
-        title="Interpreting matched to your sector"
-        lead="Every sector has its own terminology, obligations and risks. Choose yours to see the services, interpreter qualifications and compliance that apply."
+        title="Who we work with"
+        lead="Each sector has its own terminology and risks. Choose yours to see the services, the interpreters we assign and how we handle confidentiality."
         actions={
           <>
             <Button href="/get-quote/" size="lg">Request a quote</Button>
@@ -30,12 +30,12 @@ export default function IndustriesPage() {
         </Container>
       </section>
       <CtaBand
-        title="Plan language access for your organization"
-        body="Tell us your languages, settings and volume. We reply within one business day."
+        title="Tell us about your next session"
+        body="Send the languages, the date and the subject. We will reply with a quote and the interpreter profile we propose."
         actions={
           <>
             <Button href="/get-quote/" variant="on-dark" size="lg">Request a quote</Button>
-            <Button href="/contact/" variant="on-dark-outline" size="lg">Contact our team</Button>
+            <Button href="/contact/" variant="on-dark-outline" size="lg">Talk to Sales</Button>
           </>
         }
       />

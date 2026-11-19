@@ -16,8 +16,8 @@ export default function ContactPage() {
     <>
       <PageIntro
         label="Contact"
-        title="Talk to our team"
-        lead="Ask about interpreting for your organization, a specific language, pricing or security documentation. We reply within one business day."
+        title="Talk to Sales"
+        lead="Ask about interpreting for your organization, a specific language, pricing or security documentation. A member of our team will reply by email."
       />
       <Section labelledBy="contact-title">
         <h2 id="contact-title" className="sr-only">Contact form</h2>
@@ -26,13 +26,13 @@ export default function ContactPage() {
             id="contact"
             submitLabel="Send message"
             successTitle="Message sent"
-            successBody="Thank you. A member of our team will reply within one business day."
+            successBody="Thank you. Your message is with our team, and a member of the team will reply by email."
             fields={[
               { name: "name", label: "Full name", required: true, autoComplete: "name" },
               { name: "email", label: "Business email", type: "email", required: true, autoComplete: "email", placeholder: "name@organization.com" },
               { name: "org", label: "Organization", required: true, autoComplete: "organization" },
               { name: "phone", label: "Phone", type: "tel", autoComplete: "tel" },
-              { name: "topic", label: "Topic", type: "select", full: true, options: ["Interpreting for my organization", "A specific language", "Pricing", "Security and compliance documents", "Interpreter careers", "Something else"] },
+              { name: "topic", label: "Topic", type: "select", full: true, options: ["Interpreting for my organization", "A specific language", "Pricing", "Security and compliance documents", "Interpreting for InterpretNext", "Something else"] },
               { name: "message", label: "Message", type: "textarea", required: true },
             ]}
           />
@@ -44,7 +44,7 @@ export default function ContactPage() {
                 {CONTACT.email ? (
                   <a href={`mailto:${CONTACT.email}`} className="text-[15px] text-accent-1 hover:underline">{CONTACT.email}</a>
                 ) : (
-                  <p className="text-[15px] text-muted">Use the form and we will reply within one business day.</p>
+                  <p className="text-[15px] text-muted">Use the form and a member of our team will reply by email.</p>
                 )}
                 {CONTACT.phone && <p className="text-[15px] text-muted">{CONTACT.phone}</p>}
               </div>
@@ -53,7 +53,7 @@ export default function ContactPage() {
               <Icon name="support" size={44} />
               <div>
                 <p className="font-semibold text-brand">Need a quote?</p>
-                <p className="text-[15px] text-muted">The quote form gets a specialist recommendation fastest.</p>
+                <p className="text-[15px] text-muted">Send the languages, the date and the subject, and we will reply with a quote.</p>
                 <Link href="/get-quote/" className="tap mt-1 inline-block text-[15px] font-semibold text-accent-1 hover:underline">Request a quote →</Link>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function ContactPage() {
               <Icon name="building" size={44} />
               <div>
                 <p className="font-semibold text-brand">InterpretNext</p>
-                <p className="text-[15px] text-muted">An interpreting brand by bayanTech.</p>
+                <p className="text-[15px] text-muted">A bayanTech brand.</p>
                 {CONTACT.address && <p className="text-[15px] text-muted">{CONTACT.address}</p>}
               </div>
             </div>

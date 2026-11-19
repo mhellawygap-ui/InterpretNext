@@ -19,9 +19,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: { default: "InterpretNext | Professional interpreting in 200+ languages", template: "%s | InterpretNext" },
+  title: { default: "InterpretNext | Interpreters for healthcare, legal and public-sector work", template: "%s | InterpretNext" },
   description:
-    "Video, on-site and event interpreting in more than 200 languages, including rare African, Middle Eastern and Asian languages. An interpreting brand by bayanTech.",
+    "Vetted interpreters for hospitals, courts, agencies and international organizations, including rare Middle Eastern, African and Asian languages and dialects. A bayanTech brand.",
 };
 
 export default function RootLayout({

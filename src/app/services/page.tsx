@@ -8,7 +8,7 @@ import { ServiceFinder } from "@/components/shared/ServiceFinder";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Video remote, on-site and simultaneous interpreting, conference interpreting, sign language and captioning, and document translation.",
+  description: "Remote interpreting by video, on-site interpreting, conference and event interpreting on request, and document translation.",
 };
 
 export default function ServicesPage() {
@@ -16,8 +16,8 @@ export default function ServicesPage() {
     <>
       <PageIntro
         label="Services"
-        title="Interpreting services for every setting"
-        lead="Book a qualified interpreter for scheduled video sessions, in-person meetings and multilingual events, with sign language, captioning and document translation for the same case."
+        title="Interpreting services"
+        lead="Book an interpreter matched to your language, dialect and subject, for scheduled video sessions and in-person meetings. Event interpreting is available on request, and the bayanTech translation team handles documents."
         actions={
           <>
             <Button href="/get-quote/" size="lg">Request a quote</Button>
@@ -26,13 +26,13 @@ export default function ServicesPage() {
         }
       />
       <Section labelledBy="launch-title">
-        <SectionHeader id="launch-title" title="Available at launch" lead="Every service below is delivered by qualified human interpreters, matched to your subject and setting." />
+        <SectionHeader id="launch-title" title="What you can book" lead="Every session is interpreted by a person. A team member confirms every booking." />
         <div className="mt-12">
           <ServiceGrid detailed />
         </div>
       </Section>
       <Section tone="subtle" id="finder" labelledBy="finder-title">
-        <SectionHeader id="finder-title" title="Not sure which service fits?" lead="Pick the situation and we will recommend a service." />
+        <SectionHeader id="finder-title" title="Start with the situation" lead="Tell us what is happening and we will suggest the service that fits. A team member confirms every booking." />
         <div className="mt-12">
           <ServiceFinder />
         </div>
@@ -41,19 +41,19 @@ export default function ServicesPage() {
         <SectionHeader
           id="later-title"
           title="Coming in later releases"
-          lead="These capabilities are planned and are not part of the launch release. Ask us if you would like to be notified when they are available."
+          lead="These are planned and are not available yet. Contact us for urgent requests and we will do our best."
         />
         <div className="mt-12">
           <LaterList />
         </div>
       </Section>
       <CtaBand
-        title="Plan your interpreting with a specialist"
-        body="Tell us your languages, settings and volume. We reply within one business day."
+        title="Tell us about your next session"
+        body="Send the languages, the date and the subject. We will reply with a quote and the interpreter profile we propose."
         actions={
           <>
             <Button href="/get-quote/" variant="on-dark" size="lg">Request a quote</Button>
-            <Button href="/contact/" variant="on-dark-outline" size="lg">Contact our team</Button>
+            <Button href="/contact/" variant="on-dark-outline" size="lg">Talk to Sales</Button>
           </>
         }
       />

@@ -2,49 +2,46 @@
 
 import Link from "next/link";
 import { scrollToEl } from "@/lib/motion";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import {
-  ACCESSIBILITY_NEEDS,
   COUNTRIES,
   DECISION_TIMELINE,
   DURATIONS,
   FREQUENCIES,
   HEAR_ABOUT,
   INDUSTRIES,
-  INTEGRATIONS,
   MODALITY_OPTIONS,
-  PLATFORMS,
   QUOTE_LANGUAGES,
   ROLES,
   SCHEDULING,
-  SESSION_TYPES,
+  SUBJECTS,
+  TIME_ZONES,
   URGENCY,
   VOLUMES,
   type ModalityId,
 } from "@/data/quote";
 
-const STEPS = ["Service", "Languages & setting", "Timing & volume", "Your details"];
-const STEP_LABELS = ["Choose a service", "Languages & setting", "Timing & volume", "Your details"];
+const STEPS = ["Service", "Language and dialect", "Date and timing", "Your details"];
+const STEP_LABELS = ["Choose a service", "Language and dialect", "Date and timing", "Your details"];
 
 type Form = {
   modality: ModalityId | "";
-  sessionTypes: string[];
-  languages: string[];
+  subject: string;
+  language: string;
   otherLanguage: string;
   country: string;
   industry: string;
-  accessibility: string[];
   urgency: string;
   startDate: string;
+  startTime: string;
+  timeZone: string;
   duration: string;
   volume: string;
   frequency: string;
   scheduling: string;
-  platform: string;
-  integrations: string[];
   firstName: string;
   lastName: string;
   email: string;
@@ -58,20 +55,19 @@ type Form = {
 
 const EMPTY: Form = {
   modality: "",
-  sessionTypes: [],
-  languages: [],
+  subject: "",
+  language: "",
   otherLanguage: "",
   country: "",
   industry: "",
-  accessibility: [],
   urgency: "",
   startDate: "",
+  startTime: "",
+  timeZone: "",
   duration: "",
   volume: "",
   frequency: "",
   scheduling: "",
-  platform: "",
-  integrations: [],
   firstName: "",
   lastName: "",
   email: "",
@@ -85,12 +81,21 @@ const EMPTY: Form = {
 
 type Errors = Partial<Record<keyof Form, string>>;
 
-const DRAFT_KEY = "interpretnext:quote-draft";
+const DRAFT_KEY = "interpretnext:quote-draft-v2";
 
 const REGION_TO_COUNTRY: Record<string, string> = {
   US: "United States", CA: "Canada", GB: "United Kingdom", IE: "Ireland", AE: "United Arab Emirates",
   SA: "Saudi Arabia", EG: "Egypt", AU: "Australia",
 };
+
+/** The visitor's time zone, used as the default for the session time zone. */
+function localTimeZone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+  } catch {
+    return "";
+  }
+}
 
 /** Best-guess default for the country dropdown from the browser locale. */
 function countryFromLocale(): string {
@@ -105,9 +110,8 @@ function countryFromLocale(): string {
 function validate(step: number, f: Form): Errors {
   const e: Errors = {};
   if (step === 0 && !f.modality) e.modality = "Choose a service, or choose “Not sure yet”.";
-  if (step === 1 && f.languages.length === 0 && !f.otherLanguage.trim())
-    e.languages = "Select at least one language, or type one below.";
-  if (step === 2 && !f.urgency) e.urgency = "Tell us how urgent your need is.";
+  if (step === 1 && !f.language.trim()) e.language = "Enter the language and, if you know it, the dialect. For example: Arabic, Sudanese.";
+  if (step === 2 && !f.urgency) e.urgency = "Tell us whether this is urgent.";
   if (step === 3) {
     if (!f.firstName.trim()) e.firstName = "Enter your first name so the specialist can address you.";
     if (!f.lastName.trim()) e.lastName = "Enter your last name.";
@@ -186,31 +190,6 @@ function SelectField({
   );
 }
 
-function ChipGroup({
-  label, options, value, onToggle,
-}: { label: string; options: string[]; value: string[]; onToggle: (v: string) => void }) {
-  return (
-    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
-      {options.map((o) => {
-        const on = value.includes(o);
-        return (
-          <button
-            key={o}
-            type="button"
-            aria-pressed={on}
-            onClick={() => onToggle(o)}
-            className={`tap inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-[13px] ${
-              on ? "border-accent-1 bg-accent-1 text-white" : "border-border bg-card text-foreground hover:border-accent-1"
-            }`}
-          >
-            {on && <span aria-hidden>✓</span>}
-            {o}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 function ChoiceCard({
   selected, onClick, children, className = "",
@@ -258,11 +237,6 @@ function Progress({ step }: { step: number }) {
   );
 }
 
-const toggleIn = (arr: string[], v: string, exclusive?: string) => {
-  if (exclusive && v === exclusive) return arr.includes(v) ? [] : [v];
-  const base = exclusive ? arr.filter((x) => x !== exclusive) : arr;
-  return base.includes(v) ? base.filter((x) => x !== v) : [...base, v];
-};
 
 /* ---------- main ---------- */
 
@@ -271,7 +245,6 @@ export function QuoteFlow() {
   const [done, setDone] = useState(false);
   const [f, setF] = useState<Form>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
-  const [langQuery, setLangQuery] = useState("");
   const cardRef = useRef<HTMLDivElement>(null);
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => {
@@ -304,6 +277,7 @@ export function QuoteFlow() {
       /* storage unavailable — start fresh */
     }
     if (!next.country) next = { ...next, country: countryFromLocale() };
+    if (!next.timeZone) next = { ...next, timeZone: localTimeZone() };
     const m = new URLSearchParams(window.location.search).get("modality");
     if (m && MODALITY_OPTIONS.some((o) => o.id === m)) next = { ...next, modality: m as ModalityId };
     setF(next);
@@ -327,7 +301,7 @@ export function QuoteFlow() {
     } catch {
       /* ignore */
     }
-    setF({ ...EMPTY, country: countryFromLocale() });
+    setF({ ...EMPTY, country: countryFromLocale(), timeZone: localTimeZone() });
     setErrors({});
     setStep(0);
   };
@@ -355,21 +329,18 @@ export function QuoteFlow() {
     }
   };
 
-  const shownLanguages = useMemo(() => {
-    const q = langQuery.trim().toLowerCase();
-    return q ? QUOTE_LANGUAGES.filter((l) => l.toLowerCase().includes(q)) : QUOTE_LANGUAGES;
-  }, [langQuery]);
-
   const modalityTitle = MODALITY_OPTIONS.find((o) => o.id === f.modality)?.title;
 
   if (done) {
-    const langs = [...f.languages, f.otherLanguage.trim()].filter(Boolean).join(", ");
+    const langs = [f.language.trim(), f.otherLanguage.trim()].filter(Boolean).join("; ");
+    const when = [f.startDate, f.startTime, f.timeZone].filter(Boolean).join(" ");
     const rows: [string, string][] = [
-      ["Modality", modalityTitle ?? "—"],
-      ["Languages", langs || "—"],
-      ["Industry", f.industry || "—"],
-      ["Urgency", URGENCY.find((u) => u.id === f.urgency)?.title ?? "—"],
-      ["Volume", f.volume || "—"],
+      ["Service", modalityTitle ?? "—"],
+      ["Language", langs || "—"],
+      ["Subject", f.subject || "—"],
+      ["When", when || "—"],
+      ["Duration", f.duration || "—"],
+      ["Urgent", URGENCY.find((u) => u.id === f.urgency)?.title ?? "—"],
       ["Contact", `${f.firstName} ${f.lastName} · ${f.email}`],
       ["Organization", f.organization || "—"],
     ];
@@ -377,10 +348,9 @@ export function QuoteFlow() {
       <Container className="py-10 lg:!px-[112px]">
         <div role="status" className="mx-auto max-w-[740px] rounded-2xl bg-[#f4f2fa] px-6 py-12 text-center sm:px-14">
           <span aria-hidden className="bg-brand-gradient mx-auto flex size-[72px] items-center justify-center rounded-full text-3xl text-white">✓</span>
-          <h1 className="font-display-wonk mt-6 text-[32px] leading-[1.15] font-bold text-brand sm:text-[39px]">Your quote request is in.</h1>
+          <h1 className="font-display-wonk mt-6 text-[32px] leading-[1.15] font-bold text-brand sm:text-[39px]">Thank you. Your request is with our team.</h1>
           <p className="mx-auto mt-4 max-w-[460px] text-[15px] leading-[1.5] text-muted">
-            We&apos;ve received your request and will route it to the right specialist team. Expect a response within{" "}
-            <strong className="text-brand">one business day</strong>, or sooner if your need is urgent.
+            A specialist will reply with a quote and the interpreter profile we propose.
           </p>
           <div className="mt-8 rounded-xl border border-border bg-card p-6 text-left">
             <p className="text-xs font-semibold tracking-[0.12em] uppercase text-muted">What we received</p>
@@ -396,9 +366,9 @@ export function QuoteFlow() {
           <p className="mt-10 text-xs font-semibold tracking-[0.12em] uppercase text-muted">What happens next</p>
           <ul className="mt-5 flex flex-col gap-5 text-left">
             {([
-              ["email", "Confirmation email", "A copy of your request has been sent to your email address."],
-              ["routing", "Specialist routing", "Your request is routed to the team with the right language and domain expertise."],
-              ["callback", "We get in touch", "A specialist contacts you within one business day to discuss your needs and confirm pricing."],
+              ["routing", "A specialist reviews it", "Your request goes to our sales and project team, and to no one else."],
+              ["email", "You receive a quote", "With the interpreter profile we propose for your language, dialect and subject."],
+              ["callback", "You approve online", "Then share any materials, and we assign the interpreter and send the meeting link."],
             ] as [IconName, string, string][]).map(([e, t, b]) => (
               <li key={t} className="flex gap-4">
                 <Icon name={e} size={36} />
@@ -423,7 +393,7 @@ export function QuoteFlow() {
       <PageIntro
         label="Request a quote"
         title="Tell us what you need"
-        lead="Four short steps, with no commitment. A specialist replies within one business day with a recommendation and pricing."
+        lead="Tell us what you need. A specialist replies with a quote and a proposed interpreter profile."
       >
         <ol className="flex flex-wrap items-center gap-2" aria-label="Quote steps">
           {STEPS.map((s, i) => (
@@ -482,11 +452,20 @@ export function QuoteFlow() {
                     <FieldError msg={errors.modality} />
                   </div>
                   <div className="rounded-xl bg-[#f4f2fa] p-5">
-                    <p className="text-sm font-semibold text-brand">
-                      What type of session? <span className="font-normal text-muted">Select all that apply</span>
-                    </p>
-                    <div className="mt-4">
-                      <ChipGroup label="Session type" options={SESSION_TYPES} value={f.sessionTypes} onToggle={(v) => set("sessionTypes", toggleIn(f.sessionTypes, v))} />
+                    <p className="text-sm font-semibold text-brand">Subject area</p>
+                    <div role="radiogroup" aria-label="Subject area" className="mt-4 flex flex-wrap gap-2">
+                      {SUBJECTS.map((s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          role="radio"
+                          aria-checked={f.subject === s}
+                          onClick={() => set("subject", s)}
+                          className={`min-h-11 rounded-full border px-4 py-2 text-sm ${f.subject === s ? "border-accent-1 bg-white text-brand ring-1 ring-accent-1" : "border-border bg-white text-foreground hover:border-accent-1"}`}
+                        >
+                          {s}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -494,53 +473,50 @@ export function QuoteFlow() {
 
               {step === 1 && (
                 <div className="flex flex-col gap-7">
-                  <StepHeader n={2} title="Languages & setting" lead="Tell us the languages involved and the context so we can match the right interpreter profile." />
+                  <StepHeader n={2} title="Language and dialect" lead="Tell us the language and, if you know it, the dialect or where the speaker is from. We match the dialect as well as the language." />
                   <div>
-                    <p className="text-sm font-semibold text-brand">Which language(s) do you need?</p>
-                    <p className="mt-1 text-xs text-muted">Select all languages needed. If you need multiple, pick all of them.</p>
+                    <Label htmlFor="language">Language and dialect</Label>
                     <input
-                      type="search"
-                      aria-label="Search languages"
-                      style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2345444a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5' stroke-linecap='round'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "14px center", backgroundSize: "16px", paddingLeft: 40 }}
-                      value={langQuery}
-                      onChange={(e) => setLangQuery(e.target.value)}
-                      placeholder="Search languages…"
+                      id="language"
+                      list="quote-languages"
+                      value={f.language}
+                      onChange={(e) => set("language", e.target.value)}
+                      onBlur={blurCheck("language")}
+                      onFocus={clearOnFocus("language")}
+                      placeholder="Example: Arabic, Sudanese"
+                      autoComplete="off"
+                      aria-invalid={!!errors.language}
+                      aria-describedby={errors.language ? "language-error" : "language-hint"}
                       className={inputCls}
                     />
-                    <div className="mt-3 max-h-[188px] overflow-y-auto pr-1">
-                      <ChipGroup label="Languages" options={shownLanguages} value={f.languages} onToggle={(v) => set("languages", toggleIn(f.languages, v))} />
-                    </div>
-                    {f.languages.length > 0 && (
-                      <p className="mt-2 text-xs text-accent-1">{f.languages.length} selected: {f.languages.join(", ")}</p>
-                    )}
-                    <FieldError msg={errors.languages} />
+                    <datalist id="quote-languages">
+                      {QUOTE_LANGUAGES.map((l) => (
+                        <option key={l} value={l} />
+                      ))}
+                    </datalist>
+                    <p id="language-hint" className="mt-1.5 text-xs text-muted">Start typing to pick from our language list, or write your own.</p>
+                    <FieldError id="language-error" msg={errors.language} />
                   </div>
                   <TextField
                     id="other-language"
-                    label="Language or dialect not in the list?"
+                    label="Another language for the same session"
                     optional
                     value={f.otherLanguage}
                     onChange={(v) => set("otherLanguage", v)}
-                    placeholder="e.g. Tigrinya (Eritrean), Dinka, Hmong Daw…"
+                    placeholder="Example: Tigrinya, Eritrean"
                   />
                   <div className="grid gap-5 sm:grid-cols-2">
                     <SelectField id="country" label="Country or location" value={f.country} onChange={(v) => set("country", v)} options={COUNTRIES} placeholder="Select country…" />
                     <SelectField id="industry" label="Your industry or sector" value={f.industry} onChange={(v) => set("industry", v)} options={INDUSTRIES} placeholder="Select industry…" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-brand">Any accessibility requirements? <span className="font-normal text-muted">(optional)</span></p>
-                    <div className="mt-3">
-                      <ChipGroup label="Accessibility" options={ACCESSIBILITY_NEEDS} value={f.accessibility} onToggle={(v) => set("accessibility", toggleIn(f.accessibility, v, "None"))} />
-                    </div>
                   </div>
                 </div>
               )}
 
               {step === 2 && (
                 <div className="flex flex-col gap-7">
-                  <StepHeader n={3} title="Timing & volume" lead="Help us understand when you need interpretation, how often, and how it fits into your existing workflow." />
+                  <StepHeader n={3} title="Date and timing" lead="Tell us when the session is, in your time zone, and how long you need." />
                   <div>
-                    <p className="text-sm font-semibold text-brand">How urgent is your need?</p>
+                    <p className="text-sm font-semibold text-brand">Is this urgent?</p>
                     <div role="radiogroup" aria-label="Urgency" className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
                       {URGENCY.map((u) => (
                         <ChoiceCard key={u.id} selected={f.urgency === u.id} onClick={() => set("urgency", u.id)}>
@@ -553,8 +529,10 @@ export function QuoteFlow() {
                     <FieldError msg={errors.urgency} />
                   </div>
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <TextField id="start-date" label="Specific date or start date" optional type="date" value={f.startDate} onChange={(v) => set("startDate", v)} />
-                    <SelectField id="duration" label="Session or event duration" value={f.duration} onChange={(v) => set("duration", v)} options={DURATIONS} placeholder="Select duration…" />
+                    <TextField id="start-date" label="Date" optional type="date" value={f.startDate} onChange={(v) => set("startDate", v)} />
+                    <TextField id="start-time" label="Time" optional type="time" value={f.startTime} onChange={(v) => set("startTime", v)} />
+                    <SelectField id="time-zone" label="Time zone" value={f.timeZone} onChange={(v) => set("timeZone", v)} options={TIME_ZONES.includes(f.timeZone) || !f.timeZone ? TIME_ZONES : [f.timeZone, ...TIME_ZONES]} placeholder="Select time zone…" />
+                    <SelectField id="duration" label="Expected duration" value={f.duration} onChange={(v) => set("duration", v)} options={DURATIONS} placeholder="Select duration…" />
                     <SelectField id="volume" label="Estimated monthly volume" value={f.volume} onChange={(v) => set("volume", v)} options={VOLUMES} placeholder="Select volume…" />
                     <SelectField id="frequency" label="How often do you need interpretation?" value={f.frequency} onChange={(v) => set("frequency", v)} options={FREQUENCIES} placeholder="Select frequency…" />
                   </div>
@@ -568,13 +546,6 @@ export function QuoteFlow() {
                           <span className="mt-1 text-xs leading-[1.45] text-muted">{s.body}</span>
                         </ChoiceCard>
                       ))}
-                    </div>
-                  </div>
-                  <SelectField id="platform" label="Existing platform or integration needs" optional value={f.platform} onChange={(v) => set("platform", v)} options={PLATFORMS} placeholder="Select platform…" />
-                  <div>
-                    <p className="text-sm font-semibold text-brand">Any system integrations needed? <span className="font-normal text-muted">(optional)</span></p>
-                    <div className="mt-3">
-                      <ChipGroup label="Integrations" options={INTEGRATIONS} value={f.integrations} onToggle={(v) => set("integrations", toggleIn(f.integrations, v, "None required"))} />
                     </div>
                   </div>
                 </div>
@@ -621,7 +592,7 @@ export function QuoteFlow() {
                       />
                       <span>
                         I agree to InterpretNext&apos;s{" "}
-                        <Link href="/trust-center/#legal-documents" className="text-accent-1 underline">Privacy Policy</Link> and consent to being contacted about my quote request. I understand my data will be handled in accordance with GDPR and applicable privacy laws.
+                        <Link href="/trust-center/#legal-documents" className="text-accent-1 underline">Privacy Policy</Link> and consent to being contacted about my quote request. I understand my data will be handled in line with applicable privacy laws.
                       </span>
                     </label>
                     <FieldError msg={errors.consent} />
@@ -629,6 +600,12 @@ export function QuoteFlow() {
                 </div>
               )}
 
+              {step === 3 && (
+                <p className="mt-6 flex items-center gap-2 text-[13px] text-muted">
+                  <svg aria-hidden viewBox="0 0 24 24" className="size-4 shrink-0 text-accent-1" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="10.5" rx="2.5" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                  Your request is confidential and is seen only by our sales and project team.
+                </p>
+              )}
               <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
                 {step > 0 ? (
                   <button type="button" onClick={() => go(step - 1)} className="tap text-sm font-medium text-brand hover:text-accent-1">

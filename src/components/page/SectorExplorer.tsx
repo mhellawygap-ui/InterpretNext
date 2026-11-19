@@ -24,7 +24,7 @@ function SectorPanel({ s }: { s: Sector }) {
           <p className="mt-5 text-[17px] leading-[1.65] text-muted">{s.intro}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href="/get-quote/">Request a quote</Button>
-            <Button href="/contact/" variant="secondary">Talk to a specialist</Button>
+            <Button href="/contact/" variant="secondary">Talk to Sales</Button>
           </div>
         </div>
         <div className="rounded-2xl border border-border bg-surface p-7">
@@ -53,8 +53,8 @@ function SectorPanel({ s }: { s: Sector }) {
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-brand">Recommended services</h3>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <h3 className="text-xl font-semibold text-brand">Services for this sector</h3>
+        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {s.modes.map((m) => {
             const svc = serviceById(m.service)!;
             return (

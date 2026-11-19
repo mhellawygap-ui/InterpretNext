@@ -1,40 +1,47 @@
-# Content status: drafts awaiting real data
+# Content status
 
-Everything below is live on the preview as **draft copy or a template**. Each item lists the owner who must
-confirm it and the single file where it changes. Replacing a value there updates every page that uses it.
+The live preview now follows **Copy Deck v1** (Mariam, 17 Nov 2026), the **Master Language List** (draft v1) and the
+**Portal Roles Matrix v3**, applied on 19 Nov 2026.
 
-Status key: **DRAFT** = placeholder copy is live · **HIDDEN** = template is ready but nothing shows until data arrives · **HELD** = removed until approved
+Rules applied from the deck: no bracketed value is ever published, only **Safe** claims appear, nothing beyond release
+R1 is promised, no competitor names, no slogans or "X, not Y", no em dashes.
 
-| # | Item | Status | Owner | Where to change it |
-|---|------|--------|-------|--------------------|
-| 1 | **Release matrix** (launch vs later). Launch: scheduled video, on-site, simultaneous events, conference, sign language and captioning, documents, rare-language sourcing, online requests. Later: on-demand calls, phone dial-in, session recording, AI speech translation, portal reporting. | DRAFT | Product / Eng. Ouf | `src/data/site.ts` → `RELEASES` |
-| 2 | **Copy deck**: homepage, services, industries, platform, pricing, how-it-works, about. Written in buyer vocabulary, without "X, not Y" lines, heavy dashes or competitor names. | DRAFT | Marketing | `src/data/content.ts`, `services.ts`, `industries.ts`, page files in `src/app/` |
-| 3 | **Master language list**: 74 languages across 7 regions. Each is marked "core network" or "sourced on request". No speaker counts. Spanish is in Americas only, Urdu in South Asia, and "Sudanese" reads "Arabic (Sudanese)". The directory, checker, assistant and quote form all read this one list. | DRAFT | Operations | `src/data/languages.ts` |
-| 4a | **HIPAA wording**: "In progress" everywhere (Trust Center, FAQ, industries, assistant). | DRAFT | Legal | `src/data/trust.ts`, `content.ts` FAQ, `industries.ts` |
-| 4b | **ISO 17100**: removed from every page. | HELD | Compliance | re-add in `src/data/trust.ts` → `STANDARDS` |
-| 4c | **ISO 27001, GDPR and ATA** claims: listed as Active, with bayanTech as holder. | DRAFT | Legal | `src/data/trust.ts` → `STANDARDS` |
-| 4d | **Brand line**: "An interpreting brand by bayanTech". There are no Teqneyat Group mentions anywhere. | DRAFT | Legal | `src/data/site.ts` → `COMPANY` |
-| 5 | **Secure platform technical lines**: encryption in transit, role-based access, no recording at launch, access logs, incident response, subprocessor review, encryption at rest. | DRAFT | Eng. Ouf → Legal | `src/data/content.ts` → `PLATFORM`, `src/data/trust.ts` → `SECURITY_ITEMS` |
-| 6a | **Contact email, phone and address**: nothing is published until set. The contact page uses a form. | HIDDEN | Operations | `src/data/site.ts` → `CONTACT` |
-| 6b | **Client portal URL**: "Client login" opens `/client-login/`, an access-request page. | HIDDEN | Product | `src/data/site.ts` → `CLIENT_PORTAL_URL` |
-| 6c | **About page** story and values. | DRAFT | Marketing | `src/app/about/page.tsx` |
-| 7a | **Client logos**: the strip shows sectors until approved logos are added. | HIDDEN | Marketing (written permission needed) | `src/data/content.ts` → `CLIENT_LOGOS` |
-| 7b | **Testimonial**: the quote from the Figma file, lightly edited. | DRAFT | Marketing (approval and attribution needed) | `src/data/content.ts` → `TESTIMONIAL` |
-| 7c | **Case studies**: shown as "Typical engagements", with no client names and no results claimed. | DRAFT | Marketing | `src/data/content.ts` → `ENGAGEMENTS` |
-| 8 | **Hero video**: a still product visual is shown. The video plays only when configured, and never for visitors who prefer reduced motion. | HIDDEN | Marketing | `src/data/site.ts` → `HERO_VIDEO` (a 10–15 s silent MP4 of 3 MB or less, plus a poster image, in `public/videos/`) |
-| 9a | **Integrations**: described by category; no vendors are named until confirmed. | DRAFT | Product / Eng. Ouf | `src/data/content.ts` → `INTEGRATIONS` |
-| 9b | **Pricing drivers, inclusions and procurement FAQ**. | DRAFT | Sales / Finance | `src/data/content.ts` → `PRICING`, `PROCUREMENT_FAQ` |
-| 10 | **"200+ languages" and "one business day" claims**. | DRAFT | Operations | `src/data/content.ts`, page copy |
-| 11 | **Quote form dropdown options** (country, duration, volume, role…). | DRAFT | Sales | `src/data/quote.ts` |
-| 12 | **Forms have no backend**: quote, contact, language request, portal access and document request. They validate and confirm on screen, but nothing is sent yet. | DRAFT | Engineering | `LeadForm.tsx`, `QuoteFlow.tsx`, `DocRequest.tsx` (`TODO(backend)`) |
-| 13 | **Assistant** is rule-based and answers only from site data. | DRAFT | Product | `src/components/assistant/engine.ts` |
+Status key: **LIVE** = approved copy is on the site · **HIDDEN** = ready, but nothing shows until the data arrives · **HELD** = left out until the owner confirms
 
-## Removed in this release
+## Waiting for an owner
 
-- Mock "live" widgets: the session timer, "Connected in 9s", "Mandarin – 12 online", "<10s average connection" and "Updated Live". The hero now shows a static example in Arabic and French.
-- Launch-release claims: "connects in seconds", "no app" and 24/7 or on-demand promises.
-- Internal drafting notes on the Trust Center.
-- The scrolling language ticker. Its languages now live in the master list.
-- Speaker counts.
-- The "All languages" menu item.
-- Spelling and naming fixes: Mandarin, Wolof, Sinhala, NGOs, bayanTech, "on standby". The tiers are now ordered 1 Silver, 2 Gold, 3 Platinum.
+| # | Item | Status | Owner | What unlocks it | Where it changes |
+|---|------|--------|-------|-----------------|------------------|
+| 1 | **"Staffable today" and "Service modes"** for each language. Until any row is filled, all 290 languages are searchable, each says "Ask us to confirm availability", and no count is shown. Once filled, the site switches automatically: only Yes / On request rows are published, with real labels and a public count. | HIDDEN | Operations | Fill the yellow columns, then run `python3 -I scripts/import-languages.py <workbook.xlsx>` | `scripts/import-languages.py` → `src/data/languages.master.ts` |
+| 2 | **Native review** of language names, scripts and diacritics (Igbo and Hausa first). 123 of 288 rows have a native name. | LIVE as draft | Localization (Mariam) | "Native reviewed" column | same workbook |
+| 3 | **ASL** added by the website team as "to be confirmed". It is searchable but not advertised as a service. | HELD | Operations / Eng. Ouf | Confirm delivery | `scripts/import-languages.py` (web rows), `src/data/services.ts` |
+| 4 | **English** added by the website team (Europe region, en-US / en-GB / en-CA / en-AU). | LIVE | Localization | Add it to the master workbook | `scripts/import-languages.py` |
+| 5 | **Proof strip numbers**: [N] languages, [N] interpreters vetted, [N] hours since [year]. Only "Sessions are not recorded by default" and the tier line show, as the deck instructs. | HELD | Localization and Operations | Verified figures | `src/data/content.ts` → `PROOF` |
+| 6 | **Response time** ("A specialist replies within [response time]", "within [one business day]", "by [time]"). Every response-time promise was removed. | HELD | Sales | Confirmed response time | `content.ts` FAQ, `QuoteFlow.tsx`, `LanguageChecker.tsx`, contact page |
+| 7 | **Pricing paragraph** (per minute or hourly, minimums, after-hours and rare-language surcharges). The pricing page shows only the general drivers. | HELD | Sales | One short paragraph | `src/data/content.ts` → `PRICING`, `FAQ` |
+| 8 | **Integrations** (Zoom, Teams, telehealth). The integrations list and the quote-form platform question were removed. | HELD | Eng. Ouf | Confirmed list | `src/data/content.ts` |
+| 9 | **Encryption** in transit and at rest, including the audio and video path. | HELD | Eng. Ouf | Sign-off | `src/data/content.ts` → `PLATFORM_CONTROLS` |
+| 10 | **Hosting provider and region, BAA availability**. The site says "Ask us about business associate agreements". | HELD | Eng. Ouf | Hosting confirmed and BAA signable | `content.ts`, `trust.ts` |
+| 11 | **HIPAA final wording**. Interim wording used everywhere: "Built around HIPAA safeguards", status "In progress". | LIVE (interim) | Legal | Legal review | `src/data/trust.ts` → `IN_PROGRESS`, `content.ts` |
+| 12 | **ISO 27001** (certified or "aligned with") and **ISO 18841** wording. ISO 17100, ISO 27001, GDPR and ATA badges were removed. | HELD | Compliance | Wording from compliance | `src/data/trust.ts` |
+| 13 | **Simultaneous interpreting** is shown as "On request" (RSI console is R3 in the matrix). | LIVE | Operations / Eng. Ouf | Confirm delivery | `src/data/site.ts` → `RELEASES["conference-hybrid"]` |
+| 14 | **Two-factor sign-in** is listed only as "Later release" (R2). | LIVE | Eng. Ouf | Ships in R2 | `src/data/trust.ts` → `IN_PROGRESS` |
+| 15 | **Client quote** (named, with role and organization). The block stays hidden. No anonymous quotes. | HIDDEN | Sales and clients | Approved quote | `src/data/content.ts` → `TESTIMONIAL` |
+| 16 | **Client logos**. | HIDDEN | Sales and clients (written permission) | Approved logos | `src/data/content.ts` → `CLIENT_LOGOS` |
+| 17 | **Phone, email and address** in the footer and contact page. | HIDDEN | Operations | Contact details | `src/data/site.ts` → `CONTACT` |
+| 18 | **Client portal URL**. "Client login" opens `/client-login/`. | HIDDEN | Product | Portal URL | `src/data/site.ts` → `CLIENT_PORTAL_URL` |
+| 19 | **Hero video** (under 3 MB on mobile, muted, still fallback, never plays under reduced motion). | HIDDEN | Marketing | Video file and poster | `src/data/site.ts` → `HERO_VIDEO` |
+| 20 | **Security summary for IT teams** (one page). Visitors can request it; there is no download yet. | HELD | Eng. Ouf and Legal | Approved PDF | `src/data/trust.ts` → `LEGAL_DOCS` |
+| 21 | **On-demand date** ("On-demand access is planned for [date]"). The site says "planned for a later release". | HELD | Eng. Ouf / Sales | Date | `src/data/content.ts` → `FAQ` |
+| 22 | **Forms have no backend**: quote, contact, language request, interpreter application, portal access, document request. They validate and confirm on screen, but nothing is sent yet. | HIDDEN | Engineering | Endpoint or CRM | `LeadForm.tsx`, `QuoteFlow.tsx`, `DocRequest.tsx` (`TODO(backend)`) |
+
+## What changed on 19 Nov 2026
+
+- **Navigation** follows deck section 5: Services, Industries, Languages (regions plus "Check a language"), Secure Platform, Interpreters, Trust Center, Resources, plus Client login and Request a quote.
+- **Homepage** follows deck section 6 in order: hero, proof strip, service finder, industries, hard-to-staff languages (no ticker), interpreters and tiers, secure platform, four-step flow, trust summary, FAQ, closing call to action.
+- **New pages**: `/secure-platform/` (deck section 8), `/interpreters/` (with "Apply to join"), `/resources/`. `/platform/` was renamed to `/secure-platform/`.
+- **Services** match R1: remote interpreting by video, on-site, conference and event interpreting (on request), document translation. Sign language and captioning were removed until confirmed. Later: on-demand (R2), phone dial-in (R3), recording and transcripts (R3).
+- **Industries**: the five sectors in deck section 6.4.
+- **Languages page** follows deck section 7: search, availability labels, 10 regions from the master list (each language once), "Dialects matter", and a request form with language, dialect or region, service type and expected volume.
+- **Quote form** follows deck section 9: "Language and dialect", date, time and time zone, expected duration, "Is this urgent?", subject area, video-only remote option, confidentiality line under the button, new confirmation text.
+- **Removed**: comparison table, "Typical engagements", the Figma testimonial, integrations, 200+ claims, "one business day" promises, ISO / GDPR / ATA badges.

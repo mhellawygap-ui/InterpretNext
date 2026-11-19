@@ -97,7 +97,7 @@ export function DocRequestForm() {
       <div role="status" className="rounded-2xl border border-border bg-white p-8">
         <span aria-hidden className="flex size-11 items-center justify-center rounded-full bg-mint text-xl text-success-ink">✓</span>
         <p className="mt-4 text-xl font-semibold text-brand">Request received</p>
-        <p className="mt-2 text-base text-muted">We reply to verified business requests within two business days.</p>
+        <p className="mt-2 text-base text-muted">We reply by email to verified business requests.</p>
         <button type="button" onClick={() => setSent(false)} className="tap mt-6 text-sm font-semibold text-accent-1 hover:underline">Send another request</button>
       </div>
     );
@@ -151,7 +151,7 @@ export function DocRequestForm() {
       <button type="submit" className="tap mt-6 inline-flex h-12 items-center rounded-[10px] bg-brand px-6 text-base font-semibold text-white hover:bg-[#1c2270]">
         Send request
       </button>
-      <p className="mt-4 text-[13px] text-subtle">We reply to verified business requests within two business days.</p>
+      <p className="mt-4 text-[13px] text-subtle">We reply by email to verified business requests.</p>
     </form>
   );
 }

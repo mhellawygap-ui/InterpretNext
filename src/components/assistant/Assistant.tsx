@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState, type FormEvent, type Keyboard
 import { asset } from "@/lib/asset";
 import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/Badge";
-import { coverageLabel } from "@/data/languages";
+import { availabilityLabel, availabilityTone } from "@/data/languages";
 import { GREETING, MAIN_CHIPS, respond, type BotMessage, type Chip, type Intent, type Message } from "./engine";
 
 const OPEN_EVENT = "interpretnext:open-assistant";
@@ -57,7 +57,9 @@ function CardView({ m }: { m: BotMessage }) {
             <p className="text-sm font-semibold text-brand">{l.name}</p>
             {l.native && l.native !== l.name && <p className="text-xs text-muted">{l.native}</p>}
           </div>
-          <Badge tone={l.coverage === "priority" ? "success" : "violet"} dot>{coverageLabel(l.coverage)}</Badge>
+        </div>
+        <div className="mt-2">
+          <Badge tone={availabilityTone(l)} dot>{availabilityLabel(l)}</Badge>
         </div>
         <p className="mt-2 text-xs text-muted">{l.region}</p>
       </div>
@@ -314,7 +316,7 @@ export function Assistant() {
 
         <form onSubmit={submit} className="flex items-end gap-2 px-4 pt-3 pb-4">
           <label htmlFor="assistant-input" className="sr-only">
-            {expect === "language" ? "Type a language or dialect" : "Ask a question"}
+            {expect === "language" ? "Type a language or dialect" : expect === "situation" ? "Describe your situation" : "Ask a question"}
           </label>
           <input
             ref={inputRef}
@@ -322,7 +324,7 @@ export function Assistant() {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             autoComplete="off"
-            placeholder={expect === "language" ? "e.g. Tigrinya" : "Ask about a service, language or compliance…"}
+            placeholder={expect === "language" ? "Example: Tigrinya" : expect === "situation" ? "Example: a doctor and a patient who speaks Dari" : "Ask about a service, language or security…"}
             className="h-11 min-w-0 flex-1 rounded-xl border border-border bg-white px-3.5 text-sm outline-none focus:border-accent-1 focus:ring-2 focus:ring-accent-1/20"
           />
           <button type="submit" className="h-11 shrink-0 rounded-xl bg-brand px-4 text-sm font-semibold text-white hover:bg-accent-1">
@@ -331,7 +333,7 @@ export function Assistant() {
         </form>
         <p className="px-4 pb-3 text-center text-xs text-muted">
           Automated answers from our published service info.{" "}
-          <Link href="/trust-center/#privacy" className="underline">
+          <Link href="/trust-center/#legal-documents" className="underline">
             Privacy
           </Link>
         </p>

@@ -34,7 +34,7 @@ function NavEntry({ item, pathname }: { item: NavItem; pathname: string }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const linkCls = `flex h-10 items-center gap-1 rounded-lg px-3 text-[15px] font-medium hover:bg-surface ${active ? "text-brand" : "text-muted hover:text-brand"}`;
+  const linkCls = `flex h-10 items-center gap-0.5 rounded-lg px-2 text-[15px] whitespace-nowrap font-medium hover:bg-surface ${active ? "text-brand" : "text-muted hover:text-brand"}`;
 
   if (!item.children) {
     return (
@@ -88,15 +88,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
       <ScrollProgress />
-      <div className="mx-auto flex h-[72px] max-w-[1264px] items-center justify-between gap-6 px-6 md:px-8">
-        <Link href="/" aria-label="InterpretNext home" className="relative block h-[72px] w-[172px] shrink-0 overflow-hidden">
+      <div className="mx-auto flex h-[72px] max-w-[1328px] items-center justify-between gap-3 px-6 md:px-8">
+        <Link href="/" aria-label="InterpretNext home" className="relative block h-[72px] w-[144px] shrink-0 overflow-hidden">
           <Image
             src={asset("/images/logo.png")}
             alt="InterpretNext"
             width={218}
             height={145}
             priority
-            className="absolute top-1/2 -left-[8px] h-auto w-[170px] max-w-none -translate-y-1/2"
+            className="absolute top-1/2 -left-[6px] h-auto w-[142px] max-w-none -translate-y-1/2"
           />
         </Link>
 
@@ -108,8 +108,8 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-2 xl:flex">
-          <Link href={LOGIN_HREF} className="flex h-10 items-center rounded-lg px-3 text-[15px] font-medium text-muted hover:bg-surface hover:text-brand">
+        <div className="hidden shrink-0 items-center gap-1.5 xl:flex">
+          <Link href={LOGIN_HREF} className="flex h-10 items-center rounded-lg px-2 text-[15px] font-medium whitespace-nowrap text-muted hover:bg-surface hover:text-brand">
             Client login
           </Link>
           <Button href={QUOTE_HREF}>Request a quote</Button>

@@ -7,7 +7,7 @@ export const COMPANY = {
   brand: "InterpretNext",
   parent: "bayanTech",
   /** DRAFT (legal): how the brand relationship is described. */
-  tagline: "An interpreting brand by bayanTech",
+  tagline: "A bayanTech brand",
 };
 
 /**
@@ -35,25 +35,24 @@ export const CLIENT_PORTAL_URL: string | null = null;
 export const HERO_VIDEO: { src: string; poster: string } | null = null;
 
 /**
- * Release matrix. DRAFT (product / Eng. Ouf): what ships at launch vs later.
- * Only "launch" items may be promised in copy. Flip a status here and every page updates.
+ * Release matrix, from the Portal Roles Matrix v3 (R1 = launch, R2 = next, R3 = later).
+ * Only "launch" and "request" items may appear in copy. "request" = offered on request until
+ * Operations and Eng. Ouf confirm it (simultaneous interpreting). Flip a status and every page updates.
  */
-export type ReleaseStatus = "launch" | "later";
+export type ReleaseStatus = "launch" | "request" | "later";
 
-export const RELEASES: Record<string, { label: string; status: ReleaseStatus }> = {
-  "scheduled-video": { label: "Scheduled video remote interpreting", status: "launch" },
-  "on-site": { label: "On-site interpreting", status: "launch" },
-  "simultaneous-events": { label: "Remote simultaneous interpreting for events", status: "launch" },
-  "conference-hybrid": { label: "Conference and hybrid event interpreting", status: "launch" },
-  "sign-language": { label: "Sign language interpreting and live captioning", status: "launch" },
-  "document-translation": { label: "Document translation", status: "launch" },
-  "language-sourcing": { label: "Rare-language sourcing on request", status: "launch" },
-  "online-booking": { label: "Online quote and booking requests", status: "launch" },
-  "on-demand": { label: "On-demand instant interpreter calls", status: "later" },
-  "phone-dial-in": { label: "Phone dial-in (over-the-phone interpreting)", status: "later" },
-  "session-recording": { label: "Session recording", status: "later" },
-  "ai-speech": { label: "Human-led AI speech translation", status: "later" },
-  "client-portal-analytics": { label: "Usage reporting in the client portal", status: "later" },
+export const RELEASES: Record<string, { label: string; status: ReleaseStatus; matrix?: string }> = {
+  "scheduled-video": { label: "Scheduled remote interpreting by video", status: "launch", matrix: "R1" },
+  "on-site": { label: "On-site interpreting", status: "launch", matrix: "R1" },
+  "conference-hybrid": { label: "Simultaneous interpreting for conferences and events", status: "request", matrix: "R3 (RSI console)" },
+  "document-translation": { label: "Document translation (bayanTech translation team)", status: "launch" },
+  "language-sourcing": { label: "Language requests for languages we do not list yet", status: "launch" },
+  "online-booking": { label: "Online quote, approval, assignment, meeting link, rating and invoice", status: "launch", matrix: "R1" },
+  "on-demand": { label: "On-demand instant interpreter calls", status: "later", matrix: "R2" },
+  "two-factor": { label: "Two-factor sign-in for staff and interpreters", status: "later", matrix: "R2" },
+  "phone-dial-in": { label: "Phone dial-in (over-the-phone interpreting)", status: "later", matrix: "R3" },
+  "session-recording": { label: "Session recording, transcripts and AI summaries", status: "later", matrix: "R3" },
+  "client-portal-analytics": { label: "Reports and analytics in the client portal", status: "later", matrix: "R2" },
 };
 
 export const isLaunch = (key: keyof typeof RELEASES) => RELEASES[key]?.status === "launch";

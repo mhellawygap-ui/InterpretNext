@@ -2,130 +2,177 @@ import type { IconName } from "@/components/ui/Icon";
 import type { FaqItem } from "@/components/ui/Faq";
 
 /**
- * DRAFT COPY DECK. Placeholder copy written in buyer vocabulary (language access, interpreting,
- * human-led AI support). Replace with the approved copy deck; owners are listed in
- * docs/CONTENT-STATUS.md. Rules: no competitor names, no features outside the launch release,
- * no unverified numbers.
+ * COPY DECK v1 (Mariam, 17 Nov 2026), applied 19 Nov 2026.
+ * Rules from the deck: no bracketed values on the live site, only Safe claims, no features beyond
+ * release R1, no competitor names, no slogans or "X, not Y", no em dashes.
+ * Lines waiting for an owner are listed in docs/CONTENT-STATUS.md, never on the page.
  */
 
+/** 6.1 Hero */
 export const HERO = {
-  title: "Professional interpreting for conversations that matter",
-  lead: "InterpretNext gives healthcare, legal and public-sector teams qualified interpreters in more than 200 languages and dialects, including hard-to-find African, Middle Eastern and Asian languages. Book video, on-site and event interpreting through one secure platform.",
+  eyebrow: "A bayanTech brand",
+  title: "Interpreters for healthcare, legal and public-sector work, including the languages that are hard to find.",
+  lead: "InterpretNext provides vetted interpreters for hospitals, courts, agencies and international organizations. We cover rare Middle Eastern, African and Asian languages and dialects, and we run every session on our own secure platform.",
 };
 
-/** Proof strip. CLIENT_LOGOS stays empty until logos are approved with written permission. */
+/** Client logos stay empty until approved with written permission. */
 export const CLIENT_LOGOS: { name: string; src: string }[] = [];
-export const PROOF_SECTORS: { icon: IconName; label: string }[] = [
-  { icon: "healthcare", label: "Healthcare" },
-  { icon: "legal", label: "Legal" },
-  { icon: "government", label: "Government & NGOs" },
-  { icon: "global-business", label: "Enterprise" },
-  { icon: "conferences", label: "Events" },
+
+/**
+ * 6.2 Proof strip. The deck's three numeric items ([N] languages, [N] interpreters, [N] hours) wait
+ * for verified figures, so only the Safe statements show.
+ */
+export const PROOF: { icon: IconName; title: string; body: string }[] = [
+  { icon: "retention", title: "Sessions are not recorded by default", body: "We keep only what we need to run and bill the session." },
+  { icon: "tier-check", title: "Three interpreter tiers", body: "Silver, Gold and Platinum, matched to the subject and the stakes of each session." },
+  { icon: "person-check", title: "A person reviews every assignment", body: "A project manager checks each match before it is confirmed." },
+  { icon: "dialect", title: "Matched by dialect", body: "Tell us where the speaker is from and we match the dialect as well as the language." },
 ];
 
-/** DRAFT (operations): "200+" must match the master list + sourcing capacity. */
-export const KEY_FACTS: { icon: IconName; value: string; label: string }[] = [
-  { icon: "languages-200", value: "200+", label: "languages and dialects through our network and on-request sourcing" },
-  { icon: "rare", value: "Rare languages", label: "African, Middle Eastern and Asian languages that general providers often cannot staff" },
-  { icon: "tiers", value: "3 tiers", label: "of interpreters, matched to the subject and the stakes of each assignment" },
-  { icon: "modalities", value: "Video, on-site, events", label: "booked and managed through one platform" },
+/** 6.3 Find the right service. "Phone" is left out until phone dial-in ships (R3). */
+export const FINDER_COPY = {
+  title: "Start with the situation",
+  lead: "Tell us what is happening and we will suggest the service that fits. A team member confirms every booking.",
+  assistantPrompt: "Not sure? Describe your situation in a sentence.",
+  assistantButton: "Ask the assistant",
+  assistantFirst: "Tell me who needs to talk to whom and about what. I will suggest a service, and a person on our team will confirm it with you.",
+};
+
+export const FINDER: { id: string; label: string; hint: string; service: string; body: string }[] = [
+  {
+    id: "conversation",
+    label: "A conversation by video",
+    hint: "Patient visits, claims calls, case interviews",
+    service: "video-remote",
+    body: "Remote interpreting for patient visits, claims calls, case interviews and service desks. You book a session, we assign an interpreter matched to the language, dialect and subject, and we send the meeting link.",
+  },
+  {
+    id: "hearing",
+    label: "A hearing, deposition or consultation",
+    hint: "Legal and medical settings",
+    service: "on-site",
+    body: "Video interpreting with a qualified interpreter for legal and medical settings. For the highest-stakes sessions we can place an interpreter on site.",
+  },
+  {
+    id: "event",
+    label: "A conference or live event",
+    hint: "Webinars, summits, hybrid events",
+    service: "conference",
+    body: "Simultaneous interpreting for webinars, summits and hybrid events, on request.",
+  },
+  {
+    id: "document",
+    label: "A document",
+    hint: "Legal and medical paperwork",
+    service: "documents",
+    body: "Certified translation for legal and medical paperwork, handled by the bayanTech translation team.",
+  },
 ];
 
-export const FINDER: { id: string; label: string; hint: string; service: string }[] = [
-  { id: "visit", label: "A scheduled appointment or interview", hint: "One-to-one or small group", service: "video-remote" },
-  { id: "room", label: "Someone needs to be in the room", hint: "Hearings, clinics, site visits", service: "on-site" },
-  { id: "event", label: "An online event or meeting with several languages", hint: "Webinars, board meetings", service: "simultaneous" },
-  { id: "hybrid", label: "A conference with people in the room and online", hint: "Summits, assemblies", service: "conference" },
-  { id: "deaf", label: "Deaf or hard-of-hearing participants", hint: "Sign language, captioning", service: "sign-language" },
-  { id: "docs", label: "Documents to translate", hint: "Forms, records, contracts", service: "documents" },
-];
+/** 6.5 Hard-to-staff languages (replaces the scrolling ticker). */
+export const HARD_LANGUAGES = {
+  title: "Languages that take longer to find",
+  body: "Some requests are hard to fill: Tigrinya in a clinic, Sudanese Arabic in a courtroom, Dari at a resettlement agency. bayanTech has recruited and managed interpreters in these languages for years. We match by dialect as well as language, so you get the right Arabic, not just any Arabic.",
+};
 
-/** DRAFT (Eng. Ouf confirms technical lines; legal approves final wording). */
+/** 6.6 Our interpreters */
+export const INTERPRETERS = {
+  title: "How we choose who takes your session",
+  body: "Every interpreter is reviewed by our localization team before their first assignment. We look at certifications, years of experience, subject expertise and, over time, client ratings. A project manager reviews each assignment before it is confirmed.",
+  ai: "Tools we use for testing are AI-assisted. A person approves every result.",
+};
+
+/** 6.7 Secure platform (short) and section 8 controls. Only Safe lines; launch-day features are R1 in the matrix. */
 export const PLATFORM = {
-  title: "A secure platform built for sensitive conversations",
-  lead: "Book, join and manage interpreted sessions in one place. Access is limited to the people in each session, and session content is not stored.",
+  title: "Your session runs on our platform",
+  lead: "Many remote sessions run on general-purpose meeting tools. InterpretNext sessions run on a platform bayanTech built for interpreting. That lets us control who joins, what is stored and who can see it. Sessions are not recorded by default, interpreters see only the sessions they are assigned to, and they never see pricing.",
   features: [
-    { icon: "encryption" as IconName, title: "Encrypted sessions", body: "Audio and video are encrypted in transit between participants and the interpreter." },
-    { icon: "access-control" as IconName, title: "Role-based access", body: "Interpreters and staff see only what an assignment needs, and only while it is active." },
-    { icon: "retention" as IconName, title: "No recording at launch", body: "Session content is not recorded or stored. Booking details are kept for billing and quality review." },
-    { icon: "audit-log" as IconName, title: "Access logs", body: "Bookings, joins and changes are logged so your team can review who did what and when." },
-  ],
-  management: [
-    { title: "One request form for every mode", body: "Ask for video, on-site, event or document work with the same short form." },
-    { title: "Confirmed bookings with join links", body: "Each confirmed session comes with a calendar invite and a secure join link." },
-    { title: "Interpreter briefings", body: "Share glossaries, agendas and case notes ahead of time so the interpreter arrives prepared." },
-    { title: "Clear invoices", body: "Each invoice lists sessions, languages, duration and mode." },
+    { icon: "retention" as IconName, title: "No recording", body: "Sessions are not recorded by default." },
+    { icon: "access-control" as IconName, title: "Limited interpreter access", body: "Interpreters see only the sessions assigned to them and only the materials the project manager shares." },
+    { icon: "privacy-policy" as IconName, title: "No pricing exposure", body: "Interpreters never see pricing or payment details." },
+    { icon: "platform-access" as IconName, title: "Role-based access", body: "Clients, sales, project managers, interpreters and admins each see only what their role needs." },
   ],
 };
 
-/** DRAFT (product): platforms to be confirmed by Eng. Ouf before any are named. */
-export const INTEGRATIONS: { icon: IconName; title: string; body: string; later?: boolean }[] = [
-  { icon: "join", title: "Video meeting platforms", body: "Add an interpreter to the video tools your teams already use." },
-  { icon: "this-week", title: "Calendars", body: "Confirmed sessions arrive as calendar invites with the join link." },
-  { icon: "integrations", title: "Single sign-on", body: "Sign in to the client portal with your organization account.", later: true },
-  { icon: "report", title: "Reporting exports", body: "Export session history for your language-access reporting.", later: true },
+/** Section 8 table, Safe rows only. Encryption, hosting and BAA wait for Eng. Ouf; two-factor sign-in is R2. */
+export const PLATFORM_CONTROLS: { icon: IconName; title: string; body: string }[] = [
+  ...PLATFORM.features,
+  { icon: "audit-log", title: "Audit trail", body: "Access and changes are logged, so we can show who viewed or changed what and when." },
+  { icon: "security", title: "Idle sign-out", body: "Inactive sessions end automatically." },
+  { icon: "nda", title: "Confidentiality", body: "Every interpreter accepts our confidentiality terms before their first assignment." },
+  { icon: "disclosure", title: "Upload checks", body: "Files are checked for type, size and malware before they are shared." },
 ];
 
+export const PLATFORM_PAGE = {
+  title: "Secure interpreting on a platform we built",
+  lead: "Interpreted conversations carry medical history, case details and personal data. InterpretNext runs sessions on a platform built by bayanTech for interpreting. That means we decide what is stored, who can see it and for how long.",
+  keep: "We keep the details we need to run and bill the session: date, duration, languages, the roles involved and the quality rating.",
+};
+
+/** 6.8 How it works: the R1 golden path, true on day one. */
 export const SESSION_STEPS: { icon: IconName; title: string; body: string }[] = [
-  { icon: "request", title: "Request", body: "Tell us the language, the mode (video, on-site or event), the date and the subject." },
-  { icon: "match", title: "Match", body: "We assign an interpreter whose tier and subject knowledge fit the assignment." },
-  { icon: "this-month", title: "Confirm", body: "You receive a confirmation with the interpreter details and, for video, a secure join link." },
-  { icon: "join", title: "Interpret", body: "The interpreter joins on time, briefed on your terminology and the people involved." },
-  { icon: "report", title: "Follow up", body: "You receive a session summary and invoice, and can rate the session." },
+  { icon: "request", title: "Request a quote", body: "Tell us the languages, the date and time with your time zone, the subject and how long you need. Sales can also fill this in for you after a call." },
+  { icon: "this-month", title: "Approve and share materials", body: "Approve the quote online. Then upload the glossary or background documents your interpreter should see." },
+  { icon: "match", title: "We assign and confirm", body: "A project manager picks an interpreter matched to your language, dialect and subject. You receive the meeting link and calendar invite." },
+  { icon: "join", title: "Session, then follow-up", body: "The interpreter checks in and out, we confirm the actual time, you rate the session and pay by card or invoice." },
 ];
 
-export const COMPARISON = {
-  columns: ["InterpretNext", "General translation agencies", "AI-only translation tools", "Bilingual staff"],
-  rows: [
-    { label: "Qualified interpreters matched by subject and tier", values: ["yes", "varies", "no", "no"] },
-    { label: "Rare African, Middle Eastern and Asian languages", values: ["yes", "varies", "varies", "no"] },
-    { label: "Signed confidentiality for every interpreter", values: ["yes", "varies", "no", "varies"] },
-    { label: "One secure platform for booking and joining sessions", values: ["yes", "varies", "yes", "no"] },
-    { label: "Human judgment on every interpreted session", values: ["yes", "yes", "no", "yes"] },
-    { label: "Tailored quote with clear pricing drivers", values: ["yes", "varies", "yes", "no"] },
-  ] as { label: string; values: ("yes" | "varies" | "no")[] }[],
-  note: "We compare categories of provider, not named companies. Individual providers may differ.",
+/** 6.9 Trust Center summary: confirmed items only. */
+export const TRUST_SUMMARY = {
+  title: "Compliance and security in plain terms",
+  lead: "We list what we do, what is in progress and what you can ask us for. Your security team can read it before you sign.",
+  items: [
+    { icon: "nda" as IconName, title: "Confidentiality terms accepted by every interpreter before their first assignment" },
+    { icon: "audit-log" as IconName, title: "Role-based access and an audit log" },
+    { icon: "hipaa" as IconName, title: "Built around HIPAA safeguards" },
+  ],
 };
 
-/** DRAFT (marketing): this is the quote from the Figma file; replace with an approved, attributed testimonial. */
-export const TESTIMONIAL = {
-  quote: "We needed a partner who could find Tigrinya and Amharic interpreters quickly. InterpretNext covered both languages without asking us to compromise on quality.",
-  name: "Director of Patient Access",
-  org: "Regional healthcare network",
-};
+/** 6.10 Proof from clients. Left out until one approved, named quote exists. Never anonymous. */
+export const TESTIMONIAL: { quote: string; name: string; role: string; org: string } | null = null;
 
-/** DRAFT: illustrative engagements (no client names or results) until approved case studies exist. */
-export const ENGAGEMENTS: { icon: IconName; sector: string; title: string; body: string }[] = [
-  { icon: "healthcare", sector: "Healthcare", title: "Rare-language interpreting for patient intake", body: "A health network books scheduled video interpreting in Tigrinya, Dari and Somali for intake and follow-up appointments." },
-  { icon: "legal", sector: "Legal", title: "Interviews and hearings with dialect matching", body: "A legal team books on-site interpreters matched by dialect for client interviews and hearings." },
-  { icon: "government", sector: "Government & NGOs", title: "Multilingual community meetings", body: "A public agency runs town halls with simultaneous interpreting in four languages, in person and online." },
-];
+/** 6.12 Closing call to action */
+export const CLOSING = {
+  title: "Tell us about your next session",
+  body: "Send the languages, the date and the subject. We will reply with a quote and the interpreter profile we propose.",
+};
 
 export const PRICING = {
   drivers: [
-    { icon: "languages-200" as IconName, title: "Language", body: "Core-network languages and rare languages that we source on request are priced differently." },
-    { icon: "modalities" as IconName, title: "Mode", body: "Video, on-site and simultaneous event interpreting each have their own rates." },
+    { icon: "languages-200" as IconName, title: "Language and dialect", body: "Widely spoken languages and languages that take longer to find are priced differently." },
+    { icon: "modalities" as IconName, title: "Service", body: "Remote, on-site and event interpreting each have their own rates." },
     { icon: "this-week" as IconName, title: "Duration and volume", body: "Session length, frequency and monthly volume shape the price." },
-    { icon: "within-48h" as IconName, title: "Notice", body: "Sessions booked with more notice cost less than short-notice requests." },
-    { icon: "tiers" as IconName, title: "Interpreter tier", body: "Specialist medical and legal assignments use higher-tier interpreters." },
+    { icon: "within-48h" as IconName, title: "Notice and timing", body: "Short-notice and after-hours sessions can cost more." },
+    { icon: "tiers" as IconName, title: "Interpreter tier", body: "Medical and legal sessions use higher-tier interpreters." },
     { icon: "regions" as IconName, title: "Travel", body: "On-site assignments may include travel time and expenses." },
   ],
   included: [
-    "Interpreter matching by language, dialect, subject and tier",
-    "Pre-session briefing with your materials",
-    "Signed confidentiality agreement for every interpreter",
-    "Secure join link for video sessions",
-    "Session summary and itemised invoice",
+    "An interpreter matched to your language, dialect and subject",
+    "A project manager who reviews the assignment",
+    "Confidentiality terms accepted by every interpreter",
+    "A meeting link and calendar invite for remote sessions",
+    "A session rating, and payment by card or invoice",
   ],
 };
 
+/** 6.11 FAQ. Pricing and integrations answers wait for Sales and Eng. Ouf. */
+export const FAQ: FaqItem[] = [
+  { q: "Which languages do you cover?", a: "See the Languages page. If your language is not listed, send a request and we will tell you whether we can staff it." },
+  { q: "How do I book a session?", a: "Request a quote. A specialist replies with the quote and the interpreter profile we propose, and you approve online." },
+  { q: "Can I get an interpreter immediately?", a: "Scheduled sessions are available now. On-demand access is planned for a later release. Contact us for urgent requests and we will do our best." },
+  { q: "Do you record sessions?", a: "No. Sessions are not recorded by default." },
+  { q: "Who can see my documents?", a: "Your project manager decides which files the interpreter sees. The interpreter sees only the sessions assigned to them." },
+  { q: "How are interpreters chosen?", a: "Every interpreter is reviewed by our localization team before their first assignment, for certifications, years of experience and subject expertise. A project manager reviews each assignment before it is confirmed." },
+  { q: "Do you use AI?", a: "AI supports our testing and scheduling. Interpreting is done by people." },
+];
+
+/** Kept for the pricing page; same rules as FAQ. */
 export const PROCUREMENT_FAQ: FaqItem[] = [
-  { q: "How do we get a quote?", a: "Send a request with your languages, modes and expected volume. A specialist replies within one business day with a recommendation and pricing." },
-  { q: "What affects the price?", a: "Language, mode (video, on-site or event), duration and volume, notice period, interpreter tier and any travel for on-site work. There are no subscription fees at launch." },
-  { q: "How are interpreters vetted?", a: "Identity and credential checks, language assessment in both working languages, background screening for regulated settings, and ongoing quality review." },
-  { q: "Do interpreters sign confidentiality agreements?", a: "Yes. Every interpreter signs a confidentiality agreement and follows our code of conduct. We can also sign your NDA." },
-  { q: "Can you support HIPAA requirements?", a: "Our HIPAA readiness work is in progress, including Business Associate Agreements for US healthcare clients. Contact us for the current status before you contract." },
-  { q: "Which languages can you cover?", a: "More than 200 languages and dialects through our core network and on-request sourcing. Check a language on our Languages page or ask us for one that is not listed." },
-  { q: "How do participants join a video session?", a: "Each confirmed booking includes a secure join link that you share with participants." },
-  { q: "What happens to session data?", a: "Session content is not recorded or stored. Booking details are kept for billing and quality review under our retention policy." },
+  FAQ[1],
+  { q: "What affects the price?", a: "The language and dialect, the service, the duration and volume, the notice period, the interpreter tier and any travel for on-site work." },
+  { q: "How do we pay?", a: "By card or by invoice." },
+  FAQ[5],
+  { q: "Do interpreters accept confidentiality terms?", a: "Yes. Every interpreter accepts our confidentiality terms before their first assignment. We can also sign your NDA." },
+  { q: "Can you support HIPAA requirements?", a: "Our platform is built around HIPAA safeguards. Ask us about business associate agreements before you contract." },
+  FAQ[3],
 ];

@@ -16,15 +16,15 @@ export function LanguageRequest() {
       initial={initial}
       submitLabel="Send request"
       successTitle="Request received"
-      successBody="Our language team will confirm feasibility and lead time within one business day."
+      successBody="Our language team will tell you whether we can staff it, and the lead time."
       fields={[
-        { name: "language", label: "Language or dialect", required: true, placeholder: "e.g. Tigrinya (Eritrean)" },
-        { name: "where", label: "Where it is spoken", placeholder: "Country or region" },
-        { name: "mode", label: "How you need it", type: "select", options: ["Video remote interpreting", "On-site interpreting", "Event interpreting", "Document translation", "Not sure yet"] },
-        { name: "date", label: "Date needed", type: "date" },
+        { name: "language", label: "Language", required: true, placeholder: "Example: Tigrinya" },
+        { name: "where", label: "Dialect or region", placeholder: "Example: Eritrean, or where the speaker is from" },
+        { name: "mode", label: "Service type", type: "select", options: ["Remote interpreting (video)", "On-site interpreting", "Conference or event interpreting", "Document translation", "Not sure yet"] },
+        { name: "volume", label: "Expected volume", type: "select", options: ["One session", "A few sessions", "Weekly or more", "An ongoing program", "Not sure yet"] },
         { name: "email", label: "Business email", type: "email", required: true, autoComplete: "email", placeholder: "name@organization.com" },
         { name: "org", label: "Organization", required: true, autoComplete: "organization" },
-        { name: "notes", label: "Anything else we should know", type: "textarea", placeholder: "Subject, setting or number of sessions" },
+        { name: "notes", label: "Anything else we should know", type: "textarea", placeholder: "Subject, setting or dates" },
       ]}
     />
   );

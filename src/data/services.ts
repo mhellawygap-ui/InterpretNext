@@ -1,7 +1,7 @@
 import type { IconName } from "@/components/ui/Icon";
 import { RELEASES, type ReleaseStatus } from "./site";
 
-/** DRAFT copy (copy deck): written in buyer vocabulary; replace with the approved deck text. */
+/** Copy deck v1, section 6.3, limited to what release R1 delivers (Portal Roles Matrix). */
 
 export type ServiceItem = {
   id: string;
@@ -9,6 +9,8 @@ export type ServiceItem = {
   short: string;
   icon: IconName;
   release: keyof typeof RELEASES;
+  /** Situation this service answers, as the visitor would describe it (service finder). */
+  situation: string;
   summary: string;
   bestFor: string;
   useCases: string[];
@@ -19,13 +21,14 @@ export type ServiceItem = {
 export const SERVICES: ServiceItem[] = [
   {
     id: "video-remote",
-    title: "Video remote interpreting",
-    short: "VRI",
+    title: "Remote interpreting by video",
+    short: "Video",
     icon: "vri",
     release: "scheduled-video",
-    summary: "A qualified interpreter joins your scheduled video session through a secure link, so both sides can see and hear each other clearly.",
-    bestFor: "Consultations, interviews and meetings where facial expression and visual context matter.",
-    useCases: ["Medical consultations", "Legal interviews", "Case management", "Sign language"],
+    situation: "A conversation by video",
+    summary: "You book a session, we assign an interpreter matched to the language, dialect and subject, and we send the meeting link. Sessions run on our own secure platform.",
+    bestFor: "Patient visits, claims calls, case interviews and service desks.",
+    useCases: ["Patient visits", "Claims calls", "Case interviews", "Service desks"],
     quote: "vri",
   },
   {
@@ -34,43 +37,23 @@ export const SERVICES: ServiceItem[] = [
     short: "On-site",
     icon: "on-site",
     release: "on-site",
-    summary: "An interpreter attends in person, briefed on your terminology and the people in the room.",
-    bestFor: "Hearings, clinical settings, delegations and site visits where presence matters.",
-    useCases: ["Court hearings", "Clinical settings", "Delegations", "Site visits"],
+    situation: "A hearing, deposition or consultation",
+    summary: "For the highest-stakes sessions we place an interpreter in the room, matched to the language, dialect and subject, and briefed with the materials you share.",
+    bestFor: "Hearings, depositions and medical consultations where presence matters.",
+    useCases: ["Hearings", "Depositions", "Medical consultations", "Negotiations"],
     quote: "onsite",
   },
   {
-    id: "simultaneous",
-    title: "Remote simultaneous interpreting",
-    short: "RSI",
-    icon: "rsi",
-    release: "simultaneous-events",
-    summary: "Interpreters work in real time on separate language channels, so a multilingual audience follows one live program.",
-    bestFor: "Webinars, board meetings and online events with several languages.",
-    useCases: ["Webinars", "Board meetings", "Town halls", "Training"],
-    quote: "rsi",
-  },
-  {
     id: "conference",
-    title: "Conference and hybrid events",
+    title: "Conference and event interpreting",
     short: "Events",
     icon: "conference",
     release: "conference-hybrid",
-    summary: "Interpreter teams, booth or remote set-up and language coordination for audiences in the room and online.",
-    bestFor: "Conferences, summits and assemblies that combine in-person and remote attendees.",
-    useCases: ["Conferences", "Summits", "General assemblies", "Press events"],
+    situation: "A conference or live event",
+    summary: "Simultaneous interpreting for webinars, summits and hybrid events, on request. Tell us the languages and the agenda and we confirm what we can staff.",
+    bestFor: "Webinars, summits, board meetings and hybrid events with several languages.",
+    useCases: ["Webinars", "Summits", "Hybrid events", "Board meetings"],
     quote: "rsi",
-  },
-  {
-    id: "sign-language",
-    title: "Sign language and captioning",
-    short: "ASL & CART",
-    icon: "asl",
-    release: "sign-language",
-    summary: "Credentialed sign language interpreters and real-time captioning for Deaf and hard-of-hearing participants.",
-    bestFor: "Appointments, hearings, events and workplace meetings that must be accessible.",
-    useCases: ["ASL interpreting", "Live captioning (CART)", "Events", "Workplace"],
-    quote: "vri",
   },
   {
     id: "documents",
@@ -78,19 +61,19 @@ export const SERVICES: ServiceItem[] = [
     short: "Documents",
     icon: "doc-translation",
     release: "document-translation",
-    summary: "Professional translation of the documents that come with an interpreted case, by linguists who know the subject.",
+    situation: "A document",
+    summary: "Certified translation for legal and medical paperwork, handled by the bayanTech translation team.",
     bestFor: "Consent forms, records, contracts and official certificates.",
     useCases: ["Consent forms", "Medical records", "Contracts", "Certificates"],
     quote: "docs",
   },
 ];
 
-/** Planned capabilities: shown only as "later release", never promised as available. */
+/** Planned capabilities (Portal Roles Matrix R2/R3): shown only as "later release", never promised. */
 export const LATER: { icon: IconName; title: string; body: string; release: keyof typeof RELEASES }[] = [
-  { icon: "opi", title: "Over-the-phone interpreting", body: "Dial-in access to an interpreter by phone.", release: "phone-dial-in" },
-  { icon: "on-demand-video", title: "On-demand video interpreting", body: "Instant connection to an available interpreter without booking.", release: "on-demand" },
-  { icon: "ai-speech", title: "Human-led AI speech translation", body: "AI translation for lower-stakes sessions, reviewed by interpreters.", release: "ai-speech" },
-  { icon: "recording", title: "Session recording", body: "Optional recording with retention controls, where contracts allow.", release: "session-recording" },
+  { icon: "on-demand-video", title: "On-demand video interpreting", body: "Connect to an available interpreter without booking ahead.", release: "on-demand" },
+  { icon: "opi", title: "Phone interpreting", body: "Dial in to an interpreter by phone.", release: "phone-dial-in" },
+  { icon: "recording", title: "Recording and transcripts", body: "Only with written consent from everyone on the call, and a retention period agreed in advance.", release: "session-recording" },
 ];
 
 export const releaseStatus = (s: { release: keyof typeof RELEASES }): ReleaseStatus => RELEASES[s.release].status;

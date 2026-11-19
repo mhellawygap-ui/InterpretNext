@@ -18,7 +18,7 @@ export default function PricingPage() {
       <PageIntro
         label="Pricing"
         title="How pricing works"
-        lead="Every quote is tailored to your languages, settings and volume. Here is what shapes the price and what every booking includes."
+        lead="Every quote is tailored to your language, service and timing. Here is what shapes the price and what every booking includes. You pay by card or invoice."
         actions={<Button href="/get-quote/" size="lg">Request a quote</Button>}
       />
       <Section labelledBy="drivers-title">
@@ -35,7 +35,7 @@ export default function PricingPage() {
       </Section>
       <Section tone="subtle" labelledBy="included-title">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <SectionHeader id="included-title" title="Included in every booking" lead="No subscription fees at launch. You pay for the interpreting you book." />
+          <SectionHeader id="included-title" title="Included in every booking" />
           <ul className="flex flex-col divide-y divide-border rounded-2xl border border-border bg-white">
             {PRICING.included.map((p) => (
               <li key={p} className="flex gap-3 px-6 py-4 text-[15px] text-brand">
@@ -51,7 +51,7 @@ export default function PricingPage() {
         <ol className="mt-12 grid gap-6 md:grid-cols-3">
           {[
             ["Tell us what you need", "Languages, settings, dates and expected volume. It takes about two minutes."],
-            ["Get a recommendation", "A specialist replies within one business day with the right services and pricing."],
+            ["Receive a quote", "A specialist replies with the quote and the interpreter profile we propose."],
             ["Confirm and book", "Accept the quote and book sessions as you need them."],
           ].map(([t, b], i) => (
             <li key={t} className="rounded-2xl border border-border bg-white p-7">
@@ -63,18 +63,18 @@ export default function PricingPage() {
         </ol>
       </Section>
       <Section tone="subtle" narrow id="procurement-faq" labelledBy="pfaq-title">
-        <SectionHeader id="pfaq-title" title="Procurement questions" />
+        <SectionHeader id="pfaq-title" title="Questions from procurement teams" />
         <div className="mt-10">
           <Faq items={PROCUREMENT_FAQ} />
         </div>
       </Section>
       <CtaBand
-        title="Get a tailored quote"
-        body="Share your languages, settings and volume. We reply within one business day."
+        title="Tell us about your next session"
+        body="Send the languages, the date and the subject. We will reply with a quote and the interpreter profile we propose."
         actions={
           <>
             <Button href="/get-quote/" variant="on-dark" size="lg">Request a quote</Button>
-            <Button href="/contact/" variant="on-dark-outline" size="lg">Contact our team</Button>
+            <Button href="/contact/" variant="on-dark-outline" size="lg">Talk to Sales</Button>
           </>
         }
       />

@@ -4,7 +4,7 @@ import { QuoteFlow } from "@/components/page/QuoteFlow";
 export const metadata: Metadata = {
   title: "Get a Quote",
   description:
-    "Four short steps. A specialist responds within one business day with a tailored interpretation recommendation and pricing.",
+    "Tell us what you need. A specialist replies with a quote and a proposed interpreter profile.",
 };
 
 export default function GetQuotePage() {

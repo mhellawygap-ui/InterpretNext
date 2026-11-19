@@ -30,34 +30,39 @@ Wrap image paths from `public/` in `asset()` (`src/lib/asset.ts`) so they resolv
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Hero (video slot with a still fallback), proof strip, key facts, services, service finder, language checker, secure platform, how a session works, industries, category comparison, testimonial and engagements, procurement FAQ |
-| `/services/` | Launch services, service finder, later-release roadmap |
-| `/industries/` | 8 sector tabs, synced to the URL hash (`/industries/#legal`) |
-| `/languages/` | Language checker, coverage explained, priority languages by region, request-a-language form (`?request=…` pre-fills it) |
-| `/platform/` | Secure platform: protection, booking and management, integrations, security controls |
-| `/how-it-works/` | How a session works, by setting |
-| `/pricing/` | What affects the price, what's included, how to get a quote, procurement FAQ |
-| `/trust-center/` | Certifications, security, privacy, quality and tiers, accessibility, legal documents, document request |
-| `/about/`, `/contact/`, `/client-login/` | Company, contact form, portal access request |
-| `/get-quote/` | 4-step quote form (launch services only); accepts `?modality=vri\|onsite\|rsi\|docs\|unsure` |
+| `/` | Copy deck section 6 in order: hero, proof strip, service finder, industries, hard-to-staff languages, interpreters and tiers, secure platform, how a session works, trust summary, FAQ, closing call to action |
+| `/services/` | Launch services (R1), service finder, later-release list |
+| `/industries/` | 5 sector tabs, synced to the URL hash (`/industries/#legal`) |
+| `/languages/` | Language checker, availability labels, all languages by region (10 regions), dialects, request form (`?request=…` pre-fills it) |
+| `/secure-platform/` | What the platform does on launch day, controls table, what we keep, security summary request |
+| `/interpreters/` | How we choose interpreters, tiers, apply-to-join form |
+| `/resources/` | Guides and the full FAQ |
+| `/how-it-works/` | The four-step flow (quote, approve, assign, session and follow-up) |
+| `/pricing/` | What affects the price and what every booking includes |
+| `/trust-center/` | What we do, in progress, interpreters, accessibility, documents you can ask for, document request |
+| `/about/`, `/contact/`, `/client-login/` | About bayanTech, contact form, portal access request |
+| `/get-quote/` | 4-step quote form; accepts `?modality=vri\|onsite\|rsi\|docs\|unsure` |
 | `/icon-system/` | Icon reference (not in the menu) |
 
 ## Where content lives
 
 All copy and facts are in `src/data/`, so pages don't need editing when content changes:
 
-- `site.ts`: brand line, contact details, portal URL, hero video, **release matrix**
-- `content.ts`: hero, facts, finder, platform, integrations, session steps, comparison, testimonial, engagements, pricing, procurement FAQ
+- `content.ts`: Copy Deck v1 (hero, proof, finder, languages block, interpreters, platform, steps, trust summary, FAQ, pricing)
+- `site.ts`: brand line, contact details, portal URL, hero video, **release matrix** from the Portal Roles Matrix
 - `services.ts`, `industries.ts`, `trust.ts`, `quote.ts`
-- `languages.ts`: the **master language list**. The directory, checker, assistant and quote form all read it.
+- `languages.ts` + `languages.master.ts`: the **master language list**. The checker, directory, assistant and quote form all read it.
 
-**Release rule:** only services and features with status `"launch"` in `RELEASES` may be promised.
-Later items appear only as "Later release".
+**Updating languages:** run `python3 -I scripts/import-languages.py path/to/InterpretNext_Master_Language_List.xlsx`.
+Once any "Staffable today" cell is filled, the site publishes only Yes / On request languages, with labels and a count.
+
+**Release rule:** only items with status `"launch"` (or `"request"`, shown as "On request") in `RELEASES` may be promised.
+Later items appear only as "Later release". Open items and owners: [`docs/CONTENT-STATUS.md`](docs/CONTENT-STATUS.md).
 
 ## Design system
 
 - **Idea:** two languages meeting through a skilled person. The hero's "conversation bridge" (Arabic and English
-  joined through the InterpretNext mark by the logo gradient) is the signature element. Everything around it stays quiet.
+  joined through the interpreter, by the logo gradient) is the signature element. Everything around it stays quiet.
 - **Rhythm:** sections alternate white, lavender (`surface`) and deep navy glow (`bg-glow`), so a change of
   background marks a new kind of content. Inner pages open on a lavender wash (`bg-wash`).
 - **Color:** navy `#0b1045`, violet `#5b2bd1`, pink `#e0336f` (highlights, rare languages, logo gradient `bg-logo`).
@@ -68,7 +73,6 @@ Later items appear only as "Later release".
   - Scroll progress bar in the header.
   - One-time hero entrance and a voice waveform.
   - Scroll reveals, count-up facts and a timeline that fills.
-  - Language ribbon fed from the master list, with a pause button.
   - Card lift on hover.
   - Only transform and opacity animate. Everything is static under reduced motion, and content stays visible without JavaScript.
 

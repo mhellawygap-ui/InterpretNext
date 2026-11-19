@@ -1,18 +1,18 @@
 import Link from "next/link";
-import { COMPANY, CONTACT } from "@/data/site";
+import { CONTACT } from "@/data/site";
 import { CONTACT_HREF, FOOTER_COLUMNS, LEGAL_LINKS } from "@/lib/nav";
 
 export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-brand-deep text-white/75">
       <div className="mx-auto max-w-[1264px] px-6 pt-16 pb-10 md:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.2fr_repeat(4,1fr)]">
-          <div className="max-w-[300px]">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_repeat(5,1fr)] lg:gap-8">
+          <div className="max-w-[300px] sm:col-span-2 lg:col-span-1">
             <Link href="/" className="font-display-wonk text-2xl font-semibold text-white">
               Interpret<span className="text-accent-2">Next</span>
             </Link>
             <p className="mt-4 text-sm leading-[1.6]">
-              {COMPANY.tagline}. Professional interpreting in more than 200 languages for healthcare, legal and public-sector teams.
+              InterpretNext is a bayanTech brand. Interpreters for healthcare, legal and public-sector work, including the languages that are hard to find.
             </p>
             <ul className="mt-6 flex flex-col gap-2 text-sm">
               {CONTACT.email && (
@@ -47,7 +47,7 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-8 text-[13px] sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 InterpretNext. {COMPANY.tagline}.</p>
+          <p>© 2026 InterpretNext. A bayanTech brand.</p>
           <ul className="flex flex-wrap gap-6">
             {LEGAL_LINKS.map((l) => (
               <li key={l.label}>

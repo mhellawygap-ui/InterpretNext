@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  * The tile tint + glyph color encode the dimension (vertical):
  *
  *   service     violet   modalities (VRI, RSI, on-site, conference, ASL, documents, …)
- *   industry    rose     the 8 sectors
+ *   industry    rose     the 5 sectors
  *   trust       blue     certifications, legal documents, security, accessibility obligations
  *   capability  green    languages, availability, timing, process steps
  *   tier        metal    Silver / Gold / Platinum
@@ -60,9 +60,9 @@ const DEFS = {
   /* industries */
   healthcare: { family: "industry", label: "Healthcare", glyph: <><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z" /><path d="M3.2 12h6.3l.5-1 2 4.5 2-7 1.5 3.5h5.3" /></> },
   legal: { family: "industry", label: "Legal", glyph: <path d="m16 16 3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1ZM2 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" /> },
-  government: { family: "industry", label: "Government & NGOs", glyph: <path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4z" /> },
-  "global-business": { family: "industry", label: "Global business", glyph: globe },
-  conferences: { family: "industry", label: "Conferences & events", glyph: <path d="M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5M8 11l3-3 2 2 3-3" /> },
+  government: { family: "industry", label: "Government and public sector", glyph: <path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4z" /> },
+  "global-business": { family: "industry", label: "NGOs and international organizations", glyph: globe },
+  conferences: { family: "industry", label: "Business and events", glyph: <path d="M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5M8 11l3-3 2 2 3-3" /> },
   "on-site-elite": { family: "industry", label: "On-site elite", glyph: <><rect x="2" y="7" width="20" height="14" rx="2.5" /><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M2 13h20" /></> },
   accessibility: { family: "industry", label: "Accessibility", glyph: access },
   "ai-powered": { family: "industry", label: "AI-supported interpreting", glyph: <><rect x="5" y="5" width="14" height="14" rx="2.5" /><rect x="9.5" y="9.5" width="5" height="5" rx="1" /><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" /></> },
@@ -89,6 +89,9 @@ const DEFS = {
   baa: { family: "trust", label: "Business associate agreement", glyph: <><path d={file} /><path d={fileFold} /><path d="M12 11v6M9 14h6" /></> },
   "sign-language": { family: "trust", label: "ASL interpreting", glyph: hand },
   captions: { family: "trust", label: "Live captioning", glyph: <><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M7 15h4M14 15h3M7 11h2M12 11h5" /></> },
+  "tier-check": { family: "trust", label: "Interpreter tiers", glyph: <path d="M12.8 2.2a2 2 0 0 0-1.6 0L2.6 6.1a1 1 0 0 0 0 1.8l8.6 3.9a2 2 0 0 0 1.6 0l8.6-3.9a1 1 0 0 0 0-1.8ZM22 17.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 17.6M22 12.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 12.6" /> },
+  "person-check": { family: "trust", label: "Reviewed by a person", glyph: <><circle cx="9" cy="8" r="4" /><path d="M2 21v-1a6 6 0 0 1 12 0v1M16 11l2 2 4-4" /></> },
+  dialect: { family: "trust", label: "Matched by dialect", glyph: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" /></> },
   "platform-access": { family: "trust", label: "Platform accessibility", glyph: <><rect x="2" y="3" width="20" height="14" rx="2.5" /><path d="M8 21h8M12 17v4M9 10l2 2 4-4" /></> },
   "reduced-motion": { family: "trust", label: "Reduced motion", glyph: <><circle cx="12" cy="12" r="9.5" /><path d="M10 9v6M14 9v6" /></> },
 

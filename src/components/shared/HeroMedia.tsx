@@ -8,9 +8,9 @@ import { Icon } from "@/components/ui/Icon";
 
 /** Example bookings shown in the still visual. Static illustration: no live counts or timers. */
 const SESSIONS = [
-  { from: "Arabic (Levantine)", to: "English", mode: "Video remote", when: "Tue 10:00", status: "Confirmed" as const, icon: "vri" as const },
+  { from: "Arabic (Levantine)", to: "English", mode: "Video", when: "Tue 10:00", status: "Confirmed" as const, icon: "vri" as const },
   { from: "French", to: "English", mode: "On-site", when: "Wed 14:30", status: "Confirmed" as const, icon: "on-site" as const },
-  { from: "Arabic (Sudanese)", to: "English", mode: "Video remote", when: "Thu 09:00", status: "Interpreter matched" as const, icon: "vri" as const },
+  { from: "Arabic (Sudanese)", to: "English", mode: "Video", when: "Thu 09:00", status: "Interpreter matched" as const, icon: "vri" as const },
 ];
 
 function ProductStill() {
@@ -19,7 +19,7 @@ function ProductStill() {
       <div className="rounded-2xl border border-border bg-white">
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <p className="text-[15px] font-semibold text-brand">Upcoming sessions</p>
-          <span className="text-[13px] text-subtle">This week</span>
+          <span className="rounded-full bg-surface px-2.5 py-0.5 text-[12px] font-semibold text-muted ring-1 ring-border">Example</span>
         </div>
         <ul className="divide-y divide-border">
           {SESSIONS.map((s) => (
@@ -47,7 +47,7 @@ function ProductStill() {
       <div className="mt-4 flex items-center gap-3 rounded-2xl border border-border bg-white px-5 py-4">
         <Icon name="nda" size={36} />
         <p className="text-[13px] leading-snug text-muted">
-          <span className="font-semibold text-brand">Briefing shared with your interpreter.</span> Glossary and agenda attached, confidentiality agreement signed.
+          <span className="font-semibold text-brand">Briefing shared with your interpreter.</span> Glossary and agenda attached, confidentiality terms accepted.
         </p>
       </div>
     </figure>
